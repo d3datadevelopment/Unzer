@@ -2,6 +2,13 @@
 title: Changelog
 ---
 
+## 6.2.0.1 - (2020-11-10)
+### fixed
+- fehlendes NGW-Template für Vorkasse hinzugefügt - verhinderte Portierung der Altkonfiguration
+- Fehler bei Generierung von Bestellung bei Nutzung von NGW korrigiert
+
+---
+
 ## 6.2.0.0 - (2020-10-28)
 ### added
 - ermöglicht den Einsatz der MGW Schnittstelle

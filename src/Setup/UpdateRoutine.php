@@ -132,16 +132,16 @@ class UpdateRoutine extends d3install_updatebase
                             continue;
                         }
                         $escapedParameter = [
-                        'isActive'       => 1,
-                        'isTestConfig'   => $isTestMode,
-                        'title'          => $this->_mapOxpaymentIdToPaymentName($oxPaymentId),
-                        'paymentType'    => $this->_mapHeidelpayClassnameToChannelsettingsClass(
-                            $heidelpayClassName,
-                            $factory
-                        ),
-                        'channel'        => $mapHeidelpayClassnameToChannel,
-                        'oxidpaymentIds' => [$oxPaymentId],
-                    ];
+                            'isActive'       => 1,
+                            'isTestConfig'   => $isTestMode,
+                            'title'          => $this->_mapOxpaymentIdToPaymentName($oxPaymentId),
+                            'paymentType'    => $this->_mapHeidelpayClassnameToChannelsettingsClass(
+                                $heidelpayClassName,
+                                $factory
+                            ),
+                            'channel'        => $mapHeidelpayClassnameToChannel,
+                            'oxidpaymentIds' => [$oxPaymentId],
+                        ];
 
                         $newConfiguration = $this->retrieveNewConfiguration($escapedParameter);
                         $newConfiguration->setId(Registry::getUtilsObject()->generateUId());
