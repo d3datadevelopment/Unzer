@@ -47,7 +47,7 @@ class PaymentGateway extends PaymentGateway_parent
             return parent::executePayment($dAmount, $oOrder);
         }
         /** @var ControllerPaymentGateway $oGatewayFacade */
-        $oGatewayFacade = oxNew($oOrder, $oFactory);
+        $oGatewayFacade = oxNew(ControllerPaymentGateway::class, $oOrder, $oFactory);
 
         //TODO: compose Transaction in dependency of payment and paymntcode
         $oTransAction = $oFactory->getLatestTransactionByReference($oFactory->getReferenceNumber());
