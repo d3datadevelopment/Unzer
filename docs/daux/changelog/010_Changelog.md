@@ -2,6 +2,19 @@
 title: Changelog
 ---
 
+## 6.2.0.2 - (2020-11-30)
+
+### added
+- Freigabe für OXID 6.2.3
+
+### changed
+- Unzer API URL
+- iDeal Logo
+
+### fixed
+- Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (MGW)
+
+
 ## 6.2.0.1 - (2020-11-10)
 ### fixed
 - fehlendes NGW-Template für Vorkasse hinzugefügt - verhinderte Portierung der Altkonfiguration
