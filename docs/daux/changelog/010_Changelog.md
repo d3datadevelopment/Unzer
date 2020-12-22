@@ -2,6 +2,17 @@
 title: Changelog
 ---
 
+## 6.2.0.3 - (2020-12-22)
+
+### changed
+- Transaktionsübersicht bei Nutzung der MGW-Schnittstelle entfernt
+
+### fixed
+- Fehlerverhalten bei Bestellungen mit Gutschein/Rabatten
+- Aufruf des Cronjobs für iDeal & Przelewy24
+- Warenkorbberechnung korrigiert
+
+
 ## 6.2.0.2 - (2020-11-30)
 
 ### added
@@ -376,7 +387,7 @@ Inkorrektes Handling mit Gutscheinen
 ## 5.2.0.0  
 Implementierung PCI3 (Kartenzahlung via iFrame)  
 Umstellung von SGW/XML auf NGW/POST  
-neue Option "Registierung für Karten nutzen (Kreditkarte, Debitkarte)" hinzugefügt  
+neue Option "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)" hinzugefügt  
 neuer Menüpunkt /D³ Module/Heidelpay/Logging/  
 Fehlverhalten im JavaScript mit einer deaktivierten Zahlungsart gelöst  
 das Oxid Standard "Mobile-Theme" wird bis zum nächsten Update nicht untersützt!  
@@ -582,7 +593,7 @@ Optimierung aller Modulteile. Dadurch u.a. schnellere Abarbeitung der Heidelpay-
 ## 2.1
 ####neue Funktionen:  
 - Einbau einer alternativen Bezahlung mit Kreditkarte nach Schritt 4 im Bestellvorgang (Aktivierung im Admin)
-  Damit wird die zusätzliche "Registierung" des Kunden bei Heidelpay nicht genutzt und der Shopinhaber hat nur 1x Transaktionsgebühren pro Bestellung  
+  Damit wird die zusätzliche "Registrierung" des Kunden bei Heidelpay nicht genutzt und der Shopinhaber hat nur 1x Transaktionsgebühren pro Bestellung  
 - KK- und Bankkarten - Daten werden aus den Heidelpay-Responsedaten ausgelesen und in die Session als Dynvalue gespeichert.  
   -> Wichtig für eFire / creditPass-Boniprüfung
 Zusätzlich werden die KK- und ELV-Daten im Shop gespeichert, um im Schritt 3 bei wiederholter Zahlung diese anzuzeigen

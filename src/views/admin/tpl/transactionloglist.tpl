@@ -22,7 +22,11 @@
     //-->
 </script>
 
-<div id="liste">
+[{if $heidelpayInterfaceType != "ngw"}]
+    <h2>[{oxmultilang ident="D3HEIDELPAY_TRANSACTIONLIST_INFOTEXT_ONLY_NGW"}]</h2>
+[{else}]
+
+    <div id="liste">
     <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
         [{include file="_formparams.tpl" cl=$oViewConf->getActiveClassname() lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 
@@ -279,5 +283,6 @@
     </form>
 </div>
 
+[{/if}]
 [{include file="pagetabsnippet.tpl"}]
 [{include file="d3_cfg_mod_inc.tpl" blHideLinkBar=true}]
