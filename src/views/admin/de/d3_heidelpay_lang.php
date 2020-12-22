@@ -15,7 +15,7 @@ $aLang     = array(
     'D3DYN_HEIDELPAY_PARAM_SECURITYSENDER'                              => 'Sender-ID',
     'D3DYN_HEIDELPAY_PARAM_USERID'                                      => 'Login',
     'D3DYN_HEIDELPAY_PARAM_PASSWORD'                                    => 'Password',
-    'D3DYN_HEIDELPAY_PARAM_CARDS_USE_RG'                                => 'Registierung für kartenbasierte Zahlungsmethoden nutzen (Kreditkarte / Debitkarte)',
+    'D3DYN_HEIDELPAY_PARAM_CARDS_USE_RG'                                => 'Registrierung für kartenbasierte Zahlungsmethoden nutzen (Kreditkarte / Debitkarte)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE'                                 => 'Buchungstyp kartenbasierte Zahlungsmethoden (Kreditkarte / Debitkarte)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_DIRECT'                          => 'Betrag sofort abbuchen',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_RESERVE'                         => 'Betrag nur reservieren',
@@ -187,18 +187,18 @@ $aLang     = array(
         . '<br>Diese können Debit\'s (DB) und Registrierungen (RG) enthalten.' //
         . '<br>Zukünftig wird eine Registrierung (RG) für Folgezahlungen benötigt.' //
         . '<br>Die automatische Installation entfernt im nächsten Schritt alle gespeicherten Zahlungsdaten die keine Registrierungen (RG) und vom Typ Kredit- oder Debitkarte sind.' //
-        . '<br><br>Zusätzlich wird der aktive Haken bei "Registierung für Karten nutzen (Kreditkarte, Debitkarte)" vorausgesetzt (ggf. wird diese Option in einem späteren Installationsschritt automatisch gesetzt).' //
+        . '<br><br>Zusätzlich wird der aktive Haken bei "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)" vorausgesetzt (ggf. wird diese Option in einem späteren Installationsschritt automatisch gesetzt).' //
         . '<br>Die Registrierung (RG) ist eine zusätzliche Transaktion und ist kostenpflichtig.' //
-        . '<br><br>Wenn Sie diese Option nicht nutzen möchten, deaktivieren Sie bitte den Haken "Gespeicherte Daten dem Kunden anbieten?" und "Registierung für Karten nutzen (Kreditkarte, Debitkarte)".' //
+        . '<br><br>Wenn Sie diese Option nicht nutzen möchten, deaktivieren Sie bitte den Haken "Gespeicherte Daten dem Kunden anbieten?" und "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)".' //
         . '<br>Diese finden Sie unter /D&sup3; Module/Unzer/Einstellungen/.' //
         . '<br><br>Bankdaten werden seit der Modul-Version 5.2.0.0 direkt im Shop gespeichert und sind nicht betroffen.' //
         . '<br><br>Mit Klick auf "Installationsschritt ausführen..." nehmen Sie die Löschung der nicht mehr nutzbaren Daten zur Kenntnis. ',
     'D3HEIDELPAYNOTESTOREDDATAWITHOUTRG'                                => 'Sie nutzen die Option "Gespeicherte Daten dem Kunden anbieten?".' //
-        . '<br>Für den zukünftigen Gebrauch der Option, wird die aktive Einstellung "Registierung für Karten nutzen (Kreditkarte, Debitkarte)" benötigt.' //
+        . '<br>Für den zukünftigen Gebrauch der Option, wird die aktive Einstellung "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)" benötigt.' //
         . '<br>Diese wird mit diesem Installationsschritt aktiviert und kann bei Bedarf unter /Unzer/Einstellungen/ deaktiviert werden.' //
-        . '<br><br>Info zu der Einstellung "Registierung für Karten nutzen (Kreditkarte, Debitkarte)":',
+        . '<br><br>Info zu der Einstellung "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)":',
     'D3HEIDELPAYNOTESTOREDDATAWITHOUTRG_SAVING'                         => 'Sie nutzen die Option "Gespeicherte Daten dem Kunden anbieten?".' //
-        . '<br>Für den zukünftigen Gebrauch der Option, wird die aktive Einstellung "Registierung für Karten nutzen (Kreditkarte, Debitkarte)" benötigt.'
+        . '<br>Für den zukünftigen Gebrauch der Option, wird die aktive Einstellung "Registrierung für Karten nutzen (Kreditkarte, Debitkarte)" benötigt.'
         . '<br>Die Einstellung hat das Modul automatisch gesetzt und kann bei Bedarf deaktiviert werden.',
     'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_CRITERIONTAGS'      => 'Zusätzliche Parameter für die Transaktion',
     'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_DETAILS'            => 'Übergebene Parameter für die Transaktion',
@@ -276,4 +276,15 @@ $aLang     = array(
     'D3HEIDELPAY_MGW_PAYMENTSTATE_pending'                              => 'warte auf Zahlung',
     'D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE'                                => 'Debug Modus aktiv',
     'D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR'           => 'SEPA gesicherte Lastschrift - zeige Kundendateneingabe an:',
+
+    'D3HEIDELPAY_PAYMENT_COMPANY_DATE'                                   => 'Datum',
+    'D3HEIDELPAY_PAYMENT_COMPANY_RESULT'                                 => 'Ergebnis',
+    'D3HEIDELPAY_PAYMENT_COMPANY_CARDS'                                  => 'Credit/Debit',
+    'D3HEIDELPAY_PAYMENT_COMPANY_METHOD'                                 => 'Methode',
+    'D3HEIDELPAY_PAYMENT_COMPANY_PAYMENTTYPE'                            => 'Zahlungstyp',
+    'D3HEIDELPAY_PAYMENT_COMPANY_TXNID'                                  => 'Txn-ID',
+    'D3HEIDELPAY_PAYMENT_COMPANY_UNIQUEID'                               => 'Unique ID',
+    'D3HEIDELPAY_PAYMENT_COMPANY_SHORTID'                                => 'Short-ID',
+
+    'D3HEIDELPAY_TRANSACTIONLIST_INFOTEXT_ONLY_NGW'                      => 'Die Transaktionübersicht kann nur mit der Schnittstelle \'NGW\' verwendet werden.',
 );

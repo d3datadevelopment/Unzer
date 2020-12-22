@@ -5,7 +5,7 @@ $iLangNr   = 0;
 $aLang     = array(
     'charset'                                               => 'UTF-8',
     'HELP_D3DYN_HEIDELPAY_PARAM_CARDS_USE_RG'               => 'Bei aktiver Option wird vor einer ' //
-        . 'Belastung/Reservierung eine Registierung für Karten durchgeführt.' //
+        . 'Belastung/Reservierung eine Registrierung für Karten durchgeführt.' //
         . '<br>Das betrifft die Kreditkarten- und Debitkartenzahlungsarten.' //
         . '<br><br>Auf eine Registrierung können zusätzliche Buchungen ausgeführt werden (bspw. im HIP).' //
         . '<br><br>Die Registrierung gilt als zusätzliche Transaktion, es fallen Gebühren dazu an ' //
