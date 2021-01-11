@@ -30,7 +30,7 @@ $aModule = array(
         'en' => '',
     ),
     'thumbnail'      => 'picture.png',
-    'version'        => '6.2.0.3',
+    'version'        => '6.2.0.4',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',
