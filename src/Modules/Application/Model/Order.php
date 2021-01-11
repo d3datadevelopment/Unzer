@@ -106,7 +106,7 @@ class Order extends Order_parent
             )
         ) {
             $paymentId = $this->getFieldData('oxtransid');
-            if (false === strstr($paymentId, 's-pay-')) {
+            if (false === strstr($paymentId, 's-pay-') && false === strstr($paymentId, 'p-pay-')) {
                 return false;
             }
             try {

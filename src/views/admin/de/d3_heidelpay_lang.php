@@ -4,7 +4,7 @@ $sLangName = "Deutsch";
 $iLangNr   = 0;
 $aLang     = array(
     'charset'                                                           => 'UTF-8',
-    'd3mxheidelpay'                                                     => 'Unzer',
+    'd3mxheidelpay'                                                     => "<i class='fab fa-fw fa-d3unzer d3fa-color-unzer'></i> Unzer",
     'd3mxheidelpay_settings'                                            => 'Einstellungen',
     'd3tbclheidelpay_settings'                                          => 'Stamm',
     'd3tbclheidelpay_support'                                           => 'Support',

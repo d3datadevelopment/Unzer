@@ -2,6 +2,17 @@
 title: Changelog
 ---
 
+## 6.2.0.4 - (2021-01-11)
+
+### added
+- Logo in Adminnavigation eingefügt
+
+### fixed
+- keine Weiterleitung zur 3DS-Eingabe bei Nutzung der NGW-Schnittstelle möglich
+- Transaktionstab im live-Modus zeigt wieder Daten
+
+---
+
 ## 6.2.0.3 - (2020-12-22)
 
 ### changed
@@ -12,6 +23,7 @@ title: Changelog
 - Aufruf des Cronjobs für iDeal & Przelewy24
 - Warenkorbberechnung korrigiert
 
+---
 
 ## 6.2.0.2 - (2020-11-30)
 
