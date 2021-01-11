@@ -34,6 +34,12 @@ title: Changelog
 
 ---
 
+## 6.1.3.1 - (2021-01-11)
+### fixed
+- keine Weiterleitung zur 3DS-Eingabe bei Nutzung der NGW-Schnittstelle möglich
+
+---
+
 ## 6.1.3.0 - (2020-12-03)
 ### changed
 - Umbenennung (Rebranding) von heidelpay zu Unzer

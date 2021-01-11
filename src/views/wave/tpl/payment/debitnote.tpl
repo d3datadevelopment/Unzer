@@ -5,7 +5,7 @@
 [{assign var='oHeidelPayment' value=$oHeidelPaySettings->getPayment($paymentmethod)}]
 [{assign var="aBrands" value=$oHeidelpayViewConfig->getHeidelpayNgwBrands($paymentmethod, $oHeidelPayment, $oxcmp_user)}]
 [{assign var="sBrandIdentELV" value='ELV'}]
-[{assign var="sFullImageUrl" value=$sImageUrl|cat:'unzer_direct_debit.png'}]
+[{assign var="sFullImageUrl" value=$sImageUrl|cat:'logo_elv.jpg'}]
 [{assign var='blShowPaymentMethod' value=true}]
 [{if get_class($oHeidelPayment) === "D3\Heidelpay\Models\Payment\Directdebit\Secured"}]
     [{assign var='blShowPaymentMethod' value=$blD3HeidelpayHasSameAdresses}]
@@ -31,7 +31,7 @@
 [{/capture}]
 [{oxscript add=$smarty.capture.javaScript}]
 
-[{block name="heidelpay_directdebit"}]
+[{block name="heidelpay_debitnote"}]
     [{if get_class($oHeidelPayment) === "D3\Heidelpay\Models\Payment\Directdebit\Secured"}]
         [{assign var="iBirthdayMonth" value=0}]
         [{assign var="iBirthdayDay" value=0}]
@@ -58,15 +58,13 @@
                 >
                 <label for="payment_[{$sPaymentID}]">
                     <b>[{$paymentmethod->oxpayments__oxdesc->value}]</b>
-                    [{if $sPaymentID != 'oxiddebitnote'}]
-                        [{include file="d3_heidelpay_views_tpl_payment_img.tpl" sImageUrl=$sFullImageUrl sBrandIdent=$paymentmethod->oxpayments__oxdesc->value}]
-                    [{/if}]
+                    [{include file="d3_heidelpay_views_tpl_payment_img.tpl" sImageUrl=$sFullImageUrl sBrandIdent=$sBrandIdentELV}]
                 </label>
                 [{if false == $blShowPaymentMethod}]
-                    <sup class="alert alert-danger d3HeidelaySameAddressNotice">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_NOTSAMEADDRESS_NOTICE"}]</sup>
+                    <dfn class="alert alert-danger d3HeidelaySameAddressNotice">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_NOTSAMEADDRESS_NOTICE"}]</dfn>
                 [{/if}]
             </dt>
-            <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
+            <dd class="payment-option [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
                 [{assign var="oPaymentPrice" value=$paymentmethod->getPrice()}]
                 [{if $oPaymentPrice->getPrice()}]
                     [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge')}]
@@ -80,7 +78,7 @@
                 [{/if}]
                 [{if get_class($oHeidelPayment) === "D3\Heidelpay\Models\Payment\Directdebit\Secured"}]
                     <div class="form-group oxDate">
-                        <label class="control-label col-xs-12 col-lg-3 req">
+                        <label class="col-xs-12 col-lg-3 req">
                             [{oxmultilang ident="BIRTHDATE"}]
                             [{if $oView->getPaymentError() == 1}]*[{/if}]
                         </label>
@@ -109,14 +107,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-lg-9 col-lg-offset-3">
+                        <div class="col-xs-12 col-lg-9 offset-lg-3">
                             <div class="alert alert-info">[{oxmultilang ident="COMPLETE_MARKED_FIELDS"}]</div>
                         </div>
                     </div>
                 [{/if}]
 
                 <div class="form-group">
-                    <label class="req control-label col-lg-3"
+                    <label class="req col-lg-3"
                            for="sCountrySelected_[{$sPaymentID}]">[{oxmultilang ident="D3HEIDELPAY_CC_INPUT_COUNTRY"}]</label>
                     <div class="col-lg-9">
                         <select class="form-control" id="sCountrySelected_[{$sPaymentID}]" name="dynvalue[lsland]">
@@ -138,7 +136,7 @@
                     </div>
                 </div>
                 <div class="form-group" id="sBIC_[{$sPaymentID}]">
-                    <label class="req control-label col-lg-3"
+                    <label class="req col-lg-3"
                            for="sCountrySelected_[{$sPaymentID}]lsblz">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_INPUT_BANK_BIC"}]</label>
                     <div class="col-lg-9">
                         <input id="sCountrySelected_[{$sPaymentID}]lsblz" type="text" class="form-control js-oxValidate"
@@ -147,7 +145,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="req control-label col-lg-3"
+                    <label class="req col-lg-3"
                            for="sCountrySelected_[{$sPaymentID}]lsktonr">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_INPUT_BANK_IBAN"}]</label>
                     <div class="col-lg-9">
                         <input id="sCountrySelected_[{$sPaymentID}]lsktonr" type="text"
@@ -157,7 +155,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="req control-label col-lg-3"
+                    <label class="req col-lg-3"
                            for="sCountrySelected_[{$sPaymentID}]lsktoinhaber">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_INPUT_BANK_ACCOUNTHOLDER"}]</label>
                     <div class="col-lg-9">
                         <input id="sCountrySelected_[{$sPaymentID}]lsktoinhaber" type="text"
@@ -172,7 +170,7 @@
                 [{block name="checkout_payment_longdesc"}]
                     [{if $paymentmethod->oxpayments__oxlongdesc->value}]
                         <div class="row">
-                            <div class="col-xs-12 col-lg-9 col-lg-offset-3">
+                            <div class="col-xs-12 col-lg-9 offset-lg-3">
                                 <div class="alert alert-info desc">
                                     [{$paymentmethod->oxpayments__oxlongdesc->getRawValue()}]
                                 </div>

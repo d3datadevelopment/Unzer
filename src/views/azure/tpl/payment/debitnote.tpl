@@ -32,8 +32,8 @@
 [{/capture}]
 [{oxscript add=$smarty.capture.javaScript}]
 
-[{block name="heidelpay_directdebit"}]
-    [{if get_class($oHeidelPayment) === "D3\Heidelpay\Models\Payment\Directdebit\Secured"}]
+[{block name="heidelpay_debitnote"}]
+    [{if get_class($oHeidelPayment) === "D3\Heidelpay\Models\Payment\Invoice\Secured"}]
         [{assign var="iBirthdayMonth" value=0}]
         [{assign var="iBirthdayDay" value=0}]
         [{assign var="iBirthdayYear" value=0}]
@@ -56,8 +56,8 @@
                     [{/if}]
             >
             <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}]
-                    [{assign var="oPaymentPrice" value=$paymentmethod->getPrice()}]
-                        [{if $oPaymentPrice->getPrice()}]
+                    [{if $paymentmethod->getPrice()}]
+                        [{assign var="oPaymentPrice" value=$paymentmethod->getPrice()}]
                         [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge')}]
                             ( [{oxprice price=$oPaymentPrice->getNettoPrice() currency=$currency}]
                             [{if $oPaymentPrice->getVatValue() > 0}]
