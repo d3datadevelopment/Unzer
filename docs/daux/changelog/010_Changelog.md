@@ -2,6 +2,16 @@
 title: Changelog
 ---
 
+## 6.2.1.0 - (2021-01-11)
+
+### added
+- Adresseingaben werden vorformatiert, um Ablehnungen aufgrund falschen Formates zu vermeiden
+
+### changed
+- Produktbild-URL wird im MGW-Modus nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt
+
+---
+
 ## 6.2.0.4 - (2021-01-11)
 
 ### added
