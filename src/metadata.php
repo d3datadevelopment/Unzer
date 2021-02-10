@@ -18,19 +18,18 @@ use OxidEsales\Eshop\Application\Model as OxidModel;
 use OxidEsales\Eshop\Core as OxidCore;
 
 $sMetadataVersion = '2.0';
+$sLogo = '<img src="https://logos.oxidmodule.com/d3logo.svg" alt="(D3)" style="height:1em;width:1em"> ';
 
 $aModule = array(
     'id'             => 'd3heidelpay',
-    'title'          =>
-        '<svg style="height:1em;width:1em"><image xlink:href="https://logos.oxidmodule.com/d3logo.svg" style="height:1em;width:1em" /></svg> '.
-        'Unzer',
+    'title'          => $sLogo.' Unzer',
     'description'    => array(
         'de' => 'Unzer GmbH bietet als Zahlungsinstitut H&auml;ndlern ein Zahlungssystem f&uuml;r '
             . 'alle g&auml;ngigen Zahlungsverfahren f&uuml;r die Payment Abwicklung im Internet.',
         'en' => '',
     ),
     'thumbnail'      => 'picture.png',
-    'version'        => '6.2.1.0',
+    'version'        => '6.2.1.1',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',
