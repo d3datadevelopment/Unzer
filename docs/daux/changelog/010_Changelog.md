@@ -2,6 +2,14 @@
 title: Changelog
 ---
 
+## 6.2.1.1 - (2021-02-10)
+
+### fixed
+- abgesicherter rechnungskauf zurückgewiesen aufgrund abweichender Lieferadresse
+- keine Eingabe in 3rd party select-Eingabefelder an der Zahlartenauswahl möglich
+
+---
+
 ## 6.2.1.0 - (2021-01-11)
 
 ### added
@@ -18,7 +26,7 @@ title: Changelog
 - Logo in Adminnavigation eingefügt
 
 ### fixed
-- keine Weiterleitung zur 3DS-Eingabe bei Nutzung der NGW-Schnittstelle möglich
+- nötige Umstellung für 3D Secure v2
 - Transaktionstab im live-Modus zeigt wieder Daten
 
 ---

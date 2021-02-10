@@ -8,11 +8,20 @@
         [{capture name="doNotUse"}]
             <script type="text/javascript">
                 [{capture name="d3JavaScriptForHeidelpay"}]
-                $('#payment').find('dl dd').not('.activePayment').find('input, select, textarea').attr('disabled', 'disabled');
-                $('#payment dl dt input[type=radio]').click(function () {
-                    $('#payment').find('dd').find('input, select, textarea').attr('disabled', 'disabled');
-                    $(this).parents('dl').find('input, select, textarea').removeAttr('disabled');
-                });
+                    let ddna = $('#payment').find('dl dd').not('.activePayment');
+                    ddna.find('input, select, textarea').attr('disabled', 'disabled');
+                    [{* required for flow themes only*}]
+                    ddna.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').addClass("disabled");
+                    $('#payment dl dt input[type=radio]').click(function () {
+                        let dds = $('#payment').find('dd')
+                        dds.find('input, select, textarea').attr('disabled', 'disabled');
+                        [{* required for flow themes only*}]
+                        dds.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').addClass("disabled");
+                        let dls = $(this).parents('dl');
+                        dls.find('input, select, textarea').removeAttr('disabled');
+                        [{* required for flow themes only*}]
+                        dls.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').removeClass('disabled');
+                    });
                 [{/capture}]
             </script>
         [{/capture}]
