@@ -85,7 +85,13 @@ class ThankYouController extends ThankYouController_parent
         $session           = $factory->getOxidProvider()->getSession();
         $wasMailSurpressed = $session->getVariable($factory::HeidelpaySurpressEmailStateSessionName);
         if ($order instanceof Order && $wasMailSurpressed) {
+            
+            $oBasket = $this->d3FixNotBuyableState($oBasket);
+            
             $sendingResult = $order->d3HeidelpaySendOrderByEmail($oBasket, $this->getUser());
+            
+            $oBasket = $this->d3ResetFixedNotBuyableState($oBasket);
+            
             if ($sendingResult === Order::ORDER_STATE_MAILINGERROR) {
                 $this->_sMailError = true;
             }
@@ -145,5 +151,39 @@ MySQL;
                 $order->save();
             }
         }
+    }
+    
+    /**
+     * bei "wenn ausverkauft offline / nicht bestellbar" Artikel der Lagerstand auf 0 geht, kann dieser Artikel nicht mehr 
+     * als buyable geladen werden, er fehlt dann in der Bestellbestätigungsmail
+     * wir manipulieren den isBuybaleStatus für diesen Fall und resetten diesen später wieder mit d3ResetFixedNotBuyableState
+     */
+    protected function d3FixNotBuyableState($oBasket)
+    {
+        $basketContents = $oBasket->getContents();
+            
+        foreach ($basketContents as $id => $basketItem) {
+            $article = $basketItem->getArticle();
+            $article->setBuyableState(true);
+
+            $reflection = new \ReflectionClass($article);
+            $property = $reflection->getProperty('_blNotBuyableParent');
+            $property->setAccessible(true);
+            $property->setValue($article, false);
+        }
+        
+        return $oBasket;
+    }
+    
+    protected function d3ResetFixedNotBuyableState($oBasket)
+    {
+        foreach ($oBasket->getContents() as $item) {
+            $reflection = new \ReflectionClass($item);
+            $property = $reflection->getProperty('_oArticle');
+            $property->setAccessible(true);
+            $property->setValue($item, null);
+        }
+        
+        return $oBasket;
     }
 }
