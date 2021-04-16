@@ -2,6 +2,13 @@
 title: Changelog
 ---
 
+## 6.2.1.2 - (2021-04-19)
+
+### fixed
+- 0010757: fehlende Artikel in Bestellbestätigungsmail durch ausverkauft-Status
+
+---
+
 ## 6.2.1.1 - (2021-02-10)
 
 ### fixed
