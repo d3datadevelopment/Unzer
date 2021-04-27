@@ -2,6 +2,16 @@
 title: Changelog
 ---
 
+## 6.2.1.3 - (2021-04-27)
+
+### added
+- Freigabe für OXID 6.2.4
+
+### fixed
+- fehlende Zahlungsarten-Templates im Admin ergänzt
+
+---
+
 ## 6.2.1.2 - (2021-04-19)
 
 ### fixed
