@@ -3,7 +3,7 @@ title: Systemanforderungen
 ---
 
 * PHP Version
-    * 5.6.x bis 7.4.x
+    * 5.6.x bis 8.0
 * PHP Decoder
     * installierter ionCube Loader
 * Shopversionen / -editionen
@@ -11,6 +11,7 @@ title: Systemanforderungen
         * 6.0.x
         * 6.1.x
         * 6.2.x
+        * 6.3.x
 * Themes
     * flow
     * wave
@@ -19,7 +20,7 @@ title: Systemanforderungen
 * bei Verwendung der Zahlungsart „iDeal“ oder „Przelewy24“ wird ein freier Cronjob benötigt
 * bei Verwendung der Zahlungsart „Vorkasse“ oder „Rechnungskauf“ wird ein freier Cronjob benötigt
 
-Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für **PHP 5.6**, **PHP 7.0**, **PHP 7.1**, **PHP 7.2**, **PHP 7.3** oder **PHP 7.4** sowie dem auf Ihrem Server vorhandenen Decoder (**ionCube Loader**) kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.
+Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für **PHP 5.6**, **PHP 7.0**, **PHP 7.1**, **PHP 7.2**, **PHP 7.3**, **PHP 7.4** oder **PHP 8.0** sowie dem auf Ihrem Server vorhandenen Decoder (**ionCube Loader**) kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.
 
 Kontrollieren Sie bitte auch, ob diese Modulversion für die von Ihnen eingesetzte Shopedition (Professional Edition (PE) oder Enterprise Edition (EE)) ausgelegt ist. 
 
