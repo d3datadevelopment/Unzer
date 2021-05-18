@@ -2,6 +2,14 @@
 title: Changelog
 ---
 
+## 6.2.2.0 - (2021-05-18)
+
+### fixed
+- Bestellungen nur mit der Währung EUR möglich
+- Bestellabschluss bei aktivem PHP Error Log schlägt fehl
+
+---
+
 ## 6.2.1.3 - (2021-04-27)
 
 ### added
