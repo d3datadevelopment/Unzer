@@ -1,5 +1,5 @@
 ---
-title: Infos für Entwickler (nur NGW)
+title: Infos für Entwickler (nur Legacy Payments / NGW)
 ---
 
 Bestellungen die über iDeal und Przelewy24 abgewickelt werden, gehen einen anderen Weg.  

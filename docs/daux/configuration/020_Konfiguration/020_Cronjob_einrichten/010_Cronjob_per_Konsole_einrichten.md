@@ -1,5 +1,5 @@
 ---
-title: Cronjob per Konsole einrichten (nur NGW)
+title: Cronjob per Konsole einrichten (nur Legacy Payments / NGW)
 ---
 Der Cronjob muss entweder die Datei `cron_bankaccount.sh` oder `cron_bankaccount.php` aufrufen.<br>
 Die Dateien liegen im Shop unter: `/modules/d3/heidelpay/Cron/` <br>

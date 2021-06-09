@@ -1,5 +1,5 @@
 ---
-title: Was macht der Cronjob? (nur NGW)
+title: Was macht der Cronjob? (nur Legacy Payments / NGW)
 ---
 
 

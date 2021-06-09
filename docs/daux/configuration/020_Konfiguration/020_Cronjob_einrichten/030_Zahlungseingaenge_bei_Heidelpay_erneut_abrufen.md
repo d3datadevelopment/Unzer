@@ -1,5 +1,5 @@
 ---
-title: Zahlungseingänge bei Unzer erneut abrufen (nur NGW)
+title: Zahlungseingänge bei Unzer erneut abrufen (nur Legacy Payments / NGW)
 ---
 Der Cronjob fragt Zahlungseingänge bei Unzer immer für den aktuellen __Tag__ ab.
 

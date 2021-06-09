@@ -1,5 +1,5 @@
 ---
-title: Automatische Vorkasse und Rechnungskauf (nur NGW)
+title: Automatische Vorkasse und Rechnungskauf (nur Legacy Payments / NGW))
 ---
 
 > [!] Sofern Sie die Zahlungsart "automatische Vorkasse" oder "Rechnungskauf" über Unzer NICHT nutzen, können Sie auf die nächste Seite blättern.

@@ -1,5 +1,5 @@
 ---
-title: OXID eShop Enterprise Edition (nur NGW)
+title: OXID eShop Enterprise Edition (nur Legacy Payments / NGW)
 ---
 Pro Subshop wird ein einzelner Cronjob benötigt.<br>
 Hierzu verwenden Sie den Parameter `&shp=N`.

@@ -1,5 +1,5 @@
 ---
-title: Was passiert bei einem Refund? (nur NGW)
+title: Was passiert bei einem Refund? (nur Legacy Payments / NGW)
 ---
 
 Sollte eine Refund-Transaktion `OT.RF` vorhanden sein, wird die Bestellung (wie im Standard-Shop-Admin) storniert.  

@@ -1,5 +1,5 @@
 ---
-title: Was ist noch zu beachten? (nur NGW)
+title: Was ist noch zu beachten? (nur Legacy Payments / NGW)
 ---
 Sofern der Benutzer auf die Thankyou Seite kommt (Bestellschritt 5), sieht er folgenden
 Text:

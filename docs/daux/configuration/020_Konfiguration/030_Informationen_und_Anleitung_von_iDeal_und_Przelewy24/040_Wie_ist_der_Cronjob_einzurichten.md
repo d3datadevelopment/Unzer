@@ -1,5 +1,5 @@
 ---
-title: Wie ist der Cronjob einzurichten? (nur NGW)
+title: Wie ist der Cronjob einzurichten? (nur Legacy Payments / NGW)
 ---
 
 Die Datei unter [ /modules/d3/heidelpay/Cron/collectpayments.php ] muss eingebunden werden.

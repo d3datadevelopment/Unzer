@@ -1,5 +1,5 @@
 ---
-title: Was hat sich im Bestellprozess geändert? (nur NGW)
+title: Was hat sich im Bestellprozess geändert? (nur Legacy Payments / NGW)
 ---
 
 Der Benutzer durchläuft den Bestellprozess wie gewohnt.<br> 
