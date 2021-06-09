@@ -2,6 +2,16 @@
 title: Changelog
 ---
 
+## 6.2.2.1 - (2021-06-07)
+
+### changed
+- Dokumentation für Schnittstellenwechsel ergänzt
+
+### fixed
+- Preauthorisation Transaktionen werden nach erfolgreichem Abschluss mit Status "OK" markiert.
+
+---
+
 ## 6.2.2.0 - (2021-05-18)
 
 ### fixed
@@ -41,7 +51,7 @@ title: Changelog
 - Adresseingaben werden vorformatiert, um Ablehnungen aufgrund falschen Formates zu vermeiden
 
 ### changed
-- Produktbild-URL wird im MGW-Modus nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt
+- Produktbild-URL wird bei Nutzung der PaymentApi / MGW-Schnittstelle nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt
 
 ---
 
@@ -59,7 +69,7 @@ title: Changelog
 ## 6.2.0.3 - (2020-12-22)
 
 ### changed
-- Transaktionsübersicht bei Nutzung der MGW-Schnittstelle entfernt
+- Transaktionsübersicht bei Nutzung der PaymentApi / MGW-Schnittstelle entfernt
 
 ### fixed
 - Fehlerverhalten bei Bestellungen mit Gutschein/Rabatten
@@ -78,7 +88,7 @@ title: Changelog
 - iDeal Logo
 
 ### fixed
-- Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (MGW)
+- Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (PaymentApi / MGW)
 
 
 ## 6.2.0.1 - (2020-11-10)
@@ -90,7 +100,7 @@ title: Changelog
 
 ## 6.2.0.0 - (2020-10-28)
 ### added
-- ermöglicht den Einsatz der MGW Schnittstelle
+- ermöglicht den Einsatz der PaymentApi / MGW-Schnittstelle
  
 ### changed
 - Umbenennung (Rebranding) von heidelpay zu Unzer

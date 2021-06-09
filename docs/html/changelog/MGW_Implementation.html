@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="de">
 <head>
-    <title>({unreleased}) Integration der MGW/Rest Api Schnittstelle -  unzer</title>
+    <title>({unreleased}) Integration der PaymentApi / MGW Schnittstelle -  unzer</title>
         <meta name="description" content="">
     <meta name="author" content="D³ Data Development">
     <meta charset="UTF-8">
@@ -45,7 +45,7 @@
 
         <div class="Collapsible__content">
             <!-- Navigation -->
-            <ul class='Nav'><li class='Nav__item '><a href="../changelog/Changelog.html">Changelog</a></li><li class='Nav__item '><a href="../changelog/Channel_Rekonfiguration.html">(6.1.0.0) Umstellung der Konfiguration</a></li><li class='Nav__item Nav__item--active'><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der MGW/Rest Api Schnittstelle</a></li></ul>
+            <ul class='Nav'><li class='Nav__item '><a href="../changelog/Changelog.html">Changelog</a></li><li class='Nav__item '><a href="../changelog/Channel_Rekonfiguration.html">(6.1.0.0) Umstellung der Konfiguration</a></li><li class='Nav__item Nav__item--active'><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der PaymentApi / MGW Schnittstelle</a></li></ul>
             <div class='versionselector'>Version wechseln: 
 <select onchange="window.location.href=this.options[this.selectedIndex].value" size="1">
 
@@ -89,16 +89,16 @@
                 <article class="Page">
 
     <div class="Page__header">
-        <h1><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der MGW/Rest Api Schnittstelle</a></h1>
+        <h1><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der PaymentApi / MGW Schnittstelle</a></h1>
                 <span class="ModifiedDate">
-                        18.05.2021        </span>
+                        09.06.2021        </span>
                     </div>
 
     <div class="s-content">
         <h2 id="page_Einleitung">Einleitung</h2>
-<p>Seit 10. Dezember 2018 bietet Unzer offiziell eine Rest Api (auch MGW genannt) an.<br />
+<p>Seit 10. Dezember 2018 bietet Unzer offiziell eine Rest Api (auch PaymentApi / MGW genannt) an.<br />
 Die neue Schnittstelle unterscheidet sich erheblich zu den vorherigen Schnittstellen.<br />
-Für die Integration in den Oxid Shop bleibt die Anbindung an die bisherige Schnittstelle NGW erhalten.</p>
+Für die Integration in den Oxid Shop bleibt die Anbindung an die bisherige Schnittstelle Legacy Payments / NGW erhalten.</p>
 <h2 id="page_Was-andert-sich-fur-den-Shopbetreiber-im-Modul">Was ändert sich für den Shopbetreiber im Modul?</h2>
 <p>Der Administrator kann unter  <span class="navi_element">D³ Module</span>/<span class="navi_element">Unzer</span>/<span class="navi_element">Einstellungen</span>/<span class="navi_element">Stamm</span>/<span class="navi_element">Wählen Sie das Interface aus.</span> die entsprechende Schnittstelle (ngw = bisherige und mgw/rest = neu) auswählen.<br />
 Die Daten SenderId, Login, Passwort und Channels werden durch Zugangskeys (Key Pair) ersetzt.<br />

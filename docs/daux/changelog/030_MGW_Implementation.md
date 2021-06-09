@@ -1,10 +1,10 @@
 ---
-title: ({unreleased}) Integration der MGW/Rest Api Schnittstelle
+title: ({unreleased}) Integration der PaymentApi / MGW Schnittstelle
 ---
 ## Einleitung
-Seit 10. Dezember 2018 bietet Unzer offiziell eine Rest Api (auch MGW genannt) an.  
+Seit 10. Dezember 2018 bietet Unzer offiziell eine Rest Api (auch PaymentApi / MGW genannt) an.  
 Die neue Schnittstelle unterscheidet sich erheblich zu den vorherigen Schnittstellen.  
-Für die Integration in den Oxid Shop bleibt die Anbindung an die bisherige Schnittstelle NGW erhalten.
+Für die Integration in den Oxid Shop bleibt die Anbindung an die bisherige Schnittstelle Legacy Payments / NGW erhalten.
 
 ## Was ändert sich für den Shopbetreiber im Modul?
 Der Administrator kann unter  [D³ Module]/[Unzer]/[Einstellungen]/[Stamm]/[Wählen Sie das Interface aus.] die entsprechende Schnittstelle (ngw = bisherige und mgw/rest = neu) auswählen.  

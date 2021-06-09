@@ -45,7 +45,7 @@
 
         <div class="Collapsible__content">
             <!-- Navigation -->
-            <ul class='Nav'><li class='Nav__item Nav__item--active'><a href="../changelog/Changelog.html">Changelog</a></li><li class='Nav__item '><a href="../changelog/Channel_Rekonfiguration.html">(6.1.0.0) Umstellung der Konfiguration</a></li><li class='Nav__item '><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der MGW/Rest Api Schnittstelle</a></li></ul>
+            <ul class='Nav'><li class='Nav__item Nav__item--active'><a href="../changelog/Changelog.html">Changelog</a></li><li class='Nav__item '><a href="../changelog/Channel_Rekonfiguration.html">(6.1.0.0) Umstellung der Konfiguration</a></li><li class='Nav__item '><a href="../changelog/MGW_Implementation.html">({unreleased}) Integration der PaymentApi / MGW Schnittstelle</a></li></ul>
             <div class='versionselector'>Version wechseln: 
 <select onchange="window.location.href=this.options[this.selectedIndex].value" size="1">
 
@@ -91,12 +91,22 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        18.05.2021        </span>
+                        09.06.2021        </span>
                     </div>
 
     <div class="s-content">
-        <h2 id="page_6-2-2-0-2021-05-18">6.2.2.0 - (2021-05-18)</h2>
+        <h2 id="page_6-2-2-1-2021-06-07">6.2.2.1 - (2021-06-07)</h2>
+<h3 id="page_changed">changed</h3>
+<ul>
+<li>Dokumentation für Schnittstellenwechsel ergänzt</li>
+</ul>
 <h3 id="page_fixed">fixed</h3>
+<ul>
+<li>Preauthorisation Transaktionen werden nach erfolgreichem Abschluss mit Status &quot;OK&quot; markiert.</li>
+</ul>
+<hr />
+<h2 id="page_6-2-2-0-2021-05-18">6.2.2.0 - (2021-05-18)</h2>
+<h3 id="page_fixed-2">fixed</h3>
 <ul>
 <li>Bestellungen nur mit der Währung EUR möglich</li>
 <li>Bestellabschluss bei aktivem PHP Error Log schlägt fehl</li>
@@ -130,9 +140,9 @@
 <ul>
 <li>Adresseingaben werden vorformatiert, um Ablehnungen aufgrund falschen Formates zu vermeiden</li>
 </ul>
-<h3 id="page_changed">changed</h3>
+<h3 id="page_changed-2">changed</h3>
 <ul>
-<li>Produktbild-URL wird im MGW-Modus nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt</li>
+<li>Produktbild-URL wird bei Nutzung der PaymentApi / MGW-Schnittstelle nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt</li>
 </ul>
 <hr />
 <h2 id="page_6-2-0-4-2021-01-11">6.2.0.4 - (2021-01-11)</h2>
@@ -149,7 +159,7 @@
 <h2 id="page_6-2-0-3-2020-12-22">6.2.0.3 - (2020-12-22)</h2>
 <h3 id="page_changed-2">changed</h3>
 <ul>
-<li>Transaktionsübersicht bei Nutzung der MGW-Schnittstelle entfernt</li>
+<li>Transaktionsübersicht bei Nutzung der PaymentApi / MGW-Schnittstelle entfernt</li>
 </ul>
 <h3 id="page_fixed-2">fixed</h3>
 <ul>
@@ -170,7 +180,7 @@
 </ul>
 <h3 id="page_fixed-2">fixed</h3>
 <ul>
-<li>Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (MGW)</li>
+<li>Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (PaymentApi / MGW)</li>
 </ul>
 <h2 id="page_6-2-0-1-2020-11-10">6.2.0.1 - (2020-11-10)</h2>
 <h3 id="page_fixed-2">fixed</h3>
@@ -182,7 +192,7 @@
 <h2 id="page_6-2-0-0-2020-10-28">6.2.0.0 - (2020-10-28)</h2>
 <h3 id="page_added-2">added</h3>
 <ul>
-<li>ermöglicht den Einsatz der MGW Schnittstelle</li>
+<li>ermöglicht den Einsatz der PaymentApi / MGW-Schnittstelle</li>
 </ul>
 <h3 id="page_changed-2">changed</h3>
 <ul>

@@ -1,5 +1,5 @@
 ---
-title: Cronjob per Webaufruf einrichten (nur NGW)
+title: Cronjob per Webaufruf einrichten (nur Legacy Payments / NGW)
 ---
 Fügen Sie das Cronjob-Sicherheitspasswort in die Datei `config.inc.php` ein.<br>
 Gehen Sie im Shopadmin in das Menü [ (D3) Module ] / [ Modul-Connector ] /

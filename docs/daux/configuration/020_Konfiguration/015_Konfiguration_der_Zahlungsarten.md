@@ -1,6 +1,7 @@
 ---
 title: Konfiguration der Zahlungsarten
 ---
+
 ## 1. verfügbare Zahltypen:
 Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von der eingesetzten Lizenz):
 - Kreditkarte
@@ -8,16 +9,16 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
 - Bankeinzug
 - automatische Vorkasse
 - Sofort by Klarna
-- Giropay (nur NGW)
+- Giropay (nur Legacy Payments / NGW)
 - iDeal (Niederlande)
-- EPS (Österreich) (nur NGW)
+- EPS (Österreich) (nur Legacy Payments / NGW)
 - Rechnungskauf (ohne Zahlungssicherung)
 - Rechnungskauf (mit Zahlungssicherung)
 - B2B Rechnungskauf
-- Przelewy 24 (nur NGW)
-- EasyCredit (nur NGW)
+- Przelewy 24 (nur Legacy Payments / NGW)
+- EasyCredit (nur Legacy Payments / NGW)
 - PayPal
-- MasterPass (nur NGW)
+- MasterPass (nur Legacy Payments / NGW)
 
 ## 2. Zuordnung der Shop-Zahlungsarten zu den Unzer Zahltypen:
 1. Bereiten Sie die gewünschten Shop-Zahlungsarten unter [ Shopeinstellungen ] / [ Zahlungsarten ] vor.
@@ -34,7 +35,7 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
 
 2. Gehen Sie anschließend in den Menüpunkt [ (D3) Module ] / [ {$menutitle} ] / [ Channel-Konfigurationen ].  
 (Sie können die bereits mitgelieferten Channel-Konfigurationen verwenden und verändern.)  
-3. Andernfalls geben Sie einen [ Titel ] (bspw. Kreditkarte Inland), den von Unzer erhaltenen [ Channel ] (nur NGW) ein und wählen Sie den Unzer-Zahltyp aus.  
+3. Andernfalls geben Sie einen [ Titel ] (bspw. Kreditkarte Inland), den von Unzer erhaltenen [ Channel ] (nur Legacy Payments / NGW) ein und wählen Sie den Unzer-Zahltyp aus.  
 
 > [i] Wenn der Haken bei "Test Modus" gesetzt wird, ist die Channel-Konfiguration erst dann aktiv, wenn das Modul sich im Test Modus befindet. 
 
