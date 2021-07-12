@@ -2,6 +2,13 @@
 title: Changelog
 ---
 
+## 6.2.3.0 - (2021-07-12)
+
+### changed
+- Wechsel von HeidelpayPHP zu UnzerSDK
+
+---
+
 ## 6.2.2.1 - (2021-06-07)
 
 ### changed

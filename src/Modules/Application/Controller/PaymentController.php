@@ -23,7 +23,7 @@ use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
 use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
-use heidelpayPHP\Exceptions\HeidelpayApiException;
+use UnzerSDK\Exceptions\UnzerApiException;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Country;
@@ -1203,7 +1203,7 @@ class PaymentController extends PaymentController_parent
                 Factory::HeidelpayCustomerIdSessionName,
                 $currentCustomerId
             );
-        } catch (HeidelpayApiException $e) {
+        } catch (UnzerApiException $e) {
             $d3log->log(
                 d3log::ERROR,
                 __CLASS__,
@@ -1259,7 +1259,7 @@ class PaymentController extends PaymentController_parent
                     $customerInterface->getId()
                 );
             }
-        } catch (HeidelpayApiException $e) {
+        } catch (UnzerApiException $e) {
             $d3log->log(
                 d3log::INFO,
                 __CLASS__,

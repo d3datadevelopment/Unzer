@@ -11,7 +11,7 @@ use D3\Heidelpay\Models\Payment\Exception\PaymentNotReferencedToHeidelpayExcepti
 use D3\Heidelpay\Models\Transactionlog\Reader\Heidelpay as ReaderHeidelpay;
 use D3\Heidelpay\Models\Verify\Exception\AgbNotAcceptedException;
 use D3\Heidelpay\Models\Verify\Exception\CheckSessionChallengeException;
-use D3\Heidelpay\Models\Verify\Exception\HeidelpayApiException as D3HeidelpayApiException;
+use D3\Heidelpay\Models\Verify\Exception\UnzerApiException as D3UnzerApiException;
 use D3\Heidelpay\Models\Verify\Exception\NotLoggedInException;
 use D3\Heidelpay\Models\Viewconfig;
 use D3\ModCfg\Application\Model\Exception\d3_cfg_mod_exception;
@@ -20,7 +20,7 @@ use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use Exception;
-use heidelpayPHP\Exceptions\HeidelpayApiException;
+use UnzerSDK\Exceptions\UnzerApiException;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order as OxidOrder;
 use OxidEsales\Eshop\Application\Model\Payment;
@@ -726,7 +726,7 @@ class OrderController extends OrderController_parent
                         'mgw: end execute payment',
                         "result: $mResult"
                     );
-                } catch (HeidelpayApiException $exception) {
+                } catch (UnzerApiException $exception) {
 
                     $d3Log->log(
                         d3log::ERROR,
@@ -736,8 +736,8 @@ class OrderController extends OrderController_parent
                         'mgw: unexpected exception',
                         get_class($exception->getClientMessage()).PHP_EOL.$exception->getMerchantMessage()
                     );
-                    /** @var D3HeidelpayApiException $standardException */
-                    $standardException = oxNew(D3HeidelpayApiException::class, $exception->getClientMessage());
+                    /** @var D3UnzerApiException $standardException */
+                    $standardException = oxNew(D3UnzerApiException::class, $exception->getClientMessage());
 
                     return $this->d3HeidelpayRouteToPayment($standardException);
                 }
