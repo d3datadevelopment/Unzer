@@ -24,7 +24,7 @@ use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use Exception;
-use heidelpayPHP\Exceptions\HeidelpayApiException;
+use UnzerSDK\Exceptions\UnzerApiException;
 use oxArticleInputException;
 use OxidEsales\Eshop\Application\Controller\PaymentController;
 use OxidEsales\Eshop\Application\Model\Article;
@@ -62,7 +62,7 @@ class Order extends Order_parent
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws StandardException
-     * @throws HeidelpayApiException
+     * @throws UnzerApiException
      */
     public function getHeidelpayBankTransferData()
     {
@@ -115,7 +115,7 @@ class Order extends Order_parent
                     $result = $factory->getMgwResourceHandler()->obtainPaymentChargesByID($paymentId);
                     $result = $result[0];
                 }
-            } catch (HeidelpayApiException $e) {
+            } catch (UnzerApiException $e) {
                 $factory->getModuleConfiguration()->d3getLog()->log(
                     d3log::ERROR,
                     __CLASS__,

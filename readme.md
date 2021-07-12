@@ -1,6 +1,6 @@
 ## D3 Unzer
 - Unzer Homepage: https://www.unzer.com
-- D³ Data Development: https://www.shopmodule.com 
+- D³ Data Development: https://www.d3data.de
 - Mail: support@shopmodule.com
 
 ### Beschreibung
