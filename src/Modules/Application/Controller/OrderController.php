@@ -169,7 +169,7 @@ class OrderController extends OrderController_parent
     public function getCreditYears()
     {
         if ($this->d3HeidelpayCreditYears === null) {
-            $this->d3HeidelpayCreditYears = range(date('Y'), date('Y') + 10);
+            $this->d3HeidelpayCreditYears = range(date('Y'), (int) date('Y') + 10);
         }
 
         return $this->d3HeidelpayCreditYears;

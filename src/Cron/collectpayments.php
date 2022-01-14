@@ -17,6 +17,7 @@ use Doctrine\DBAL\DBALException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\ComposerPlugin\Installer\Package\ShopPackageInstaller;
+use OxidEsales\Eshop\Core\Registry;
 
 $aParams = array();
 
@@ -67,22 +68,22 @@ require_once($bootstrapFileName);
 // initializes singleton config class
 try {
     $config = OxidEsales\Eshop\Core\Registry::getConfig();
+
+    // force init a new session (e.g. to determine the voucher values from the shopping cart saved in the session)
+    Registry::getSession()->setForceNewSession();
+
+    // executing maintenance tasks..
+    try {
+        /** @var PaymentCollector $collector */
+        $collector = oxNew(PaymentCollector::class);
+        $collector->setStartParameters($aParams)->execute();
+    } catch (StandardException $e) {
+        echo $e->getMessage();
+    } catch (DBALException $e) {
+        echo $e->getMessage();
+    }
+
+    // closing page, writing cache and so on..
+    $config->pageClose();
 } catch (SystemComponentException $e) {
 }
-
-// force init a new session (e.g. to determine the voucher values from the shopping cart saved in the session)
-oxRegistry::getSession()->setForceNewSession();
-
-// executing maintenance tasks..
-try {
-    /** @var PaymentCollector $collector */
-    $collector = oxNew(PaymentCollector::class);
-    $collector->setStartParameters($aParams)->execute();
-} catch (StandardException $e) {
-    echo $e->getMessage();
-} catch (DBALException $e) {
-    echo $e->getMessage();
-}
-
-// closing page, writing cache and so on..
-$config->pageClose();

@@ -2,6 +2,24 @@
 title: Changelog
 ---
 
+## 6.2.4.0 - (2022-01-14)
+
+### added
+- installierbar in OXID 6.4
+- fehlende englische Übersetzungen ergänzt
+- ungültiger privater Schlüssel-Fehler wird passend behandelt
+
+### changed
+- CLI-Prüfung angepasst
+- veralteten Code für Einsatz unter PHP 8 entfernt
+
+### fixed
+- Emails können in OXID >= 6.2 nicht versendet werden, Rendererablauf korrigiert
+- fehlende Namespaces ergänzt
+- Icon-Formatierung aktualisiert
+
+---
+
 ## 6.2.3.0 - (2021-07-12)
 
 ### changed

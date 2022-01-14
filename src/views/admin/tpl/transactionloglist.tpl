@@ -37,25 +37,25 @@
                     <th colspan="2">
                         [{if $sorting.d3transactionlog.d3lognr == "asc"}][{assign var='logSorting' value='desc'}][{/if}]
                         <a href="Javascript:top.oxid.admin.setSorting( document.search, 'd3transactionlog', 'd3lognr', '[{$logSorting|default:"asc"}]');document.search.submit();"
-                           class="listheader">LogNr</a>
+                           class="listheader">[{oxmultilang ident="D3HEIDELPAY_TALIST_LOGNR"}]</a>
                     </th>
                     <th>
                         [{if $sorting.d3transactionlog.d3action == "asc"}][{assign var='actionSorting' value='desc'}][{/if}]
                         <a href="Javascript:top.oxid.admin.setSorting( document.search, 'd3transactionlog', 'd3action', '[{$actionSorting|default:"asc"}]');document.search.submit();"
-                           class="listheader">Typ</a>
+                           class="listheader">[{oxmultilang ident="D3HEIDELPAY_TALIST_TYPE"}]</a>
                     </th>
                     <th>
                         [{if $sorting.d3transactionlog.d3transactionstatus == "asc"}][{assign var='statusSorting' value='desc'}][{/if}]
                         <a href="Javascript:top.oxid.admin.setSorting( document.search, 'd3transactionlog', 'd3transactionstatus', '[{$statusSorting|default:"asc"}]');document.search.submit();"
-                           class="listheader">Ergebnis</a>
+                           class="listheader">[{oxmultilang ident="D3HEIDELPAY_TALIST_RESULT"}]</a>
                     </th>
-                    <th>Bestellnr.</th>
-                    <th>Zeitstempel</th>
-                    <th>Credit/Debit</th>
-                    <th>Meth.Typ</th>
-                    <th>Txn-ID</th>
-                    <th>Short ID</th>
-                    <th>Session</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_ORDERNR"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_TIMESTAMP"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_CREDITDEBIT"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_METHODTYPE"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_TRANSACTIONID"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_SHORTID"}]</th>
+                    <th>[{oxmultilang ident="D3HEIDELPAY_TALIST_SESSION"}]</th>
                 </tr>
                 <tr>
                     <td colspan="2"></td>

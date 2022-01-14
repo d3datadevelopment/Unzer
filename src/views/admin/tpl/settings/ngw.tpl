@@ -327,11 +327,11 @@
                                 <td class="edittext">
                                     [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_CSSPATH"}]
 
-                                    [{assign var='cssClass' value='fa-times-circle fa-17x fa-d3color-red'}]
+                                    [{assign var='cssClass' value='fa-times-circle d3fa-17x d3fa-color-red'}]
                                     [{if $oHeidelpayViewConfig->existIFrameCSSFile()}]
-                                        [{assign var='cssClass' value='fa-check-circle fa-17x fa-d3color-green'}]
+                                        [{assign var='cssClass' value='fa-check-circle d3fa-17x d3fa-color-green'}]
                                     [{/if}]
-                                    <label class="fa [{$cssClass}]"></label>
+                                    <label class="fas [{$cssClass}]"></label>
                                     <a class="editinput"
                                        href="[{$oHeidelpayViewConfig->getIFrameCSSFileURL()}]"
                                        target="d3heidelpaycssfile">[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_CSSPATH_LINK"}]</a>

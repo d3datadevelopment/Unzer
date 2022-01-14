@@ -93,10 +93,10 @@
         <div class="col-xs-12">
             <div class="legende">
                 <div class="paytype act">&nbsp;</div>
-                <div class="paytypestatus">Die Shop-Zahlungsart ist dieser Channel-Konfiguration zugeordnet.</div>
+                <div class="paytypestatus">[{oxmultilang ident="D3HEIDELPAY_CHANNELS_ASSIGNED"}]</div>
                 <br>
                 <div class="paytype inact">&nbsp;</div>
-                <div class="paytypestatus">Die Shop-Zahlungsart hat keine Zuweisung und kann zugeordnet werden.</div>
+                <div class="paytypestatus">[{oxmultilang ident="D3HEIDELPAY_CHANNELS_NOTASSIGNED"}]</div>
                 <br>
                 <div class="paytype used">&nbsp;</div>
                 <div class="paytypestatus">[{oxmultilang ident="D3HEIDELPAY_CONFIG_ALREADY_ASSIGNED_TO_OTHER_CONFIG"}]</div>
@@ -153,7 +153,7 @@
                 <div class="form-group">
                     <div class="alert alert-info" style="padding:5px;text-align:right;width:100%;">
                         <button class="btn btn-primary" type="submit">
-                            Zuordnung(en) speichern
+                            [{oxmultilang ident="D3HEIDELPAY_CHANNELS_SAVE"}]
                         </button>
                     </div>
                 </div>

@@ -35,6 +35,8 @@ class Email extends Email_parent
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
+        $this->d3AssignSmartyVars($smarty);
+
         $this->setBody($smarty->fetch('d3_heidelpay_views_tpl_email_html_prepayment_cust.tpl'));
         $this->setAltBody($smarty->fetch('d3_heidelpay_views_tpl_email_plain_prepayment_cust.tpl'));
         $this->setSubject($smarty->fetch('d3_heidelpay_views_tpl_email_html_prepayment_cust_subj.tpl'));
@@ -74,6 +76,8 @@ class Email extends Email_parent
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
+
+        $this->d3AssignSmartyVars($smarty);
 
         $this->setBody($smarty->fetch("d3_heidelpay_views_tpl_email_html_prepayment_owner.tpl"));
         $this->setAltBody($smarty->fetch("d3_heidelpay_views_tpl_email_plain_prepayment_owner.tpl"));
@@ -116,5 +120,15 @@ class Email extends Email_parent
         $this->setReplyTo($recipient, "");
 
         return $this->send();
+    }
+
+    /**
+     * BC for OXID >= 6.2 (with template renderer system)
+     */
+    protected function d3AssignSmartyVars($smarty)
+    {
+        foreach ($this->getViewData() as $id => $element) {
+            $smarty->assign($id, $element);
+        }
     }
 }
