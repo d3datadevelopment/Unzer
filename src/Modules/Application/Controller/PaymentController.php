@@ -23,6 +23,7 @@ use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
 use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
+use RuntimeException;
 use UnzerSDK\Exceptions\UnzerApiException;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Basket;
@@ -1211,6 +1212,16 @@ class PaymentController extends PaymentController_parent
                 __LINE__,
                 'mgw: update customer failed',
                 'merchant message: ' . $e->getMerchantMessage()
+            );
+        } catch ( RuntimeException $e) {
+            /** @var $e RuntimeException */
+            $d3log->log(
+                d3log::ERROR,
+                __CLASS__,
+                __FUNCTION__,
+                __LINE__,
+                'mgw: update customer failed',
+                'merchant message: ' . $e->getMessage()
             );
         }
 

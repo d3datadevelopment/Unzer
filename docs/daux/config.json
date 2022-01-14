@@ -1,9 +1,9 @@
 {
     "title": "<i class='fab fa-d3 d3fa-color-blue'></i> unzer",
-    "moduleversion": "6.2.3.0",
+    "moduleversion": "6.2.4.0",
     "titledesc": "für den Oxid eShop",
     "author": "D³ Data Development",
-    "moduledate": "12.07.2021",
+    "moduledate": "14.01.2022",
     "editors": "",
     "tagline": "",
     "image": "",
@@ -65,6 +65,7 @@
         "modulename"    : "<i class='fab fa-d3 d3fa-color-blue'></i> unzer",
         "menutitle"     : "Unzer",
         "modulefolder"  : "unzer",
+        "metadataident" : "d3heidelpay",
         "modcfgident"   : "d3unzer",
         "composerident" : "d3/unzer"
     },

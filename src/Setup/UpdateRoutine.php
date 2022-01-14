@@ -213,9 +213,9 @@ class UpdateRoutine extends d3install_updatebase
         $this->setConfirmMessageSessionRequest('D3HeidelpaySetupUpdateRoutinemigrateModCfgConfiguration', true);
         $executeType =  Registry::get(Request::class)->getRequestEscapedParameter('exectype');
 
-        if (empty($executeType) && php_sapi_name() !== 'cli') {
+        if (empty($executeType) && substr(php_sapi_name(), 0, 3) !== 'cli') {
             return $this->_confirmMessage('D3_HEIDELPAY_UPDATE_CHANNELCONFIGURATIONS');
-        } elseif (php_sapi_name() === 'cli') {
+        } elseif (substr(php_sapi_name(), 0, 3) === 'cli') {
             $this->_confirmMessage('D3_HEIDELPAY_UPDATE_CHANNELCONFIGURATIONS');
         }
 

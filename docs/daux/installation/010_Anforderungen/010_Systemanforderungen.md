@@ -6,8 +6,13 @@ title: Systemanforderungen
     * 7.0.x bis 8.0
 * PHP Decoder
     * installierter ionCube Loader
-* Shopversionen / -editionen
-    * OXID eShop Community Edition (CE), Professional Edition (PE) oder Enterprise Edition (EE) in Compilation Version 
+* Shopeditionen
+    * OXID eShop Community Edition (CE)
+    * OXID eShop Professional Edition (PE)
+    * OXID eShop Enterprise Edition (EE)
+    * OXID eShop B2B Edition
+* Shopversionen
+    * OXID eShop in Compilation Version 
         * 6.0.x
         * 6.1.x
         * 6.2.x
@@ -20,7 +25,7 @@ title: Systemanforderungen
 * bei Verwendung der Zahlungsart „iDeal“ oder „Przelewy24“ wird ein freier Cronjob benötigt
 * bei Verwendung der Zahlungsart „Vorkasse“ oder „Rechnungskauf“ wird ein freier Cronjob benötigt
 
-Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für **PHP 7.0**, **PHP 7.1**, **PHP 7.2**, **PHP 7.3**, **PHP 7.4** oder **PHP 8.0** sowie dem auf Ihrem Server vorhandenen Decoder (**ionCube Loader**) kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.
+Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für Ihre genutzte PHP-Version sowie dem auf Ihrem Server vorhandenen Decoder (**ionCube Loader**) kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.
 
 Kontrollieren Sie bitte auch, ob diese Modulversion für die von Ihnen eingesetzte Shopedition (Professional Edition (PE) oder Enterprise Edition (EE)) ausgelegt ist. 
 
