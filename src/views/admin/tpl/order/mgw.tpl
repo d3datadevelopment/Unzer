@@ -100,6 +100,15 @@
                             <input type="hidden" name="fnc" value="routeToAction"/>
                             <label>
                                 <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
+                                [{if $action == "cancelCharge"}]
+                                <select name="reasoncode">
+                                    <option value="">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_SELECTREASON"}]</option>
+                                    <option value="CANCEL">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CANCEL"}]</option>
+                                    <option value="RETURN">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_RETURN"}]</option>
+                                    <option value="CREDIT">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT"}]</option>
+                                </select>
+                                <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
+                                [{/if}]
                                 <button [{$readonly}]>[{oxmultilang ident="D3HEIDELPAY_MGW_TRANSACTIONTYPE_"|cat:$action}]</button>
                             </label>
                         </form>

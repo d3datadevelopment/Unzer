@@ -49,7 +49,7 @@ class PaymentController extends PaymentController_parent
     /**
      * @var array
      */
-    protected $d3HeidelpayMissingUserParameter = [];
+    protected $d3UnzerMissingUserParameter = [];
 
     /**
      * Initiate and register module classes
@@ -148,7 +148,7 @@ class PaymentController extends PaymentController_parent
                 $missingParameter   = $userInputValidator->getMissingParameter();
 
                 if (false === empty($missingParameter)) {
-                    $this->d3HeidelpayMissingUserParameter = $missingParameter;
+                    $this->d3UnzerMissingUserParameter = $missingParameter;
                 }
             }
         }
@@ -325,13 +325,13 @@ class PaymentController extends PaymentController_parent
                 /** @var Request $request */
                 $request         = oxNew(Request::class);
                 if($heidelPayment instanceof DirectdebitSecured || $heidelPayment instanceof Directdebit) {
-                    $isSepaValidated = (bool)($request->getRequestParameter('heidelpaySepaValidation')[$paymentId]);
+                    $isSepaValidated = (bool)($request->getRequestParameter('unzerSepaValidation')[$paymentId]);
                     if(false == $isSepaValidated) {
-                        return 'payment?d3heidelpaysepamandatnotchecked=1';
+                        return 'payment?d3unzersepamandatnotchecked=1';
                     }
                 }
 
-                $heidelpayResult = $request->getRequestParameter('heidelpay-result');
+                $heidelpayResult = $request->getRequestParameter('unzer-result');
                 $d3log->log(
                     d3log::INFO,
                     __CLASS__,
@@ -472,7 +472,7 @@ class PaymentController extends PaymentController_parent
      */
     protected function getD3HeidelpayMissingUserData()
     {
-        return (array)Registry::get(Request::class)->getRequestParameter('d3HeidelpayMissingUserData');
+        return (array)Registry::get(Request::class)->getRequestParameter('d3UnzerMissingUserData');
     }
 
     /**
@@ -703,8 +703,8 @@ class PaymentController extends PaymentController_parent
             );
             $this->d3AddHeidelpayCorsHeader();
             $this->d3AddHeidelpayFrontendResources();
-            $this->addTplParam('d3HeidelpayPublicKey', $factory->getModuleProvider()->getMgwPublicKey());
-            $this->addTplParam('d3HeidelpayLanguageLocale', $factory->getLanguageLocale());
+            $this->addTplParam('d3UnzerPublicKey', $factory->getModuleProvider()->getMgwPublicKey());
+            $this->addTplParam('d3UnzerLanguageLocale', $factory->getLanguageLocale());
             $oxUser         = $this->getUser();
             $userStoredData = $factory->getMgwResourceHandler()->loadUserStoredData(
                 $oxUser->getId(),
@@ -712,10 +712,10 @@ class PaymentController extends PaymentController_parent
             );
             $this->addTplParam('d3HeidelpayResourceIds', $userStoredData);
             $this->addTplParam(
-                'd3HeidelpayShowSepaGuranteedCustomerFormular',
+                'd3UnzerShowSepaGuranteedCustomerFormular',
                 $this->d3ShowCustomerForm($factory, (bool)trim($oxUser->getFieldData('oxcompany')))
             );
-            $this->addTplParam('d3HeidelpayMissingUserParameter', $this->d3HeidelpayMissingUserParameter);
+            $this->addTplParam('d3UnzerMissingUserParameter', $this->d3UnzerMissingUserParameter);
             $this->addTplParam('d3HeidelpayMappedThemeId', $factory->getModuleConfiguration()->getMappedThemeId());
 
             $factory->getModuleConfiguration()->d3getLog()->log(
@@ -734,8 +734,8 @@ class PaymentController extends PaymentController_parent
             $shop = oxNew(Shop::class);
             $shop->load($shopId);
             $translateString = str_replace('{NAME_OF_MERCHANT}', $shop->getFieldData('oxcompany'), $translateString);
-            $this->addTplParam('d3HeidelpaySepaMandatText', $translateString);
-            $this->addTplParam('isD3HeidelpaySepaMandatNotConfirmed', $this->isSepaMandatNotConfirmed());
+            $this->addTplParam('d3UnzerSepaMandatText', $translateString);
+            $this->addTplParam('isD3UnzerSepaMandatNotConfirmed', $this->isSepaMandatNotConfirmed());
         }
 
         //</editor-fold>
@@ -756,7 +756,7 @@ class PaymentController extends PaymentController_parent
      */
     protected function isSepaMandatNotConfirmed()
     {
-        return (bool)Registry::get(Request::class)->getRequestParameter('d3heidelpaysepamandatnotchecked');
+        return (bool)Registry::get(Request::class)->getRequestParameter('d3unzersepamandatnotchecked');
     }
 
     /**
@@ -1093,7 +1093,7 @@ class PaymentController extends PaymentController_parent
 
     protected function d3AddHeidelpayCorsHeader()
     {
-        Registry::getUtils()->setHeader("Access-Control-Allow-Origin: https://payment.heidelpay.com");
+        Registry::getUtils()->setHeader("Access-Control-Allow-Origin: https://payment.unzer.com");
     }
 
     /**
@@ -1109,10 +1109,10 @@ class PaymentController extends PaymentController_parent
     {
         /** @var StyleRegistrator $styleRegistrator */
         $styleRegistrator = oxNew(StyleRegistrator::class);
-        $styleRegistrator->addFile('https://static.heidelpay.com/v1/heidelpay.css', null, false);
+        $styleRegistrator->addFile('https://static.unzer.com/v1/unzer.css', null, false);
 
-        $fileTime = filemtime($this->getViewConfig()->getModulePath('d3heidelpay', 'out/src/css/d3heidelpayMGW.css'));
-        $fileUrl  = $this->getViewConfig()->getModuleUrl('d3heidelpay', 'out/src/css/d3heidelpayMGW.css');
+        $fileTime = filemtime($this->getViewConfig()->getModulePath('d3heidelpay', 'out/src/css/d3unzerMGW.css'));
+        $fileUrl  = $this->getViewConfig()->getModuleUrl('d3heidelpay', 'out/src/css/d3unzerMGW.css');
         if ($fileTime) {
             $fileUrl .= "?$fileTime";
         }
@@ -1120,10 +1120,10 @@ class PaymentController extends PaymentController_parent
 
         /** @var JavaScriptRegistrator $javaScriptRegistrator */
         $javaScriptRegistrator = oxNew(JavaScriptRegistrator::class);
-        $javaScriptRegistrator->addFile('https://static.heidelpay.com/v1/heidelpay.js', 3, false);
+        $javaScriptRegistrator->addFile('https://static.unzer.com/v1/unzer.js', 3, false);
 
-        $fileTime = filemtime($this->getViewConfig()->getModulePath('d3heidelpay', 'out/src/js/d3heidelpay.js'));
-        $fileUrl  = $this->getViewConfig()->getModuleUrl('d3heidelpay', 'out/src/js/d3heidelpay.js');
+        $fileTime = filemtime($this->getViewConfig()->getModulePath('d3heidelpay', 'out/src/js/d3unzer.js'));
+        $fileUrl  = $this->getViewConfig()->getModuleUrl('d3heidelpay', 'out/src/js/d3unzer.js');
         if ($fileTime) {
             $fileUrl .= "?$fileTime";
         }
@@ -1280,5 +1280,19 @@ class PaymentController extends PaymentController_parent
                 var_export($e->getMessage(), true)
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function d3getCountryCode()
+    {
+        $user = $this->getUser();
+
+        $oCountry = oxNew(Country::class);
+        $oCountry->load($user->getFieldData("oxcountryid"));
+        $sCode = $oCountry->getFieldData("oxisoalpha2");
+
+        return $sCode;
     }
 }

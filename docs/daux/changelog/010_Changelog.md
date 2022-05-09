@@ -1,6 +1,24 @@
 ---
 title: Changelog
 ---
+## 6.2.5.0 - (2022-05-06)
+
+### added
+- MGW: Zahlart EPS hinzugefügt
+- MGW: Zahlart Przelewy24 hinzugefügt
+- MGW: Zahlart Giropay hinzugefügt
+- Eingabefeld fürden Karteninhaber bei kartenbasierten Zahlarten hinzugefügt
+- bei Stornierung einer Zahlung: Auswahlbox für den Stornierungsgrund integriert (Pflicht für die Zahlart 'abgesicherter Rechnungskauf')
+
+### changed
+- Frontend Bestellschritt 3 auf unzerSDK migriert
+- Abhängigkeiten der composer.json auf UnzerSDK aktualisiert
+
+### fixed
+- bei Zahlungsart Vorkasse und Rechnung blieb der Status einer Bestellung auf "NOT_FINISHED" 
+- einige Template-Block-Namen korrigiert
+
+---
 
 ## 6.2.4.0 - (2022-01-14)
 

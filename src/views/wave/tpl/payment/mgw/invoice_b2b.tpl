@@ -1,5 +1,5 @@
 [{assign var="sImageUrl" value=$oViewConf->getModuleUrl('d3heidelpay','out/img/mgw/')}]
-[{block name="heidelpay_directdebit"}]
+[{block name="heidelpay_invoice_b2b"}]
     <div class="well well-sm">
         <dl>
             <dt>

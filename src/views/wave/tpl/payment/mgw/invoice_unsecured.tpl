@@ -1,4 +1,4 @@
-[{block name="heidelpay_directdebit"}]
+[{block name="heidelpay_invoice_unsecured"}]
     <div class="well well-sm">
         <dl>
             <dt>

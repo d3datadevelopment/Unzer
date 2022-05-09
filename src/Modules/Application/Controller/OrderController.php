@@ -7,6 +7,9 @@ use D3\Heidelpay\Controllers\Order;
 use D3\Heidelpay\Models\Containers\Criterions;
 use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Payment\Easycredit;
+use D3\Heidelpay\Models\Payment\Prepayment;
+use D3\Heidelpay\Models\Payment\Invoice\Secured;
+use D3\Heidelpay\Models\Payment\Invoice\Unsecured;
 use D3\Heidelpay\Models\Payment\Exception\PaymentNotReferencedToHeidelpayException;
 use D3\Heidelpay\Models\Transactionlog\Reader\Heidelpay as ReaderHeidelpay;
 use D3\Heidelpay\Models\Verify\Exception\AgbNotAcceptedException;
@@ -685,13 +688,26 @@ class OrderController extends OrderController_parent
                 $order->assign([
                     'oxtransstatus' => $factory::HeidelpayOrderStatePending,
                 ]);
+                $type = "pending";
+
+                $heidelpayment = $factory->getSettings()->getPayment($payment);
+
+                if ($heidelpayment instanceof Prepayment
+                    || $heidelpayment instanceof Secured
+                    || $heidelpayment instanceof Unsecured) {
+                    $order->assign([
+                        'oxtransstatus' => $factory::HeidelpayOrderStateOK,
+                    ]);
+                    $type = "ok";
+                }
+
                 $order->save();
                 $d3Log->log(
                     d3log::INFO,
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
-                    'mgw: order set to pending',
+                    'mgw: order set to '.$type ,
                     "ordernr: {$order->getFieldData('oxordernr')}, orderid: {$orderId}"
                 );
 

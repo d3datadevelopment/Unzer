@@ -1,6 +1,6 @@
 
 (function($){
-    $.fn.d3HeidelpayValidateMissingUserParameter = function () {
+    $.fn.d3UnzerValidateMissingUserParameter = function () {
         let isFormValid = true;
 
         /**
@@ -9,7 +9,7 @@
          **/
 
         const checkedRadioButton = $('#payment').find('input[name="paymentid"]:checked');
-        const missingFields = checkedRadioButton.parent('.well dl').find('.d3HeidelpayMissingFields input:required');
+        const missingFields = checkedRadioButton.parent('.well dl').find('.d3UnzerMissingFields input:required');
         missingFields.each(function () {
             if (!this.value){
                 isFormValid = false;

@@ -1,24 +1,24 @@
-<div class="heidelpayUI form">
+<div class="unzerUI form">
     <div class="field">
-        <div id="sepa-iban-[{$paymentId}]" class="heidelpayInput"></div>
+        <div id="sepa-iban-[{$paymentId}]" class="unzerInput"></div>
     </div>
     <div class="divider"></div>
 </div>
-<div class="d3HeidelpaySepaNote">
-    [{if $isD3HeidelpaySepaMandatNotConfirmed}]
-        <div class="d3HeidelpayErrorNotice">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_INVALID"}]</div>
+<div class="d3UnzerSepaNote">
+    [{if $isD3UnzerSepaMandatNotConfirmed}]
+        <div class="d3UnzerErrorNotice">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_INVALID"}]</div>
     [{/if}]
 
-    [{$d3HeidelpaySepaMandatText}]
+    [{$d3UnzerSepaMandatText}]
     <br>
-    <input type="hidden" name="heidelpaySepaValidation[[{$paymentId}]]" value="0">
+    <input type="hidden" name="unzerSepaValidation[[{$paymentId}]]" value="0">
     <label>
-        <input type="checkbox" name="heidelpaySepaValidation[[{$paymentId}]]" value="1">
+        <input type="checkbox" name="unzerSepaValidation[[{$paymentId}]]" value="1">
         [{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_LABEL"}]
     </label>
 </div>
 
-<div class="modal fade" id="heidelpayWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade" id="unzerWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_PLEASE_WAIT"}]</div>
@@ -29,29 +29,29 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-        var heidelpayInstance;
-        if( "undefined" === typeof heidelpayInstance  ) {
-            heidelpayInstance= new heidelpay('[{$d3HeidelpayPublicKey}]', {locale: '[{$d3HeidelpayLanguageLocale}]'});
+        var unzerInstance;
+        if( "undefined" === typeof unzerInstance  ) {
+            unzerInstance = new unzer('[{$d3UnzerPublicKey}]', {locale: '[{$d3UnzerLanguageLocale}]'});
         }
-        var SepaDirectDebit_[{$paymentId|escape:'url'}] = heidelpayInstance.SepaDirectDebit();
+        var SepaDirectDebit_[{$paymentId|escape:'url'}] = unzerInstance.SepaDirectDebit();
         SepaDirectDebit_[{$paymentId|escape:'url'}].create('sepa-direct-debit', {
             containerId: 'sepa-iban-[{$paymentId}]'
         });
         var form = document.getElementById('payment');
         form.addEventListener('submit',
             function (event) {
-                let isFormValid = $().d3HeidelpayValidateMissingUserParameter();
+                let isFormValid = $().d3UnzerValidateMissingUserParameter();
 
                 if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                     event.preventDefault();
                     $('#error-[{$paymentId}]').remove();
-                    var modalDialog = $( "#heidelpayWaitingDialog-[{$paymentId}]" ).modal('show');
+                    var modalDialog = $( "#unzerWaitingDialog-[{$paymentId}]" ).modal('show');
                     SepaDirectDebit_[{$paymentId|escape:'url'}].createResource()
                         .then(function (result) {
                             var hiddenField   = document.createElement("input");
                             hiddenField.value = JSON.stringify(result);
                             hiddenField.type  = 'hidden';
-                            hiddenField.name  = "heidelpay-result";
+                            hiddenField.name  = "unzer-result";
 
                             form.appendChild(hiddenField);
                             form.submit();

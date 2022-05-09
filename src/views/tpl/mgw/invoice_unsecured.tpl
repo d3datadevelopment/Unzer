@@ -1,4 +1,4 @@
-<div class="modal fade" id="heidelpayWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade" id="unzerWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_PLEASE_WAIT"}]</div>
@@ -9,26 +9,26 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-        var heidelpayInstance;
-        if( "undefined" === typeof heidelpayInstance  ) {
-            heidelpayInstance= new heidelpay('[{$d3HeidelpayPublicKey}]', {locale: '[{$d3HeidelpayLanguageLocale}]'});
+        var unzerInstance;
+        if( "undefined" === typeof unzerInstance  ) {
+            unzerInstance= new unzer('[{$d3UnzerPublicKey}]', {locale: '[{$d3UnzerLanguageLocale}]'});
         }
-        var Invoice_[{$paymentId|escape:'url'}] = heidelpayInstance.Invoice();
+        var Invoice_[{$paymentId|escape:'url'}] = unzerInstance.Invoice();
         var form = document.getElementById('payment');
         form.addEventListener('submit',
             function (event) {
-                let isFormValid = $().d3HeidelpayValidateMissingUserParameter();
+                let isFormValid = $().d3UnzerValidateMissingUserParameter();
 
                 if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                     event.preventDefault();
                     $('#error-[{$paymentId}]').remove();
-                    var modalDialog = $( "#heidelpayWaitingDialog-[{$paymentId}]" ).modal('show');
+                    var modalDialog = $( "#unzerWaitingDialog-[{$paymentId}]" ).modal('show');
                     Invoice_[{$paymentId|escape:'url'}].createResource()
                         .then(function (result) {
                             var hiddenField   = document.createElement("input");
                             hiddenField.value = JSON.stringify(result);
                             hiddenField.type  = 'hidden';
-                            hiddenField.name  = "heidelpay-result";
+                            hiddenField.name  = "unzer-result";
 
                             form.appendChild(hiddenField);
                             form.submit();

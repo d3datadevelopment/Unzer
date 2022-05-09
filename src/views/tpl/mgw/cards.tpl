@@ -1,22 +1,26 @@
-<div class="heidelpayUI form">
+<div class="unzerUI form">
     <div class="field">
-        <div id="card-element-id-number-[{$paymentId}]" class="heidelpayInput">
+        <div id="card-element-id-card-holder-[{$paymentId}]" class="unzerInput">
+        </div>
+    </div>
+    <div class="field">
+        <div id="card-element-id-number-[{$paymentId}]" class="unzerInput">
         </div>
     </div>
     <div class="two fields">
         <div class="field ten wide">
-            <div id="card-element-id-expiry-[{$paymentId}]" class="heidelpayInput">
+            <div id="card-element-id-expiry-[{$paymentId}]" class="unzerInput">
             </div>
         </div>
         <div class="field six wide">
-            <div id="card-element-id-cvc-[{$paymentId}]" class="heidelpayInput">
+            <div id="card-element-id-cvc-[{$paymentId}]" class="unzerInput">
             </div>
         </div>
     </div>
     <div class="divider"></div>
 </div>
 
-<div class="modal fade" id="heidelpayWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade" id="unzerWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_PLEASE_WAIT"}]</div>
@@ -27,12 +31,16 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-        var heidelpayInstance;
-        if( "undefined" === typeof heidelpayInstance  ) {
-            heidelpayInstance= new heidelpay('[{$d3HeidelpayPublicKey}]', {locale: '[{$d3HeidelpayLanguageLocale}]'});
+        var unzerInstance;
+        if( "undefined" === typeof unzerInstance  ) {
+            unzerInstance= new unzer('[{$d3UnzerPublicKey}]', {locale: '[{$d3UnzerLanguageLocale}]'});
         }
 
-        var Card_[{$paymentId|escape:'url'}] = heidelpayInstance.Card();
+        var Card_[{$paymentId|escape:'url'}] = unzerInstance.Card();
+        Card_[{$paymentId|escape:'url'}].create('holder',
+            {
+                containerId: 'card-element-id-card-holder-[{$paymentId}]', onlyIframe: false
+            });
         Card_[{$paymentId|escape:'url'}].create('number',
             {
                 containerId: 'card-element-id-number-[{$paymentId}]', onlyIframe: false
@@ -48,18 +56,18 @@
         var form = document.getElementById('payment');
         form.addEventListener('submit',
             function (event) {
-                let isFormValid = $().d3HeidelpayValidateMissingUserParameter();
+                let isFormValid = $().d3UnzerValidateMissingUserParameter();
 
                 if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                     event.preventDefault();
                     $('#error-[{$paymentId}]').remove();
-                    var modalDialog = $("#heidelpayWaitingDialog-[{$paymentId}]").modal('show');
+                    var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
                     Card_[{$paymentId|escape:'url'}].createResource()
                         .then(function (result) {
                             var hiddenField = document.createElement("input");
                             hiddenField.value = JSON.stringify(result);
                             hiddenField.type  = 'hidden';
-                            hiddenField.name  = "heidelpay-result";
+                            hiddenField.name  = "unzer-result";
 
                             form.appendChild(hiddenField);
                             form.submit();
