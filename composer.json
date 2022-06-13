@@ -1,0 +1,63 @@
+{
+  "name": "d3/unzer",
+  "description": "Unzer client module for oxid eShop v6",
+  "type": "oxideshop-module",
+  "authors": [
+    {
+      "name": "D3 Data Development (Inh. Thomas Dartsch)",
+      "email": "info@shopmodule.com",
+      "homepage": "http://www.oxidmodule.com",
+      "role": "Owner"
+    }
+  ],
+  "support": {
+    "email": "support@shopmodule.com"
+  },
+  "keywords": [
+    "oxid",
+    "modules",
+    "eShop",
+    "d3",
+    "heidelpay",
+    "creditcard",
+    "debitcard",
+    "payment"
+  ],
+  "homepage": "https://www.oxidmodule.com/",
+  "license": [
+    "proprietary"
+  ],
+  "extra": {
+    "oxideshop": {
+      "source-directory": "/src",
+      "target-directory": "d3/heidelpay"
+    }
+  },
+  "require": {
+    "php": "^8.0",
+    "ext-sourceguardian": "*",
+    "lib-curl": ">=7.34.0",
+    "lib-openssl": ">=1.0.1",
+    "ext-curl": "*",
+    "ext-openssl": "*",
+    "ext-libxml": "*",
+    "ext-dom": "*",
+    "ext-simplexml": "*",
+    "ext-bcmath": "*",
+    "ext-json": "*",
+    "oxid-esales/oxideshop-ce": "6.3 - 6.10",
+    "d3/modcfg": "^5.3.6.000 || ^6",
+    "unzerdev/php-sdk": "~1.1.0"
+  },
+  "require-dev": {
+    "mikey179/vfsstream": "~1.6.5"
+  },
+  "replace": {
+    "d3/heidelpay": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "D3\\Heidelpay\\": "../../../source/modules/d3/heidelpay"
+    }
+  }
+}
