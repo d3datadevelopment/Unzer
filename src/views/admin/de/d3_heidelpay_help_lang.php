@@ -2,7 +2,7 @@
 
 $sLangName = "Deutsch";
 $iLangNr   = 0;
-$aLang     = array(
+$aLang     = [
     'charset'                                               => 'UTF-8',
     'HELP_D3DYN_HEIDELPAY_PARAM_CARDS_USE_RG'               => 'Bei aktiver Option wird vor einer ' //
         . 'Belastung/Reservierung eine Registrierung für Karten durchgeführt.' //
@@ -193,4 +193,5 @@ Es werden auf dem Test Server keine realen Buchungen durchgeführt!<br><br>' //
     'HELP_D3HEIDELPAY_MGW_AMOUNT_CANCELED' => 'Stellt den Geldbetrag dar, den der Händler dem Kunden zurückerstattet. Es können nur gebuchte Beträge verrechnet werden.',
     'HELP_D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE'                           => '<strong>Aktiv:</strong><br> Zeichnet jede Kommunikationsschritt über die Unzer PHP Api auf. <br>Die einzelnen Einträge werden im Logging hinterlegt.<br>Der Debug Modus kann auch im Live aktiviert werden.<br><br><strong>ACHTUNG! Dieser Haken verursacht eine hohe Datenlast auf die Tabelle d3log. Bitte nur nach Aufforderung nutzen!</strong>',
     'HELP_D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR' => '<strong>Aktiv:</strong><br> Es wird für die Zahlungsart "Sepa gesicherte Lastschrift" ein Formular zur Personendateneingabe des Zahlungskonto im Bestellschritt "3. Versand & Zahlungsart" angezeigt.<br><br><strong>Hinweis:</strong><br>Bitte besprechen Sie dieses Feature mit Ihrem Unzer Ansprechpartner.',
-);
+    'HELP_D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX' => 'An Lastschrift-Zahlarten wird eine Checkbox gezeigt, mit der der Kunde das Lastschriftmandat akzeptieren muss. Wird diese Option gesetzt, entfällt die Checkbox und die Prüfung darauf. Das Mandat wird obligatorisch akzeptiert.',
+];

@@ -88,7 +88,7 @@ class Order extends Order_parent
             || $heidelpayment instanceof Secured
             || $heidelpayment instanceof Unsecured
             || $heidelpayment instanceof Btobbillpurchase
-            )
+        )
         ) {
             /** @var PrepaymentData $oPrePaymentData */
             $oPrePaymentData = oxNew(PrepaymentData::class);
@@ -238,18 +238,18 @@ class Order extends Order_parent
         /** @var Factory $factory */
         $factory = oxNew(Factory::class);
         if (count($aVouchers)) {
-            $aVoucherIds  = array();
+            $aVoucherIds  = [];
             $pendingLimit = $factory->getModuleProvider()->getPaymentCollectorOrderPendingTime();
-            foreach ($aVouchers as $sVoucherId => $oStdVoucher) {
+            foreach ($aVouchers as $oStdVoucher) {
                 /** @var Voucher $oVoucher */
                 $oVoucher = oxNew(Voucher::class);
                 if ($oVoucher->load($oStdVoucher->sVoucherId)) {
                     $aVoucherIds[$oStdVoucher->sVoucherId] = $oStdVoucher->sVoucherId;
-                    $oVoucher->assign(array('oxreserved' => time() + $pendingLimit * 3600));
+                    $oVoucher->assign(['oxreserved' => time() + $pendingLimit * 3600]);
                     $oVoucher->save();
                 }
             }
-            $this->assign(array('d3heidelpayvouchers' => implode('|', $aVoucherIds)));
+            $this->assign(['d3heidelpayvouchers' => implode('|', $aVoucherIds)]);
         }
 
         //saving all order data to DB
@@ -296,29 +296,27 @@ class Order extends Order_parent
         }
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceNGWActive()) {
-            $oSettings = $factory->getSettings();
-
             $oDB = DatabaseProvider::getDb();
 
             $sOldStatus = $oDB->getOne('select oxtransstatus from oxorder where oxid="' . $this->getId() . '"');
             $sPaid      = $oDB->getOne('select oxpaid from oxorder where oxid="' . $this->getId() . '"');
             $sPaymentId = $this->getFieldData('OXPAYMENTTYPE');
 
-        /** @var Factory $factory */
-        $factory   = oxNew(Factory::class);
+            /** @var Factory $factory */
+            $factory   = oxNew(Factory::class);
 
-        /** @var OxidPayment $payment */
-        $payment = oxNew(OxidPayment::class);
-        $payment->load($sPaymentId);
+            /** @var OxidPayment $payment */
+            $payment = oxNew(OxidPayment::class);
+            $payment->load($sPaymentId);
 
-        if (false == $factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($payment->getId())) {
+            if (false == $factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($payment->getId())) {
                 parent::_setOrderStatus($sStatus);
 
                 return;
             }
 
-        $settings       = $factory->getSettings();
-        $blIsPrepayment = $settings->getPayment($payment) instanceof Prepayment;
+            $settings       = $factory->getSettings();
+            $blIsPrepayment = $settings->getPayment($payment) instanceof Prepayment;
             $blIsWaiting    = $sOldStatus == 'PENDING' && $sPaid == '0000-00-00 00:00:00';
             if ($blIsPrepayment && $blIsWaiting) {
                 $sStatus = "PENDING";
@@ -507,7 +505,7 @@ class Order extends Order_parent
      */
     public function setD3HPTransactionStatusError($transStatusError, $resetPaidDate = true)
     {
-        $aAssignment                  = array();
+        $aAssignment                  = [];
         $aAssignment['oxtransstatus'] = $transStatusError;
         if ($resetPaidDate) {
             $aAssignment['oxpaid'] = '0000-00-00 00:00:00';
@@ -647,7 +645,7 @@ class Order extends Order_parent
         if ($factory->getModuleProvider()->isHeidelpayInterfaceNGWActive()) {
             try {
                 $paymentId = $oxBasket->getPaymentId();
-                $payment = oxNew( OxidPayment::class);
+                $payment = oxNew(OxidPayment::class);
                 $payment->load($paymentId);
 
                 /** @var Viewconfig $heidelpayViewConfig */

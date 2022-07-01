@@ -2,7 +2,7 @@
 
 $sLangName = "English";
 $iLangNr   = 1;
-$aLang     = array(
+$aLang     = [
     'charset'                                                           => 'UTF-8',
     'd3mxheidelpay'                                                     => "<i class='fab fa-fw fa-d3unzer d3fa-color-unzer'></i> Unzer",
     'd3mxheidelpay_settings'                                            => 'Settings',
@@ -280,6 +280,7 @@ $aLang     = array(
     'D3HEIDELPAY_MGW_PAYMENTSTATE_pending'                              => 'waiting for payment',
     'D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE'                                => 'debug mode active',
     'D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR'           => 'SEPA secured direct debit - show customer data entry:',
+    'D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX'          => 'Direct debit mandate does not have to be accepted:',
 
     'D3HEIDELPAY_PAYMENT_COMPANY_DATE'                                   => 'Date',
     'D3HEIDELPAY_PAYMENT_COMPANY_RESULT'                                 => 'Result',
@@ -306,4 +307,4 @@ $aLang     = array(
     'D3HEIDELPAY_CHANNELS_SAVE'                                          => 'Save assignment(s)',
 
     'D3HEIDELPAY_TRANSACTIONLIST_INFOTEXT_ONLY_NGW'                      => 'The transaction overview can only be used with the "NGW" interface.',
-);
+];

@@ -5,7 +5,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\ComposerPlugin\Installer\Package\ShopPackageInstaller;
 
-$aParams = array();
+$aParams = [];
 
 if ($argv && is_array($argv) && $argc) {
     if (isset($argv[1]) && $argv[1]) {

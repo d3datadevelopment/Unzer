@@ -2,7 +2,7 @@
 
 $sLangName = "Deutsch";
 $iLangNr   = 0;
-$aLang     = array(
+$aLang     = [
     'charset'                                                           => 'UTF-8',
     'd3mxheidelpay'                                                     => "<i class='fab fa-fw fa-d3unzer d3fa-color-unzer'></i> Unzer",
     'd3mxheidelpay_settings'                                            => 'Einstellungen',
@@ -281,6 +281,7 @@ $aLang     = array(
     'D3HEIDELPAY_MGW_PAYMENTSTATE_chargeback'                           => 'Rückbuchung durchgeführt',
     'D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE'                                => 'Debug Modus aktiv',
     'D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR'           => 'SEPA gesicherte Lastschrift - zeige Kundendateneingabe an:',
+    'D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX'          => 'Lastschrift Mandat muss nicht akzeptiert werden:',
 
     'D3HEIDELPAY_PAYMENT_COMPANY_DATE'                                   => 'Datum',
     'D3HEIDELPAY_PAYMENT_COMPANY_RESULT'                                 => 'Ergebnis',
@@ -307,4 +308,4 @@ $aLang     = array(
     'D3HEIDELPAY_CHANNELS_SAVE'                                          => 'Zuordnung(en) speichern',
 
     'D3HEIDELPAY_TRANSACTIONLIST_INFOTEXT_ONLY_NGW'                      => 'Die Transaktionübersicht kann nur mit der Schnittstelle "NGW" verwendet werden.',
-);
+];

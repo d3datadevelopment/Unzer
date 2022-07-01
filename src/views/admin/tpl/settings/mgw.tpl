@@ -127,6 +127,17 @@
                         [{if ($edit->getValue("showSepaGuranteedCustomerFormular"))}]checked[{/if}]>
                 </td>
             </tr>
+            <tr>
+                <td class="edittext">
+                    <label for="dontShowDirectDebitMandateCheckbox">[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX"}]</label>
+                </td>
+                <td class="edittext">
+                    [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX"}]
+                    <input type="hidden" value="0" name="value[d3_cfg_mod__dontShowDirectDebitMandateCheckbox]"/>
+                    <input id="dontShowDirectDebitMandateCheckbox" value="1" type="checkbox" name="value[d3_cfg_mod__dontShowDirectDebitMandateCheckbox]"
+                        [{if ($edit->getValue("dontShowDirectDebitMandateCheckbox"))}]checked[{/if}]>
+                </td>
+            </tr>
         </table>
         </fieldset>
     </td>

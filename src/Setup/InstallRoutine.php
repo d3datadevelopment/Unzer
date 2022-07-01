@@ -51,7 +51,7 @@ class InstallRoutine extends d3install_updatebase
     /**
      * @var string
      */
-    public $sModVersion = '6.2.5.0';
+    public $sModVersion = '6.2.6.0';
 
     /**
      * @var string
@@ -59,18 +59,18 @@ class InstallRoutine extends d3install_updatebase
     public $sMinModCfgVersion = '5.3.0.0';
 
     /** @var string @deprecated since 2016-04-13 */
-    public $sModRevision = '6250';
+    public $sModRevision = '6260';
 
     /**
      * @var string
      */
     public $sBaseConf = '--------------------------------------------------------------------------------
-z5qv2==cmdQUUJmZTkvc09EQWE1Q3MyV2ZwblEzbzE2UnVlOTBQeWVpWlBCU2ppdlpQVHY1Q0RIUml4T
-HozS0czbWd1VzhLMUtPaTl1REY5SkhxTndmd2kwd1RjMUIvenVJVmhaZWJQWVdyalY3RkpzNzdDcWtDR
-Uc3ek1nR0sxTUVUbWdaTUFwMkVmSE9tVEQyMGdvdmhiRWtIV3RZVk9MMFZGMlpybUx6TTlXN1A4NkdTQ
-3JGOGFCa2F2T3VpTzZxWi9UUWFhTm4rOHg5bDJIeFQ1U2V2b0lac05LWnBYU3EvVmNlMk0wSVc3MjZkY
-jUzUHp3eWY0eEFzcSszM3Vyc0tKdVFzem00S2VVR0RzUlJVMFk5d0F4cFl0Y3I3L3Y2NkZPcXBhTGROV
-UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
+ep3v2==ZzdNZVJTdmh2RVFheE1pVW43M0xnTy9tdmxxa1FVZmtla0F0d1hRelFDRkZjaFN0YyswUUtUU
+EZIajljUG8rbldaMUZHTi9YaFk3K0RFYTBrb0hFWWFsNDRkUzc1Sm9qczMwbTAvcTV1MkNhNWdrTlJNZ
+Ek2a3B4U1NZaUQrdDZRNktvOEhmc2tONkVhdHB0K2x0RWc2THhTdFEvb0g5MnNYMnJtWElELzNCMEFHT
+ktlOHh1SHZleXp6SXpwZ1lQaFhJdldUWkt6TkJic1JLS2gzRGcxWmUxYURsZFBwdUwwZ0xiRFhpVWVvR
+FF4ZFZ5TEozQVptRE5wemIyOUxKaVZCY2VxaVRDY3E0b29COHI1dFhFcEVHUW15UlVEZHBOV2VNSGJLd
+TVKeFhReFFneEEwb3J6NTltL2ZMbU5uOXRNT1p3d2pQbTh2SHJ6M29nYVpIYTlnPT0=
 --------------------------------------------------------------------------------';
 
     /**
@@ -86,8 +86,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
     /**
      * @var array
      */
-    public $aFields = array(
-        'OXID_d3hpuid'                => array(
+    public $aFields = [
+        'OXID_d3hpuid'                => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXID',
             'sType'       => 'VARCHAR(32)',
@@ -96,8 +96,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXUSERID_d3hpuid'            => array(
+        ],
+        'OXUSERID_d3hpuid'            => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXUSERID',
             'sType'       => 'VARCHAR(32)',
@@ -106,8 +106,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXPAYMENTID_d3hpuid'         => array(
+        ],
+        'OXPAYMENTID_d3hpuid'         => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXPAYMENTID',
             'sType'       => 'VARCHAR(32)',
@@ -116,8 +116,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXUID_d3hpuid'               => array(
+        ],
+        'OXUID_d3hpuid'               => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXUID',
             'sType'       => 'VARCHAR(50)',
@@ -126,8 +126,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXTIME_d3hpuid'              => array(
+        ],
+        'OXTIME_d3hpuid'              => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXTIME',
             'sType'       => 'DATETIME',
@@ -136,8 +136,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXPAYMENTDATA_d3hpuid'       => array(
+        ],
+        'OXPAYMENTDATA_d3hpuid'       => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXPAYMENTDATA',
             'sType'       => 'TEXT',
@@ -146,8 +146,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXSHOPID_d3hpuid'       => array(
+        ],
+        'OXSHOPID_d3hpuid'       => [
             'sTableName'  => 'd3hpuid',
             'sFieldName'  => 'OXSHOPID',
             'sType'       => 'INT(11)',
@@ -156,8 +156,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => '',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXID_d3hperrortexts'         => array(
+        ],
+        'OXID_d3hperrortexts'         => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXID',
             'sType'       => 'VARCHAR(32)',
@@ -166,8 +166,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXCODE_d3hperrortexts'       => array(
+        ],
+        'OXCODE_d3hperrortexts'       => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXCODE',
             'sType'       => 'VARCHAR(20)',
@@ -176,8 +176,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXTYPE_d3hperrortexts'       => array(
+        ],
+        'OXTYPE_d3hperrortexts'       => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXTYPE',
             'sType'       => 'INT(1)',
@@ -186,8 +186,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXTITLE_d3hperrortexts'      => array(
+        ],
+        'OXTITLE_d3hperrortexts'      => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXTITLE',
             'sType'       => 'VARCHAR(255)',
@@ -196,8 +196,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXTITLE_1_d3hperrortexts'    => array(
+        ],
+        'OXTITLE_1_d3hperrortexts'    => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXTITLE_1',
             'sType'       => 'VARCHAR(255)',
@@ -206,8 +206,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'OXREALTEXT_d3hperrortexts'   => array(
+        ],
+        'OXREALTEXT_d3hperrortexts'   => [
             'sTableName'  => 'd3hperrortexts',
             'sFieldName'  => 'OXREALTEXT',
             'sType'       => 'VARCHAR(255)',
@@ -216,8 +216,8 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-        'D3HEIDELPAYVOUCHERS_oxorder' => array(
+        ],
+        'D3HEIDELPAYVOUCHERS_oxorder' => [
             'sTableName'  => 'oxorder',
             'sFieldName'  => 'D3HEIDELPAYVOUCHERS',
             'sType'       => 'TEXT',
@@ -226,143 +226,143 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
             'sComment'    => 'D3 Heidelpay voucherinfos for temporary orders',
             'sExtra'      => '',
             'blMultilang' => false,
-        ),
-    );
+        ],
+    ];
 
     // Standardwerte zum umbenennen Tables
     /**
      * @var array
      */
-    public $aIndizes = array(
-        array(
+    public $aIndizes = [
+        [
             'sTableName'  => 'd3hpuid',
             'sType'       => d3database::INDEX_TYPE_PRIMARY,
             'sName'       => d3database::INDEX_TYPE_PRIMARY,
-            'aFields'     => array(
+            'aFields'     => [
                 'OXID' => 'OXID',
-            ),
+            ],
             'blMultilang' => false,
-        ),
-        array(
+        ],
+        [
             'sTableName'  => 'd3hpuid',
             'sType'       => 'KEY',
             'sName'       => 'OXSHOPID',
-            'aFields'     => array(
+            'aFields'     => [
                 'OXSHOPID' => 'OXSHOPID',
-            ),
+            ],
             'blMultilang' => false,
-        ),
-        array(
+        ],
+        [
             'sTableName'  => 'd3hpuid',
             'sType'       => 'KEY',
             'sName'       => 'OXUSERID',
-            'aFields'     => array(
+            'aFields'     => [
                 'OXUSERID' => 'OXUSERID',
-            ),
+            ],
             'blMultilang' => false,
-        ),
-        array(
+        ],
+        [
             'sTableName'  => 'd3hperrortexts',
             'sType'       => 'PRIMARY',
             'sName'       => 'PRIMARY',
-            'aFields'     => array(
+            'aFields'     => [
                 'OXID' => 'OXID',
-            ),
+            ],
             'blMultilang' => false,
-        ),
-    );
+        ],
+    ];
 
     // Standardwerte fuer checkFields(), _addTable() und fixFields()
     // Standardwerte fuer checkIndizes() und fixIndizes()
     /**
      * @var array
      */
-    protected $_aRefreshMetaModuleIds = array('d3heidelpay');
+    protected $_aRefreshMetaModuleIds = ['d3heidelpay'];
     /**
      * @var array
      */
-    protected $_aUpdateMethods = array(
-        array(
+    protected $_aUpdateMethods = [
+        [
             'check' => 'hasToShowNoteForStoredData',
             'do'    => 'showNoteForStoredData'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkModCfgItemExist', // Prueft auf Datenbankeintrag
             'do'    => 'updateModCfgItemExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkD3hpuidTableExist',
             'do'    => 'updateD3hpuidTableExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkD3hperrortextsTableExist',
             'do'    => 'updateD3hperrortextsTableExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'hasEmptyCMSShopId', //0004566: Korrektur der Autoinstallation bei einem Modulupdate
             'do'    => 'removeEmptyCMSShopId' // bug fix for version 5.0.0.2
-        ),
-        array(
+        ],
+        [
             'check' => 'checkHPerrortextcontent', // UPDATE `d3hperrortexts` SET `OXTYPE` = '2' WHERE `OXCODE` = '800.100.153';
             'do'    => 'updateHPerrortextcontent' // Update 4.0.1.0 XE4 => 4.0.2.0 XE4
-        ),
-        array(
+        ],
+        [
             'check' => 'hasOldTables',
             'do'    => 'deleteOldTables'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkOxcontentEntrysExist', // Pruefte ob oxcontenteintraege schon vorhanden
             'do'    => 'showMessageForCustomerToUpdateManually'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkOxcontentItemsExist', // sql befehle fuer Tabelle oxcontents
             'do'    => 'insertOxcontentItemsIfNotExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkOxpaymentsItemsExist', // sql befehle fuer Tabelle oxpayments
             'do'    => 'insertOxpaymentsItemsIfNotExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkD3hperrortextsItemsExist', // sql befehle fuer Tabelle d3hperrortexts
             'do'    => 'insertD3hperrortextsItemsIfNotExist'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkForChangeHaendlerKontoMsg',
             'do'    => 'showForChangeHaendlerKontoMsg'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkModCfgorderExecutePostFields',
             'do'    => 'updateModCfgorderExecutePostFields'
-        ),
-        array(
+        ],
+        [
             'check' => 'usingModCfgStoredDataWithoutRG',
             'do'    => 'updateModCfStoredDataWithRG'
-        ),
-        array(
+        ],
+        [
             'check' => 'hasModProfileEntries',
             'do'    => 'createModProfileEntries'
-        ),
-        array(
+        ],
+        [
             'check' => 'hasOldModuleItems', //nicht vorhandene Moduldatei-Eintraege entfernen
             'do'    => 'deleteOldModuleItems'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkFields',
             'do'    => 'fixFields'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkIndizes',
             'do'    => 'fixIndizes'
-        ),
-        array(
+        ],
+        [
             'check' => 'checkModCfgSameRevision', // Prueft auf nachgezogene Revisionsnummer
             'do'    => 'updateModCfgSameRevision'
-        ),
-        array( // this has to be the last step
+        ],
+        [ // this has to be the last step
                'check' => 'hasMultilangConfigButNoSetting',
                'do'    => 'showMultilangConfigButNoSettingMessage'
-        ),
-    );
+        ],
+    ];
 
     /**
      * @return bool
@@ -402,7 +402,7 @@ UJEUWVWRXlRdWRIY01saXpRbGFHNnhyTlhmYUZKakc4bXpyMmFNNG91N2xKbXl3PT0=
     {
         $this->_confirmMessage('D3HEIDELPAYNOTESHOWNFORSTOREDDATA');
 
-        $aDoList                  = array();
+        $aDoList                  = [];
         $hasReferenceIndexCreated = $hasOxuidIndexCreated = false;
         //set indexes
         if (false == DatabaseProvider::getDb()->getOne('SHOW INDEX FROM d3transactionlog WHERE Column_name=\'D3REFERENCE\';')) {
@@ -434,7 +434,7 @@ LEFT JOIN d3transactionlog ON d3hpuid.`OXUID` = d3transactionlog.D3REFERENCE
 WHERE d3transactionlog.oxid IS NOT NULL;'
         );
 
-        $deleteIds = array();
+        $deleteIds = [];
         /** @var TransactionlogReader $reader */
         $reader = oxNew(TransactionlogReader::class);
         foreach ($result as $logdata) {
@@ -444,7 +444,7 @@ WHERE d3transactionlog.oxid IS NOT NULL;'
             }
             $reader      = $transaction->getTransactiondata();
             $paymentcode = strtolower($reader->getPaymentcode());
-            if (false == in_array($paymentcode, array('cc.rg', 'dc.rg'))) {
+            if (false == in_array($paymentcode, ['cc.rg', 'dc.rg'])) {
                 $deleteIds[] = $transaction->getFieldData('d3reference');
                 continue;
             }
@@ -700,7 +700,7 @@ WHERE d3transactionlog.oxid IS NOT NULL;'
         startProfile(__METHOD__);
 
         $blRet   = true;
-        $aDoList = array();
+        $aDoList = [];
 
         $sCurrentShopId = $this->getConfig()->getShopId();
 
@@ -826,43 +826,43 @@ MySQL;
         $blRet = false;
 
         if ($this->checkHPerrortextcontent()) {
-            $aWhere = array(
+            $aWhere = [
                 'oxcode' => '800.100.153',
-            );
+            ];
 
             if ($this->_checkTableItemNotExist('d3hperrortexts', $aWhere)) {
-                $aInsertFields = array(
-                    'OXID'       => array(
+                $aInsertFields = [
+                    'OXID'       => [
                         'content'      => "366",
                         'force_update' => true,
                         'use_quote'    => false,
-                    ),
-                    'OXCODE'     => array(
+                    ],
+                    'OXCODE'     => [
                         'content'      => '800.100.153',
                         'force_update' => true,
                         'use_quote'    => true,
-                    ),
-                    'OXTYPE'     => array(
+                    ],
+                    'OXTYPE'     => [
                         'content'      => "2",
                         'force_update' => true,
                         'use_quote'    => true,
-                    ),
-                    'OXTITLE'    => array(
+                    ],
+                    'OXTITLE'    => [
                         'content'      => "Ung&uuml;ltige Pr&uuml;fziffer",
                         'force_update' => true,
                         'use_quote'    => true,
-                    ),
-                    'OXTITLE_1'  => array(
+                    ],
+                    'OXTITLE_1'  => [
                         'content'      => "transaction declined (invalid CVV)",
                         'force_update' => false,
                         'use_quote'    => false,
-                    ),
-                    'OXREALTEXT' => array(
+                    ],
+                    'OXREALTEXT' => [
                         'content'      => "transaction declined (invalid CVV)",
                         'force_update' => true,
                         'use_quote'    => true,
-                    )
-                );
+                    ]
+                ];
                 $aRet          = $this->_updateTableItem2('d3hperrortexts', $aInsertFields, $aWhere);
                 $blRet         = $aRet['blRet'];
 
@@ -893,9 +893,9 @@ MySQL;
             return $blRet;
         }
 
-        $aWhere = array(
+        $aWhere = [
             'oxcode' => '800.100.153',
-        );
+        ];
         $blRet1 = $this->_checkTableItemNotExist('d3hperrortexts', $aWhere);
 
         $blRetX = $this->checkModCfgSameRevision();
@@ -1019,7 +1019,7 @@ MySQL;
 
             if (false == is_string(
                 $moduleConfiguration->getValue('d3heidelpay_orderExecutePostFields')
-                ) || strlen(
+            ) || strlen(
                     $moduleConfiguration->getValue('d3heidelpay_orderExecutePostFields')
                 ) == 0
             ) {

@@ -10,7 +10,7 @@
                        [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]">
                     <b>[{$paymentmethod->oxpayments__oxdesc->value}]</b>
-                    <img src="[{$sImageUrl}]sofort.png" alt="[{$paymentmethod->oxpayments__oxdesc->value}]" style="vertical-align: middle;">
+                    <img src="[{$sImageUrl}]sofort.png" alt="[{$paymentmethod->oxpayments__oxdesc->value}]" style="vertical-align: middle; width: 65px">
                 </label>
             </dt>
             <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">

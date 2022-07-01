@@ -5,7 +5,7 @@ $iLangNr   = 1;
 // -------------------------------
 // RESOURCE IDENTITFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 
     'charset'                   => 'UTF-8',
     "d3heidelpay_000.000.000"   => "Transaction succeeded",
@@ -624,4 +624,4 @@ $aLang = array(
     'd3heidelpay_800.400.158'   => 'The customer salutation/name is incomplete.',
     'd3heidelpay_800.400.159'   => 'Merchant not live at partner system.',
     'd3heidelpay_800.400.160'   => 'Invalid reference at partner system.',
-);
+];

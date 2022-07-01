@@ -11,7 +11,6 @@ use D3\Heidelpay\Modules\Application\Controller;
 use D3\Heidelpay\Modules\Application\Model;
 use D3\Heidelpay\Modules\Core;
 use D3\ModCfg\Application\Model\d3counter;
-use D3\ModCfg\Application\Model\d3utils;
 use D3\ModCfg\Application\Model\Install\d3install;
 use OxidEsales\Eshop\Application\Controller as OxidController;
 use OxidEsales\Eshop\Application\Model as OxidModel;
@@ -20,24 +19,24 @@ use OxidEsales\Eshop\Core as OxidCore;
 $sMetadataVersion = '2.0';
 $sLogo = '<img src="https://logos.oxidmodule.com/d3logo.svg" alt="(D3)" style="height:1em;width:1em"> ';
 
-$aModule = array(
+$aModule = [
     'id'             => 'd3heidelpay',
     'title'          => $sLogo.' Unzer',
-    'description'    => array(
+    'description'    => [
         'de' => 'Unzer GmbH bietet als Zahlungsinstitut H&auml;ndlern ein Zahlungssystem f&uuml;r '
             . 'alle g&auml;ngigen Zahlungsverfahren f&uuml;r die Payment Abwicklung im Internet.',
         'en' => '',
-    ),
+    ],
     'thumbnail'      => 'picture.png',
-    'version'        => '6.2.5.0',
+    'version'        => '6.2.6.0',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',
-    'events'         => array(
+    'events'         => [
         'onActivate' => d3install::class . '::checkUpdateStart',
-    ),
+    ],
 
-    'extend'         => array(
+    'extend'         => [
         d3counter::class                         => Core\Counter::class,
         OxidCore\Email::class                    => Core\Email::class,
         OxidCore\InputValidator::class           => Core\InputValidator::class,
@@ -47,8 +46,8 @@ $aModule = array(
         OxidModel\Order::class                   => Model\Order::class,
         OxidModel\PaymentGateway::class          => Model\PaymentGateway::class,
         OxidModel\BasketItem::class              => Model\BasketItem::class,
-    ),
-    'controllers'    => array(
+    ],
+    'controllers'    => [
         'd3_heidelpay_controllers_admin_adminlist'          => AdminList::class,
         'd3_heidelpay_controllers_admin_base'               => Base::class,
         'd3_heidelpay_controllers_admin_settings'           => Settings::class,
@@ -61,8 +60,8 @@ $aModule = array(
         'd3_heidelpay_controllers_admin_channels_list'      => D3\Heidelpay\Controllers\Admin\Channels\AdminList::class,
         'd3_heidelpay_controllers_admin_channels_main'      => D3\Heidelpay\Controllers\Admin\Channels\Main::class,
         'd3_heidelpay_controllers_admin_channels_payments'  => D3\Heidelpay\Controllers\Admin\Channels\Payments::class,
-    ),
-    'templates'      => array(
+    ],
+    'templates'      => [
         #admin
         'd3_heidelpay_views_admin_tpl_settings.tpl'                         => 'd3/heidelpay/views/admin/tpl/settings.tpl',
         'd3_heidelpay_views_admin_tpl_settings_ngw.tpl'                     => 'd3/heidelpay/views/admin/tpl/settings/ngw.tpl',
@@ -191,8 +190,8 @@ $aModule = array(
         'd3_heidelpay_views_flow_tpl_forms_title.tpl'                       => 'd3/heidelpay/views/flow/tpl/forms/title.tpl',
         'd3_heidelpay_views_flow_tpl_forms_birthdate.tpl'                   => 'd3/heidelpay/views/flow/tpl/forms/birthdate.tpl',
 
-		##wave-theme
-		'd3_heidelpay_views_wave_tpl_payment_directdebit.tpl'            => 'd3/heidelpay/views/wave/tpl/payment/directdebit.tpl',
+        ##wave-theme
+        'd3_heidelpay_views_wave_tpl_payment_directdebit.tpl'            => 'd3/heidelpay/views/wave/tpl/payment/directdebit.tpl',
         'd3_heidelpay_views_wave_tpl_payment_cards.tpl'                  => 'd3/heidelpay/views/wave/tpl/payment/cards.tpl',
         'd3_heidelpay_views_wave_tpl_payment_masterpass.tpl'             => 'd3/heidelpay/views/wave/tpl/payment/masterpass.tpl',
         'd3_heidelpay_views_wave_tpl_payment_giropay.tpl'                => 'd3/heidelpay/views/wave/tpl/payment/giropay.tpl',
@@ -236,63 +235,63 @@ $aModule = array(
         'd3_heidelpay_views_wave_tpl_forms_title.tpl'                    => 'd3/heidelpay/views/wave/tpl/forms/title.tpl',
         'd3_heidelpay_views_wave_tpl_forms_birthdate.tpl'                => 'd3/heidelpay/views/wave/tpl/forms/birthdate.tpl',
 
-    ),
-    'blocks'         => array(
+    ],
+    'blocks'         => [
         ##Admin
-        array(
+        [
             'template' => 'headitem.tpl',
             'block'    => 'admin_headitem_inccss',
             'file'     => '/views/blocks/admin_headitem_inccss.tpl'
-        ),
+        ],
 
         #### azure
-        array(
+        [
             'template' => 'page/checkout/payment.tpl',
             'block'    => 'change_payment',
             'file'     => '/views/blocks/change_payment.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'page/checkout/payment.tpl',
             'block'    => 'select_payment',
             'file'     => '/views/blocks/select_payment.tpl'
-        ),
+        ],
 
-        array(
+        [
             'template' => 'layout/base.tpl',
             'block'    => 'base_style',
             'file'     => '/views/blocks/base_style.tpl'
-        ),
+        ],
 
         ##azure+flow
-        array(
+        [
             'template' => 'email/html/order_cust.tpl',
             'block'    => 'email_html_order_cust_paymentinfo',
             'file'     => '/views/blocks/email_html_order_cust_paymentinfo.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'email/plain/order_cust.tpl',
             'block'    => 'email_plain_order_cust_paymentinfo',
             'file'     => '/views/blocks/email_plain_order_cust_paymentinfo.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'page/checkout/thankyou.tpl',
             'block'    => 'checkout_thankyou_info',
             'file'     => '/views/blocks/checkout_thankyou_info.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'page/checkout/payment.tpl',
             'block'    => 'checkout_payment_errors',
             'file'     => '/views/blocks/checkout_payment_errors.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'page/checkout/order.tpl',
             'block'    => 'shippingAndPayment',
             'file'     => '/views/blocks/shippingandpayment.tpl'
-        ),
-        array(
+        ],
+        [
             'template' => 'page/checkout/inc/basketcontents.tpl',
             'block'    => 'checkout_basketcontents_grandtotal',
             'file'     => '/views/blocks/checkout_basketcontents_grandtotal.tpl'
-        ),
-    ),
-);
+        ],
+    ],
+];

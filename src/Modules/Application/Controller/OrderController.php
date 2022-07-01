@@ -128,14 +128,12 @@ class OrderController extends OrderController_parent
         $sReturn   = '';
         $aDynValue = Registry::getSession()->getVariable('dynvalue');
 
-        $transaction = null;
-
         if (isset($aDynValue['oxuid']) && false == empty($aDynValue['oxuid'])) {
             $logReader   = oxNew(ReaderHeidelpay::class);
             $transaction = oxNew(d3transactionlog::class, $logReader);
             $sUniqueId   = $aDynValue['oxuid'];
 
-            if (false == $transaction->load(DatabaseProvider::getDb()->getOne('SELECT * FROM d3transactionlog WHERE d3reference = ?', array($sUniqueId)))) {
+            if (false == $transaction->load(DatabaseProvider::getDb()->getOne('SELECT * FROM d3transactionlog WHERE d3reference = ?', [$sUniqueId]))) {
                 $factory->getModuleConfiguration()->d3getLog()->log(
                     d3log::WARNING,
                     __CLASS__,
@@ -197,15 +195,15 @@ class OrderController extends OrderController_parent
         $factory  = oxNew(Factory::class);
 
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            return array();
+            return [];
         }
 
         $storeIds = $this->getUserHPStoreIDs($sPaymentId);
         if (empty($storeIds)) {
-            return array();
+            return [];
         }
 
-        $storedDataList = array();
+        $storedDataList = [];
 
         foreach ($storeIds as $storeId) {
             $storedData = $factory->getStoredDataPlain();
@@ -234,7 +232,7 @@ class OrderController extends OrderController_parent
     public function getUserHPStoreIDs($sPaymentId)
     {
         if (false == ($sUserID = $this->getSession()->getVariable("usr"))) {
-            return array();
+            return [];
         }
         $shopid = $this->getConfig()->getShopId();
         return DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->getAll(
@@ -707,7 +705,7 @@ class OrderController extends OrderController_parent
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
-                    'mgw: order set to '.$type ,
+                    'mgw: order set to '.$type,
                     "ordernr: {$order->getFieldData('oxordernr')}, orderid: {$orderId}"
                 );
 
@@ -743,7 +741,6 @@ class OrderController extends OrderController_parent
                         "result: $mResult"
                     );
                 } catch (UnzerApiException $exception) {
-
                     $d3Log->log(
                         d3log::ERROR,
                         __CLASS__,

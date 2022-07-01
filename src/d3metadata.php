@@ -17,10 +17,10 @@
 
 use D3\Heidelpay\Setup as ModuleSetup;
 
-$aModule = array(
-    'd3SetupClasses'    => array(
+$aModule = [
+    'd3SetupClasses'    => [
         ModuleSetup\InstallRoutine::class,
         ModuleSetup\CleanupRoutine::class,
         ModuleSetup\UpdateRoutine::class,
-    )
-);
+    ]
+];
