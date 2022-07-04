@@ -26,12 +26,12 @@ use OxidEsales\Facts\Facts;
 
 class CleanupRoutine extends d3install_updatebase
 {
-    protected $_aUpdateMethods = array(
-        array(
+    protected $_aUpdateMethods = [
+        [
             'check' => 'hasStoredDataWithWrongShopid',
             'do'    => 'cleanUpStoredDataShopids'
-        ),
-    );
+        ],
+    ];
 
     /**
      * @throws DatabaseConnectionException

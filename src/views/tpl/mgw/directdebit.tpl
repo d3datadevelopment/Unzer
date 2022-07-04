@@ -5,17 +5,20 @@
     <div class="divider"></div>
 </div>
 <div class="d3UnzerSepaNote">
-    [{if $isD3UnzerSepaMandatNotConfirmed}]
+    [{if false === $d3UnzerDontShowDirectDebitMandateCheckbox && $isD3UnzerSepaMandatNotConfirmed}]
         <div class="d3UnzerErrorNotice">[{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_INVALID"}]</div>
     [{/if}]
 
     [{$d3UnzerSepaMandatText}]
-    <br>
-    <input type="hidden" name="unzerSepaValidation[[{$paymentId}]]" value="0">
-    <label>
-        <input type="checkbox" name="unzerSepaValidation[[{$paymentId}]]" value="1">
-        [{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_LABEL"}]
-    </label>
+
+    [{if false === $d3UnzerDontShowDirectDebitMandateCheckbox}]
+        <br>
+        <input type="hidden" name="unzerSepaValidation[[{$paymentId}]]" value="0">
+        <label>
+            <input type="checkbox" name="unzerSepaValidation[[{$paymentId}]]" value="1">
+            [{oxmultilang ident="D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_LABEL"}]
+        </label>
+    [{/if}]
 </div>
 
 <div class="modal fade" id="unzerWaitingDialog-[{$paymentId}]" tabindex="-1" role="dialog"  aria-hidden="true">

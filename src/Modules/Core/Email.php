@@ -9,7 +9,6 @@ use Smarty;
  */
 class Email extends Email_parent
 {
-
     /**
      * Sends customer heidelpay information e-mail
      *
@@ -20,7 +19,7 @@ class Email extends Email_parent
     public function d3SendCustHPPPInfoMail($oOrder)
     {
         //sets language of order
-        $iOrderLang = (int)(isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
+        $iOrderLang = (int)($oOrder->oxorder__oxlang->value ?? 0);
 
         // shop info
         $oShop = $this->_getShop($iOrderLang);
@@ -62,7 +61,7 @@ class Email extends Email_parent
     public function d3SendOwnerHPPPInfoMail($oOrder)
     {
         //sets language of order
-        $iOrderLang = (int)(isset($oOrder->oxorder__oxlang->value) ? $oOrder->oxorder__oxlang->value : 0);
+        $iOrderLang = (int)($oOrder->oxorder__oxlang->value ?? 0);
 
         // shop info
         $oShop = $this->_getShop($iOrderLang);

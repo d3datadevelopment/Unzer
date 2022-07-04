@@ -17,13 +17,11 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\Eshop\Core\Registry;
 
 /**
  */
 class PaymentGateway extends PaymentGateway_parent
 {
-
     /**
      * executes heidelpay paymentgateway
      *

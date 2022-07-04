@@ -55,12 +55,12 @@ use ReflectionException;
 
 class UpdateRoutine extends d3install_updatebase
 {
-    protected $_aUpdateMethods = array(
-        array(
+    protected $_aUpdateMethods = [
+        [
             'check' => 'hasModCfgConfiguration',
             'do'    => 'showModCfgMigrationMessage',
-        )
-    );
+        ]
+    ];
 
     /**
      * @return bool
@@ -80,7 +80,6 @@ class UpdateRoutine extends d3install_updatebase
         if ($this->hasModCfgConfiguration() && $this->_getAction() !== 'checklist') {
             $sCurrentShopId        = $this->getConfig()->getShopId();
             $currentLanguage       = Registry::getLang();
-            $currentTplLanguageId  = $currentLanguage->getTplLanguage();
             $currentBaseLanguageId = $currentLanguage->getBaseLanguage();
             foreach ($this->getShopListByActiveModule('d3heidelpay') as $oShop) {
                 /** @var $oShop BaseModel */
@@ -159,7 +158,6 @@ class UpdateRoutine extends d3install_updatebase
             $this->_changeToShop($sCurrentShopId);
             $currentLanguage             = Registry::getLang();
             $currentLanguage->setBaseLanguage($currentBaseLanguageId);
-//            $currentLanguage->setTplLanguage($currentTplLanguageId);
         }
 
         stopProfile(__METHOD__);
@@ -352,7 +350,7 @@ class UpdateRoutine extends d3install_updatebase
             'D3\\Heidelpay\\Models\\Payment\\',
             "D3\\Heidelpay\\Models\\Settings\\Channels\\",
             $heidelpayClassName
-            ));
+        ));
         if ('d3\\heidelpay\\models\\settings\\channels\\directdebit' === $generatedSettingsClassname) {
             $generatedSettingsClassname = 'd3\\heidelpay\\models\\settings\\channels\\directdebit\\unsecured';
         }
@@ -361,7 +359,7 @@ class UpdateRoutine extends d3install_updatebase
             $generatedSettingsClassname = 'd3\\heidelpay\\models\\settings\\channels\\sofort';
         }
 
-        foreach ($paymentConfigurations as $index => $paymentConfiguration) {
+        foreach ($paymentConfigurations as $paymentConfiguration) {
             if ($generatedSettingsClassname === strtolower($paymentConfiguration)) {
                 $settingsClassName = $paymentConfiguration;
                 break;

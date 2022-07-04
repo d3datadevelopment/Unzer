@@ -19,7 +19,7 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\ComposerPlugin\Installer\Package\ShopPackageInstaller;
 use OxidEsales\Eshop\Core\Registry;
 
-$aParams = array();
+$aParams = [];
 
 if ($argv && is_array($argv) && $argc) {
     if (isset($argv[1]) && false == empty($argv[1])) {

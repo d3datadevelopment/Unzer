@@ -9,15 +9,16 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
 - Bankeinzug
 - automatische Vorkasse
 - Sofort by Klarna
-- Giropay (nur Legacy Payments / NGW)
+- Giropay
 - iDeal (Niederlande)
-- EPS (Österreich) (nur Legacy Payments / NGW)
+- EPS (Österreich)
 - Rechnungskauf (ohne Zahlungssicherung)
 - Rechnungskauf (mit Zahlungssicherung)
 - B2B Rechnungskauf
-- Przelewy 24 (nur Legacy Payments / NGW)
-- EasyCredit (nur Legacy Payments / NGW)
+- Przelewy 24
 - PayPal
+- EasyCredit (nur Legacy Payments / NGW)
+- PostFinance (nur Legacy Payments / NGW)
 - MasterPass (nur Legacy Payments / NGW)
 
 ## 2. Zuordnung der Shop-Zahlungsarten zu den Unzer Zahltypen:

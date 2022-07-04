@@ -1,6 +1,19 @@
 ---
 title: Changelog
 ---
+
+## 6.2.6.0 - (2022-07-01)
+
+### added
+- optional: Lastschriftmandat muss nicht akzeptiert werden
+- eventuell vorhandener Port an Kundenremoteadresse entfernt
+
+### changed
+- Zahlartenlogos aktualisiert
+- Abhängigkeiten angepasst
+
+---
+
 ## 6.2.5.0 - (2022-05-06)
 
 ### added

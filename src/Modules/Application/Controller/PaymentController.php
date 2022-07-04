@@ -46,6 +46,8 @@ use OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator;
  */
 class PaymentController extends PaymentController_parent
 {
+    public const OPTION_DONT_SHOW_DD_MANDATE = 'dontShowDirectDebitMandateCheckbox';
+
     /**
      * @var array
      */
@@ -112,11 +114,11 @@ class PaymentController extends PaymentController_parent
             );
 
             $orderId = $session->getVariable($factory::HeidelpayOrderResultSessionOrderID);
-            if($orderId) {
+            if ($orderId) {
                 /** @var Order $order */
                 $order = oxNew(Order::class);
                 $message = "Order: $orderId was not deleted";
-                if($order->delete($orderId)) {
+                if ($order->delete($orderId)) {
                     $message = "Order: $orderId was deleted";
                 }
                 $d3log->log(
@@ -287,7 +289,7 @@ class PaymentController extends PaymentController_parent
                     || $heidelPayment instanceof Paypal
                     || $heidelPayment instanceof DirectdebitSecured
                     || $heidelPayment instanceof Secured
-                ) && false == Registry::get(Request::class)->getRequestParameter('paymentid')
+            ) && false == Registry::get(Request::class)->getRequestParameter('paymentid')
             ) {
                 return false;
             }
@@ -302,7 +304,7 @@ class PaymentController extends PaymentController_parent
         }
         //</editor-fold>
 
-        if($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
+        if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
             $d3log = $factory->getModuleConfiguration()->d3getLog();
             $d3log->log(
                 d3log::INFO,
@@ -321,12 +323,15 @@ class PaymentController extends PaymentController_parent
                 'mgw: payment is '.$heidelPayment->getPaymentMethod()
             );
 
-            if($heidelPayment->isMGWPayment()) {
+            if ($heidelPayment->isMGWPayment()) {
                 /** @var Request $request */
                 $request         = oxNew(Request::class);
-                if($heidelPayment instanceof DirectdebitSecured || $heidelPayment instanceof Directdebit) {
+                if (
+                    ($heidelPayment instanceof DirectdebitSecured || $heidelPayment instanceof Directdebit) &&
+                    (bool) $factory->getModuleConfiguration()->getValue(self::OPTION_DONT_SHOW_DD_MANDATE) === false
+                ) {
                     $isSepaValidated = (bool)($request->getRequestParameter('unzerSepaValidation')[$paymentId]);
-                    if(false == $isSepaValidated) {
+                    if (false == $isSepaValidated) {
                         return 'payment?d3unzersepamandatnotchecked=1';
                     }
                 }
@@ -343,7 +348,7 @@ class PaymentController extends PaymentController_parent
                 $reader = $factory->getMgwReader();
                 $reader->read($heidelpayResult);
                 $heidelpayCustomerId = $reader->getCustomerReference();
-                if(empty($heidelpayCustomerId)) {
+                if (empty($heidelpayCustomerId)) {
                     $d3log->log(
                         d3log::INFO,
                         __CLASS__,
@@ -367,7 +372,7 @@ class PaymentController extends PaymentController_parent
                 $session->setVariable($factory::HeidelpayCustomerIdSessionName, $heidelpayCustomerId);
 
                 $heidelpayResourceId = $reader->getId();
-                if(empty($heidelpayResourceId)) {
+                if (empty($heidelpayResourceId)) {
                     $d3log->log(
                         d3log::ERROR,
                         __CLASS__,
@@ -421,12 +426,14 @@ class PaymentController extends PaymentController_parent
                         __LINE__,
                         'mgw: save d3hpuid',
                         'payment id: ' . $paymentId
-
                     );
                     $userStoredData = $factory->getStoredDataPlain();
 
                     $result = $factory->getMgwResourceHandler()->saveResource(
-                        $userStoredData, $reader, $oxUser->getId(), $paymentId
+                        $userStoredData,
+                        $reader,
+                        $oxUser->getId(),
+                        $paymentId
                     );
                     if (false === $result) {
                         $d3log->log(
@@ -435,7 +442,6 @@ class PaymentController extends PaymentController_parent
                             __FUNCTION__,
                             __LINE__,
                             'mgw: d3hpuid entry couldn\'t saved'
-
                         );
                     }
                 }
@@ -676,7 +682,7 @@ class PaymentController extends PaymentController_parent
             $this->addTplParam('blD3HeidelpayAllowPostFinance', $this->isPaymentAllowedForCountryAndCurrency('CH', 'CHF'));
             $this->addTplParam('blD3HeidelpayAllowPrzelewy24', $this->isPaymentAllowedForCountryAndCurrency('PL', 'PLN'));
             $this->addTplParam('blD3HeidelpayAllowIdeal', $this->isPaymentAllowedForCountryAndCurrency('NL', 'EUR'));
-        $this->addTplParam('blD3HeidelpayAllowEPS', $this->isPaymentAllowedForCountryAndCurrency('AT', 'EUR'));
+            $this->addTplParam('blD3HeidelpayAllowEPS', $this->isPaymentAllowedForCountryAndCurrency('AT', 'EUR'));
             $this->addTplParam('iD3HeidelpayInvoiceSecuredLimits', $this->getInvoiceSecuredLimits());
             $this->addTplParam('blD3HeidelpayHasSameAdresses', $this->d3HeidelpayHasSameAdresses());
             $this->addTplParam(
@@ -714,6 +720,10 @@ class PaymentController extends PaymentController_parent
             $this->addTplParam(
                 'd3UnzerShowSepaGuranteedCustomerFormular',
                 $this->d3ShowCustomerForm($factory, (bool)trim($oxUser->getFieldData('oxcompany')))
+            );
+            $this->addTplParam(
+                'd3UnzerDontShowDirectDebitMandateCheckbox',
+                (bool) $factory->getModuleConfiguration()->getValue(self::OPTION_DONT_SHOW_DD_MANDATE)
             );
             $this->addTplParam('d3UnzerMissingUserParameter', $this->d3UnzerMissingUserParameter);
             $this->addTplParam('d3HeidelpayMappedThemeId', $factory->getModuleConfiguration()->getMappedThemeId());
@@ -782,7 +792,7 @@ class PaymentController extends PaymentController_parent
         }
 
         $basketUser       = $oxBasket->getBasketUser();
-        $possiblePSFields = array('oxfname', 'oxlname', 'oxstreet', 'oxstreetnr', 'oxcity');
+        $possiblePSFields = ['oxfname', 'oxlname', 'oxstreet', 'oxstreetnr', 'oxcity'];
 
         foreach ($possiblePSFields as $field) {
             if (false === stristr(strtolower($basketUser->getFieldData($field)), 'packstation')) {
@@ -829,7 +839,7 @@ class PaymentController extends PaymentController_parent
         }
         $oUser = $this->getUser();
 
-        $userAdress = array(
+        $userAdress = [
             $oUser->getFieldData('oxfname'),
             $oUser->getFieldData('oxlname'),
             $oUser->getFieldData('oxcompany'),
@@ -837,9 +847,9 @@ class PaymentController extends PaymentController_parent
             $oUser->getFieldData('oxstreetnr'),
             $oUser->getFieldData('oxzip'),
             $oUser->getFieldData('oxcity')
-        );
+        ];
 
-        $deliverAdress = array(
+        $deliverAdress = [
             $oDelAdress->getFieldData('oxfname'),
             $oDelAdress->getFieldData('oxlname'),
             $oDelAdress->getFieldData('oxcompany'),
@@ -847,7 +857,7 @@ class PaymentController extends PaymentController_parent
             $oDelAdress->getFieldData('oxstreetnr'),
             $oDelAdress->getFieldData('oxzip'),
             $oDelAdress->getFieldData('oxcity')
-        );
+        ];
 
         if ($userAdress == $deliverAdress) {
             return true;
@@ -1078,7 +1088,7 @@ class PaymentController extends PaymentController_parent
         $settings    = $factory->getSettings();
         $paymentList = $this->getPaymentList();
         try {
-            foreach ($paymentList as $paymentId => $payment) {
+            foreach ($paymentList as $payment) {
                 /** @var $payment Payment */
                 if ($settings->isAssignedToHeidelPayment($payment)) {
                     return true;
@@ -1088,7 +1098,6 @@ class PaymentController extends PaymentController_parent
         }
 
         return false;
-
     }
 
     protected function d3AddHeidelpayCorsHeader()
@@ -1213,7 +1222,7 @@ class PaymentController extends PaymentController_parent
                 'mgw: update customer failed',
                 'merchant message: ' . $e->getMerchantMessage()
             );
-        } catch ( RuntimeException $e) {
+        } catch (RuntimeException $e) {
             /** @var $e RuntimeException */
             $d3log->log(
                 d3log::ERROR,

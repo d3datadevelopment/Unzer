@@ -3,7 +3,7 @@ title: Systemanforderungen
 ---
 
 * PHP Version
-    * 7.0.x bis 8.0
+    * 7.1.x bis 8.0
 * PHP Decoder
     * installierter ionCube Loader (PHP bis 7.4) *oder*
     * installierter SourceGuardian Loader (PHP ab 8.0)
@@ -14,8 +14,6 @@ title: Systemanforderungen
     * OXID eShop B2B Edition
 * Shopversionen
     * OXID eShop in Compilation Version 
-        * 6.0.x
-        * 6.1.x
         * 6.2.x
         * 6.3.x
         * 6.4.x
