@@ -2,6 +2,13 @@
 title: Changelog
 ---
 
+## 6.2.6.1 - (2022-07-18)
+
+### changed
+- Zahlartenlogos aktualisiert
+
+---
+
 ## 6.2.6.0 - (2022-07-01)
 
 ### added
