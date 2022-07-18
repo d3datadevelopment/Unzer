@@ -9,43 +9,47 @@
 [{/if}]
 
 <form id="paymentFrameForm">
-    <div class="d3timeOut">
-        [{oxmultilang ident="D3HEIDELPAY_TIMEOUT_TIMER"}]
-        <div class='timer' data-seconds-left="[{$cardTypeTimeOut}]"></div>
-    </div>
-    [{if $isThreeDSecure}]
-        [{assign var='o3DSecure' value=$oHeidelpayViewConfig->get3dSecureResponse()}]
-        [{assign var="iframeUrl" value=$o3DSecure->sRedirectURL}]
-        [{foreach from=$o3DSecure->aRedirectRarams key='key' item='value'}]
-            <input type="hidden" name="[{$key}]" value="[{$value}]">
-        [{/foreach}]
-    [{else}]
-        [{assign var="iframeUrl" value=$oHeidelpayViewConfig->getHeidelpayNgwIFrameUrl($oHeidelPayment)}]
-    [{/if}]
-
-    [{*<input type="hidden" name="PROCESSING.RECOVERABLE" value="TRUE"/>*}]
-
-    [{if $iframeUrl}]
-        <iframe id="paymentFrameIframe" src="[{$iframeUrl}]" frameborder="0" scrolling="no">
-            Your Browser doesn\'t support iFrames
-        </iframe>
-    [{/if}]
-
-    [{if $payment->oxpayments__oxlongdesc->value}]
-        <div class="desc">
-            [{$payment->oxpayments__oxlongdesc->value}]
+    <div id="payment-box">
+        <div class="d3timeOut">
+            [{oxmultilang ident="D3HEIDELPAY_TIMEOUT_TIMER"}]
+            <div class='timer' data-seconds-left="[{$cardTypeTimeOut}]"></div>
         </div>
-    [{/if}]
-
-    <div class="lineBox clear">
-        <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=order"}]"
-           class="submitButton largeButton">[{oxmultilang ident="D3HEIDELPAY_ORDER_PAGE_BACKSTEPT"}]</a>
-        [{if $iframeUrl}]
-            <button type="submit"
-                    name="userform"
-                    class="submitButton nextStep largeButton"
-                    id="paymentNextStepBottom">[{oxmultilang ident="D3HEIDELPAY_ORDER_PAGE_NEXTSTEP"}]</button>
+        [{if $isThreeDSecure}]
+            [{assign var='o3DSecure' value=$oHeidelpayViewConfig->get3dSecureResponse()}]
+            [{assign var="iframeUrl" value=$o3DSecure->sRedirectURL}]
+            [{foreach from=$o3DSecure->aRedirectRarams key='key' item='value'}]
+                <input type="hidden" name="[{$key}]" value="[{$value}]">
+            [{/foreach}]
+        [{else}]
+            [{assign var="iframeUrl" value=$oHeidelpayViewConfig->getHeidelpayNgwIFrameUrl($oHeidelPayment)}]
         [{/if}]
+
+        [{*<input type="hidden" name="PROCESSING.RECOVERABLE" value="TRUE"/>*}]
+
+        [{if $iframeUrl}]
+            <iframe id="paymentFrameIframe" src="[{$iframeUrl}]" frameborder="0" scrolling="no">
+                Your Browser doesn\'t support iFrames
+            </iframe>
+        [{/if}]
+
+        [{if $payment->oxpayments__oxlongdesc->value}]
+            <div class="desc">
+                [{$payment->oxpayments__oxlongdesc->value}]
+            </div>
+        [{/if}]
+    </div>
+    <div class="clear backgroundUnset">
+        <div class="col col-nav-top col-bottom col-100 clearfix">
+            <div class="lineBox" style="background: none; padding-right: 0">
+                <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=order"}]" class="prevStep submitButton largeButton" id=     "paymentBackStepBottom">
+                <i class="fas fa-angle-left"></i>
+                [{ oxmultilang ident="PREVIOUS_STEP" }]
+                </a>
+                [{if $iframeUrl}]
+                <button type="submit" name="userform" class="submitButton nextStep largeButton" id="paymentNextStepBottom">[{ oxmultilang ident="DOT_CONTINUE_SHOPPING" }] <i class="fas fa-angle-right"></i></button>
+                [{/if}]
+            </div>
+        </div>
     </div>
 </form>
 [{if $iframeUrl}]
