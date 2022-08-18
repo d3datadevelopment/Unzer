@@ -39,7 +39,4 @@
             [{/if}]
         [{/foreach}]
     </div>
-[{else}]
-    <pre>[{$d3UnzerMissingUserParameter|@debug_print_var}]</pre>
-    <pre>[{$oxidPaymentId}]</pre>
 [{/if}]

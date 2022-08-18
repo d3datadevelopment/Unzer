@@ -2,173 +2,142 @@
 title: Changelog
 ---
 
-## 6.2.6.1 - (2022-07-18)
+All notable changes to this project will be documented in this file.
 
-### changed
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...rel_6.x_mgw)
+
+## [6.2.6.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.1...6.2.6.2) - 2022-07-18
+### Fixed
+- verhindert, dass die Liste der Zahlungsarten abgerufen wird, bevor die vorherige ShipSetId bereinigt wurde, wenn die Benutzerländer gewechselt werden
+- zeige keine Debug-Informationen bei Zahlungsauswahlen, wenn die Zahlung keine fehlenden Benutzerdaten hat
+
+## [6.2.6.1](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.0...6.2.6.1) - 2022-07-18
+### Changed
 - Zahlartenlogos aktualisiert
 
----
-
-## 6.2.6.0 - (2022-07-01)
-
-### added
+## [6.2.6.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.5.0...6.2.6.0) - 2022-07-01
+### Added
 - optional: Lastschriftmandat muss nicht akzeptiert werden
 - eventuell vorhandener Port an Kundenremoteadresse entfernt
 
-### changed
+### Changed
 - Zahlartenlogos aktualisiert
 - Abhängigkeiten angepasst
 
----
-
-## 6.2.5.0 - (2022-05-06)
-
-### added
+## [6.2.5.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.4.0...6.2.5.0) - 2022-05-06
+### Added
 - MGW: Zahlart EPS hinzugefügt
 - MGW: Zahlart Przelewy24 hinzugefügt
 - MGW: Zahlart Giropay hinzugefügt
 - Eingabefeld fürden Karteninhaber bei kartenbasierten Zahlarten hinzugefügt
 - bei Stornierung einer Zahlung: Auswahlbox für den Stornierungsgrund integriert (Pflicht für die Zahlart 'abgesicherter Rechnungskauf')
 
-### changed
+### Changed
 - Frontend Bestellschritt 3 auf unzerSDK migriert
 - Abhängigkeiten der composer.json auf UnzerSDK aktualisiert
 
-### fixed
+### Fixed
 - bei Zahlungsart Vorkasse und Rechnung blieb der Status einer Bestellung auf "NOT_FINISHED" 
 - einige Template-Block-Namen korrigiert
 
----
-
-## 6.2.4.0 - (2022-01-14)
-
-### added
+## [6.2.4.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.3.0...6.2.4.0) - 2022-01-14
+### Added
 - installierbar in OXID 6.4
 - fehlende englische Übersetzungen ergänzt
 - ungültiger privater Schlüssel-Fehler wird passend behandelt
 
-### changed
+### Changed
 - CLI-Prüfung angepasst
 - veralteten Code für Einsatz unter PHP 8 entfernt
 
-### fixed
+### Fixed
 - Emails können in OXID >= 6.2 nicht versendet werden, Rendererablauf korrigiert
 - fehlende Namespaces ergänzt
 - Icon-Formatierung aktualisiert
 
----
-
-## 6.2.3.0 - (2021-07-12)
-
-### changed
+## [6.2.3.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.2.1...6.2.3.0) - 2021-07-12
+### Changed
 - Wechsel von HeidelpayPHP zu UnzerSDK
 
----
-
-## 6.2.2.1 - (2021-06-07)
-
-### changed
+## [6.2.2.1](https://git.d3data.de/D3Private/Unzer/compare/6.2.2.0...6.2.2.1) - 2021-06-07
+### Changed
 - Dokumentation für Schnittstellenwechsel ergänzt
 
-### fixed
+### Fixed
 - Preauthorisation Transaktionen werden nach erfolgreichem Abschluss mit Status "OK" markiert.
 
----
-
-## 6.2.2.0 - (2021-05-18)
-
-### fixed
+## [6.2.2.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.1.3...6.2.2.0) - 2021-05-18
+### Fixed
 - Bestellungen nur mit der Währung EUR möglich
 - Bestellabschluss bei aktivem PHP Error Log schlägt fehl
 
----
-
-## 6.2.1.3 - (2021-04-27)
-
-### added
+## [6.2.1.3](https://git.d3data.de/D3Private/Unzer/compare/6.2.1.2...6.2.1.3) - 2021-04-27
+### Added
 - Freigabe für OXID 6.3
 
-### fixed
+### Fixed
 - fehlende Zahlungsarten-Templates im Admin ergänzt
 
----
-
-## 6.2.1.2 - (2021-04-19)
-
-### fixed
+## [6.2.1.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.1.1...6.2.1.2) - 2021-04-19
+### Fixed
 - 0010757: fehlende Artikel in Bestellbestätigungsmail durch ausverkauft-Status
 
----
-
-## 6.2.1.1 - (2021-02-10)
-
-### fixed
+## [6.2.1.1](https://git.d3data.de/D3Private/Unzer/compare/6.2.1.0...6.2.1.1) - 2021-02-10
+### Fixed
 - abgesicherter rechnungskauf zurückgewiesen aufgrund abweichender Lieferadresse
 - keine Eingabe in 3rd party select-Eingabefelder an der Zahlartenauswahl möglich
 
----
-
-## 6.2.1.0 - (2021-01-11)
-
-### added
+## [6.2.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.0.4...6.2.1.0) - 2021-01-11
+### Added
 - Adresseingaben werden vorformatiert, um Ablehnungen aufgrund falschen Formates zu vermeiden
 
-### changed
+### Changed
 - Produktbild-URL wird bei Nutzung der PaymentApi / MGW-Schnittstelle nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt
 
----
-
-## 6.2.0.4 - (2021-01-11)
-
-### added
+## [6.2.0.4](https://git.d3data.de/D3Private/Unzer/compare/6.2.0.3...6.2.0.4) - 2021-01-11
+### Added
 - Logo in Adminnavigation eingefügt
 
-### fixed
+### Fixed
 - nötige Umstellung für 3D Secure v2
 - Transaktionstab im live-Modus zeigt wieder Daten
 
----
-
-## 6.2.0.3 - (2020-12-22)
-
-### changed
+## [6.2.0.3](https://git.d3data.de/D3Private/Unzer/compare/6.2.0.2...6.2.0.3) - 2020-12-22
+### Changed
 - Transaktionsübersicht bei Nutzung der PaymentApi / MGW-Schnittstelle entfernt
 
-### fixed
+### Fixed
 - Fehlerverhalten bei Bestellungen mit Gutschein/Rabatten
 - Aufruf des Cronjobs für iDeal & Przelewy24
 - Warenkorbberechnung korrigiert
 
----
-
-## 6.2.0.2 - (2020-11-30)
-
-### added
+## [6.2.0.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.0.1...6.2.0.2) - 2020-11-30
+### Added
 - Freigabe für OXID 6.2.3
 
-### changed
+### Changed
 - Unzer API URL
 - iDeal Logo
 
-### fixed
+### Fixed
 - Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (PaymentApi / MGW)
 
-
-## 6.2.0.1 - (2020-11-10)
-### fixed
+## [6.2.0.1](https://git.d3data.de/D3Private/Unzer/compare/6.2.0.0...6.2.0.1) - 2020-11-10
+### Fixed
 - fehlendes NGW-Template für Vorkasse hinzugefügt - verhinderte Portierung der Altkonfiguration
 - Fehler bei Generierung von Bestellung bei Nutzung von NGW korrigiert
 
----
-
-## 6.2.0.0 - (2020-10-28)
-### added
+## [6.2.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.1.2.2...6.2.0.0) - 2020-10-28
+### Added
 - ermöglicht den Einsatz der PaymentApi / MGW-Schnittstelle
  
-### changed
+### Changed
 - Umbenennung (Rebranding) von heidelpay zu Unzer
  
-### fixed
+### Fixed
 - falsche Konfigurations-ID korrigiert - dieser Fehler löste kein Fehlverhalten im Modul aus
 
 ---

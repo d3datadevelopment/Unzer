@@ -141,18 +141,6 @@ class PaymentController extends PaymentController_parent
                 __LINE__,
                 'mgw: end session cleanup'
             );
-
-            $paymentList = $this->getPaymentList();
-            $user        = $this->getUser();
-            if ($user && is_array($paymentList) && 1 <= count($paymentList)) {
-                $heidelPaymentList  = $factory->getHeidelPaymentList($paymentList);
-                $userInputValidator = $factory->getUserInputValidator($user, $heidelPaymentList);
-                $missingParameter   = $userInputValidator->getMissingParameter();
-
-                if (false === empty($missingParameter)) {
-                    $this->d3UnzerMissingUserParameter = $missingParameter;
-                }
-            }
         }
 
         $paymentId = Registry::getSession()->getBasket()->getPaymentId();
@@ -725,7 +713,6 @@ class PaymentController extends PaymentController_parent
                 'd3UnzerDontShowDirectDebitMandateCheckbox',
                 (bool) $factory->getModuleConfiguration()->getValue(self::OPTION_DONT_SHOW_DD_MANDATE)
             );
-            $this->addTplParam('d3UnzerMissingUserParameter', $this->d3UnzerMissingUserParameter);
             $this->addTplParam('d3HeidelpayMappedThemeId', $factory->getModuleConfiguration()->getMappedThemeId());
 
             $factory->getModuleConfiguration()->d3getLog()->log(
@@ -746,6 +733,21 @@ class PaymentController extends PaymentController_parent
             $translateString = str_replace('{NAME_OF_MERCHANT}', $shop->getFieldData('oxcompany'), $translateString);
             $this->addTplParam('d3UnzerSepaMandatText', $translateString);
             $this->addTplParam('isD3UnzerSepaMandatNotConfirmed', $this->isSepaMandatNotConfirmed());
+
+            if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
+                $paymentList = $this->getPaymentList();
+                $user        = $this->getUser();
+                if ($user && is_array($paymentList) && 1 <= count($paymentList)) {
+                    $heidelPaymentList  = $factory->getHeidelPaymentList($paymentList);
+                    $userInputValidator = $factory->getUserInputValidator($user, $heidelPaymentList);
+                    $missingParameter   = $userInputValidator->getMissingParameter();
+
+                    if (false === empty($missingParameter)) {
+                        $this->d3UnzerMissingUserParameter = $missingParameter;
+                    }
+                }
+            }
+            $this->addTplParam('d3UnzerMissingUserParameter', $this->d3UnzerMissingUserParameter);
         }
 
         //</editor-fold>
