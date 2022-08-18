@@ -91,30 +91,38 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        18.07.2022        </span>
+                        18.08.2022        </span>
                     </div>
 
     <div class="s-content">
-        <h2 id="page_6-2-6-1-2022-07-18">6.2.6.1 - (2022-07-18)</h2>
-<h3 id="page_changed">changed</h3>
+        <p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="Link--external">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="Link--external">Semantic Versioning</a>.</p>
+<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
+<h2 id="page_6-2-6-2-2022-07-18"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.6.1...6.2.6.2" class="Link--external">6.2.6.2</a> - 2022-07-18</h2>
+<h3 id="page_Fixed">Fixed</h3>
+<ul>
+<li>verhindert, dass die Liste der Zahlungsarten abgerufen wird, bevor die vorherige ShipSetId bereinigt wurde, wenn die Benutzerländer gewechselt werden</li>
+<li>zeige keine Debug-Informationen bei Zahlungsauswahlen, wenn die Zahlung keine fehlenden Benutzerdaten hat</li>
+</ul>
+<h2 id="page_6-2-6-1-2022-07-18"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.6.0...6.2.6.1" class="Link--external">6.2.6.1</a> - 2022-07-18</h2>
+<h3 id="page_Changed">Changed</h3>
 <ul>
 <li>Zahlartenlogos aktualisiert</li>
 </ul>
-<hr />
-<h2 id="page_6-2-6-0-2022-07-01">6.2.6.0 - (2022-07-01)</h2>
-<h3 id="page_added">added</h3>
+<h2 id="page_6-2-6-0-2022-07-01"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.5.0...6.2.6.0" class="Link--external">6.2.6.0</a> - 2022-07-01</h2>
+<h3 id="page_Added">Added</h3>
 <ul>
 <li>optional: Lastschriftmandat muss nicht akzeptiert werden</li>
 <li>eventuell vorhandener Port an Kundenremoteadresse entfernt</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Zahlartenlogos aktualisiert</li>
 <li>Abhängigkeiten angepasst</li>
 </ul>
-<hr />
-<h2 id="page_6-2-5-0-2022-05-06">6.2.5.0 - (2022-05-06)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-5-0-2022-05-06"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.4.0...6.2.5.0" class="Link--external">6.2.5.0</a> - 2022-05-06</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>MGW: Zahlart EPS hinzugefügt</li>
 <li>MGW: Zahlart Przelewy24 hinzugefügt</li>
@@ -122,152 +130,140 @@
 <li>Eingabefeld fürden Karteninhaber bei kartenbasierten Zahlarten hinzugefügt</li>
 <li>bei Stornierung einer Zahlung: Auswahlbox für den Stornierungsgrund integriert (Pflicht für die Zahlart 'abgesicherter Rechnungskauf')</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Frontend Bestellschritt 3 auf unzerSDK migriert</li>
 <li>Abhängigkeiten der composer.json auf UnzerSDK aktualisiert</li>
 </ul>
-<h3 id="page_fixed">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>bei Zahlungsart Vorkasse und Rechnung blieb der Status einer Bestellung auf &quot;NOT_FINISHED&quot;</li>
 <li>einige Template-Block-Namen korrigiert</li>
 </ul>
-<hr />
-<h2 id="page_6-2-4-0-2022-01-14">6.2.4.0 - (2022-01-14)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-4-0-2022-01-14"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.3.0...6.2.4.0" class="Link--external">6.2.4.0</a> - 2022-01-14</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>installierbar in OXID 6.4</li>
 <li>fehlende englische Übersetzungen ergänzt</li>
 <li>ungültiger privater Schlüssel-Fehler wird passend behandelt</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>CLI-Prüfung angepasst</li>
 <li>veralteten Code für Einsatz unter PHP 8 entfernt</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Emails können in OXID &gt;= 6.2 nicht versendet werden, Rendererablauf korrigiert</li>
 <li>fehlende Namespaces ergänzt</li>
 <li>Icon-Formatierung aktualisiert</li>
 </ul>
-<hr />
-<h2 id="page_6-2-3-0-2021-07-12">6.2.3.0 - (2021-07-12)</h2>
-<h3 id="page_changed-2">changed</h3>
+<h2 id="page_6-2-3-0-2021-07-12"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.2.1...6.2.3.0" class="Link--external">6.2.3.0</a> - 2021-07-12</h2>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Wechsel von HeidelpayPHP zu UnzerSDK</li>
 </ul>
-<hr />
-<h2 id="page_6-2-2-1-2021-06-07">6.2.2.1 - (2021-06-07)</h2>
-<h3 id="page_changed-2">changed</h3>
+<h2 id="page_6-2-2-1-2021-06-07"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.2.0...6.2.2.1" class="Link--external">6.2.2.1</a> - 2021-06-07</h2>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Dokumentation für Schnittstellenwechsel ergänzt</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Preauthorisation Transaktionen werden nach erfolgreichem Abschluss mit Status &quot;OK&quot; markiert.</li>
 </ul>
-<hr />
-<h2 id="page_6-2-2-0-2021-05-18">6.2.2.0 - (2021-05-18)</h2>
-<h3 id="page_fixed-2">fixed</h3>
+<h2 id="page_6-2-2-0-2021-05-18"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.1.3...6.2.2.0" class="Link--external">6.2.2.0</a> - 2021-05-18</h2>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Bestellungen nur mit der Währung EUR möglich</li>
 <li>Bestellabschluss bei aktivem PHP Error Log schlägt fehl</li>
 </ul>
-<hr />
-<h2 id="page_6-2-1-3-2021-04-27">6.2.1.3 - (2021-04-27)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-1-3-2021-04-27"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.1.2...6.2.1.3" class="Link--external">6.2.1.3</a> - 2021-04-27</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>Freigabe für OXID 6.3</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>fehlende Zahlungsarten-Templates im Admin ergänzt</li>
 </ul>
-<hr />
-<h2 id="page_6-2-1-2-2021-04-19">6.2.1.2 - (2021-04-19)</h2>
-<h3 id="page_fixed-2">fixed</h3>
+<h2 id="page_6-2-1-2-2021-04-19"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.1.1...6.2.1.2" class="Link--external">6.2.1.2</a> - 2021-04-19</h2>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>0010757: fehlende Artikel in Bestellbestätigungsmail durch ausverkauft-Status</li>
 </ul>
-<hr />
-<h2 id="page_6-2-1-1-2021-02-10">6.2.1.1 - (2021-02-10)</h2>
-<h3 id="page_fixed-2">fixed</h3>
+<h2 id="page_6-2-1-1-2021-02-10"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.1.0...6.2.1.1" class="Link--external">6.2.1.1</a> - 2021-02-10</h2>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>abgesicherter rechnungskauf zurückgewiesen aufgrund abweichender Lieferadresse</li>
 <li>keine Eingabe in 3rd party select-Eingabefelder an der Zahlartenauswahl möglich</li>
 </ul>
-<hr />
-<h2 id="page_6-2-1-0-2021-01-11">6.2.1.0 - (2021-01-11)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-1-0-2021-01-11"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.0.4...6.2.1.0" class="Link--external">6.2.1.0</a> - 2021-01-11</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>Adresseingaben werden vorformatiert, um Ablehnungen aufgrund falschen Formates zu vermeiden</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Produktbild-URL wird bei Nutzung der PaymentApi / MGW-Schnittstelle nicht zu Unzer übergeben, da nicht erreichbare URL (z.B. Dev-Shop) zum Abbruch der Transaktion führt</li>
 </ul>
-<hr />
-<h2 id="page_6-2-0-4-2021-01-11">6.2.0.4 - (2021-01-11)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-0-4-2021-01-11"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.0.3...6.2.0.4" class="Link--external">6.2.0.4</a> - 2021-01-11</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>Logo in Adminnavigation eingefügt</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>nötige Umstellung für 3D Secure v2</li>
 <li>Transaktionstab im live-Modus zeigt wieder Daten</li>
 </ul>
-<hr />
-<h2 id="page_6-2-0-3-2020-12-22">6.2.0.3 - (2020-12-22)</h2>
-<h3 id="page_changed-2">changed</h3>
+<h2 id="page_6-2-0-3-2020-12-22"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.0.2...6.2.0.3" class="Link--external">6.2.0.3</a> - 2020-12-22</h2>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Transaktionsübersicht bei Nutzung der PaymentApi / MGW-Schnittstelle entfernt</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Fehlerverhalten bei Bestellungen mit Gutschein/Rabatten</li>
 <li>Aufruf des Cronjobs für iDeal &amp; Przelewy24</li>
 <li>Warenkorbberechnung korrigiert</li>
 </ul>
-<hr />
-<h2 id="page_6-2-0-2-2020-11-30">6.2.0.2 - (2020-11-30)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-0-2-2020-11-30"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.0.1...6.2.0.2" class="Link--external">6.2.0.2</a> - 2020-11-30</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>Freigabe für OXID 6.2.3</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Unzer API URL</li>
 <li>iDeal Logo</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Präfixverhalten bei leeren Eingabefeldern des Zugangskeys (PaymentApi / MGW)</li>
 </ul>
-<h2 id="page_6-2-0-1-2020-11-10">6.2.0.1 - (2020-11-10)</h2>
-<h3 id="page_fixed-2">fixed</h3>
+<h2 id="page_6-2-0-1-2020-11-10"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.0.0...6.2.0.1" class="Link--external">6.2.0.1</a> - 2020-11-10</h2>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>fehlendes NGW-Template für Vorkasse hinzugefügt - verhinderte Portierung der Altkonfiguration</li>
 <li>Fehler bei Generierung von Bestellung bei Nutzung von NGW korrigiert</li>
 </ul>
-<hr />
-<h2 id="page_6-2-0-0-2020-10-28">6.2.0.0 - (2020-10-28)</h2>
-<h3 id="page_added-2">added</h3>
+<h2 id="page_6-2-0-0-2020-10-28"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.1.2.2...6.2.0.0" class="Link--external">6.2.0.0</a> - 2020-10-28</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>ermöglicht den Einsatz der PaymentApi / MGW-Schnittstelle</li>
 </ul>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Umbenennung (Rebranding) von heidelpay zu Unzer</li>
 </ul>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>falsche Konfigurations-ID korrigiert - dieser Fehler löste kein Fehlverhalten im Modul aus</li>
 </ul>
 <hr />
 <h2 id="page_6-1-2-2-2020-09-30">6.1.2.2 - (2020-09-30)</h2>
-<h3 id="page_changed-2">changed</h3>
+<h3 id="page_changed">changed</h3>
 <ul>
 <li>Titellogo auf statischen Asset umgestellt</li>
 <li>Logos für Amex, MasterCard, Paypal und VISA aktualisiert</li>
@@ -275,7 +271,7 @@
 </ul>
 <hr />
 <h2 id="page_6-1-2-1-2020-06-15">6.1.2.1 - (2020-06-15)</h2>
-<h3 id="page_fixed-2">fixed</h3>
+<h3 id="page_fixed">fixed</h3>
 <ul>
 <li>korrigiert Fragezeichen in Rückgabewert der execute-Methoden (führte zu ungültiger Redirect URL)</li>
 <li>0009794: erzwingt neue Session im iDeal Cron Script (führt zu Fehlern, wenn z.B. auf während der Bearbeitung der ersten Bestellung der Warenkorb neu aufgebaut werden muss - nötig z.B. bei Gutscheinverwendung)</li>
@@ -288,7 +284,7 @@
 </ul>
 <hr />
 <h2 id="page_6-1-2-0-2020-05-12">6.1.2.0 - (2020-05-12)</h2>
-<h3 id="page_added-2">added</h3>
+<h3 id="page_added">added</h3>
 <ul>
 <li>0009705: Freigabe OXID 6.2</li>
 </ul>
