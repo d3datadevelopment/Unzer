@@ -1,0 +1,26 @@
+From 5b1d95de5bc7f6ca096da5513273eca8933b4375 Mon Sep 17 00:00:00 2001
+From: Daniel Seifert <ds@shopmodule.com>
+Date: Thu, 25 Aug 2022 11:51:41 +0200
+Subject: [PATCH 1/1] remove unnecessary Unzer SDK dependency
+
+see https://bugs.oxid-esales.com/view.php?id=7349
+---
+ composer.json | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/composer.json b/composer.json
+index 7f0e73c..7875a53 100644
+--- a/composer.json
++++ b/composer.json
+@@ -21,7 +21,6 @@
+     "psr/http-client": "1.0.1",
+     "psr/http-factory": "1.0.1",
+     "psr/http-message": "1.0.1",
+-    "ralouphie/getallheaders": "3.0.3",
+-    "unzerdev/php-sdk": "1.2.0.0"
++    "ralouphie/getallheaders": "3.0.3"
+   }
+ }
+-- 
+2.26.1.windows.1
+
