@@ -747,7 +747,7 @@ class OrderController extends OrderController_parent
                         __FUNCTION__,
                         __LINE__,
                         'mgw: unexpected exception',
-                        get_class($exception->getClientMessage()).PHP_EOL.$exception->getMerchantMessage()
+                        $exception->getClientMessage().PHP_EOL.$exception->getMerchantMessage()
                     );
                     /** @var D3UnzerApiException $standardException */
                     $standardException = oxNew(D3UnzerApiException::class, $exception->getClientMessage());

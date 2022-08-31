@@ -45,15 +45,16 @@
     "ext-simplexml": "*",
     "ext-bcmath": "*",
     "ext-json": "*",
-    "oxid-esales/oxideshop-ce": "6.5 - 6.10",
+    "oxid-esales/oxideshop-ce": "6.5 - 6.12",
     "d3/modcfg": "^5.3.6.000 || ^6",
-    "unzerdev/php-sdk": "~1.1.0"
+    "unzerdev/php-sdk": "~1.2.0"
   },
   "require-dev": {
     "mikey179/vfsstream": "~1.6.5"
   },
   "replace": {
-    "d3/heidelpay": "*"
+    "d3/heidelpay": "*",
+    "oxid-esales/unzer": "*"
   },
   "autoload": {
     "psr-4": {
