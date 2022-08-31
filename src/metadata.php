@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Application\Controller as OxidController;
 use OxidEsales\Eshop\Application\Model as OxidModel;
 use OxidEsales\Eshop\Core as OxidCore;
 
-$sMetadataVersion = '2.0';
+$sMetadataVersion = '2.1';
 $sLogo = '<img src="https://logos.oxidmodule.com/d3logo.svg" alt="(D3)" style="height:1em;width:1em"> ';
 
 $aModule = [
@@ -28,7 +28,7 @@ $aModule = [
         'en' => '',
     ],
     'thumbnail'      => 'picture.png',
-    'version'        => '6.2.6.2',
+    'version'        => '6.3.0.0',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',

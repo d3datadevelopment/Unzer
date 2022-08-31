@@ -232,6 +232,7 @@ If necessary switch the D³ Logging (/Unzer/Settings/Settings for module logging
     'D3HEIDELPAY_PAYMENT_COMPANY_EXECUTIVE_HOMESTREET'                                         => 'street address',
     'D3HEIDELPAY_PAYMENT_COMPANY_EXECUTIVE_INFOS'          => 'infos about the company holder',
     'D3HEIDELPAY_PAYMENT_COMPANY_INFOS'                    => 'infos about the company',
+    'D3HEIDELPAY_PAYMENT_PLEASE_WAIT'                                                          => 'Please wait. Your data will be transmitted securely.',
     'D3HEIDELPAY_PAYMENT_MGW_MISSINGFIELD_INPUT_oxfname'                                       => 'given name',
     'D3HEIDELPAY_PAYMENT_MGW_MISSINGFIELD_INPUT_oxlname'                                       => 'family name',
     'D3HEIDELPAY_PAYMENT_MGW_MISSINGFIELD_INPUT_oxbirthdate'                                   => 'birthdate',

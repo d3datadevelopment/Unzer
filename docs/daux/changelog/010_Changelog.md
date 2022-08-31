@@ -7,7 +7,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...rel_6.x_mgw)
+
+## [6.3.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0) - 2022-08-30
+### Added
+- installierbar in OXID 6.5 (CE 6.12)
+- installierbar in PHP 8.1
+- Paket ersetzt OXID Unzer Plugin
+
+### Changed
+- verwendet Unzer SDK 1.2.x
+- Dokumentation angepasst
+
+### Fixed
+- entfernt CurlHandle Serialisierungsfehler in PHP 8 (0011619)
+- fehlende Übersetzung in englischer Sprache ergänzt
 
 ## [6.2.6.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.1...6.2.6.2) - 2022-07-18
 ### Fixed
@@ -140,70 +154,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - falsche Konfigurations-ID korrigiert - dieser Fehler löste kein Fehlverhalten im Modul aus
 
----
-
-## 6.1.2.2 - (2020-09-30)
-### changed
+## [6.1.2.2](https://git.d3data.de/D3Private/Unzer/compare/6.1.2.1...6.1.2.2) - 2020-09-30
+### Changed
 - Titellogo auf statischen Asset umgestellt
 - Logos für Amex, MasterCard, Paypal und VISA aktualisiert
 - übersetzbare Sparchbausteine für Bestellungsübersicht verwendet
 
----
-
-## 6.1.2.1 - (2020-06-15)
-### fixed
+## [6.1.2.1](https://git.d3data.de/D3Private/Unzer/compare/6.1.2.0...6.1.2.1) - 2020-06-15
+### Fixed
 - korrigiert Fragezeichen in Rückgabewert der execute-Methoden (führte zu ungültiger Redirect URL)
 - 0009794: erzwingt neue Session im iDeal Cron Script (führt zu Fehlern, wenn z.B. auf während der Bearbeitung der ersten Bestellung der Warenkorb neu aufgebaut werden muss - nötig z.B. bei Gutscheinverwendung)
 - EPS nicht auswählbar - blD3HeidelpayAllowEPS fehlt
 - verwendet optimierte Logik, um in externen Aufrufen die bootstrap-Datei finden zu können
 
-### changed
+### Changed
 - Bestellschritt3: Aufpreis bei Zahlarten ausblenden wenn 0
 
----
-
-## 6.1.2.0 - (2020-05-12)
-### added
+## [6.1.2.0](https://git.d3data.de/D3Private/Unzer/compare/6.1.1.3...6.1.2.0) - 2020-05-12
+### Added
 - 0009705: Freigabe OXID 6.2
 
----
-
-## 6.1.1.3 - (2020-04-03)
-### changed
+## [6.1.1.3](https://git.d3data.de/D3Private/Unzer/compare/6.1.1.2...6.1.1.3) - 2020-04-03
+### Changed
 - ermöglicht Einsatz mit ModulConnector 5.3
 - ermöglicht Installation in Projekten ohne "oxid-esales/oxideshop-metapackage-ce"
 
-### fixed
+### Fixed
 - Abbruch bei Verwendung nicht zu Heidelpay zugewiesener Zahlart korrigiert
 
----
-
-## 6.1.1.2 - (2020-03-19)
-### fixed
+## [6.1.1.2](https://git.d3data.de/D3Private/Unzer/compare/6.1.1.1...6.1.1.2) - 2020-03-19
+### Fixed
 - 0009550: Manipulationsprävention bei Zahlung mit abgesichertem Rechnungskauf integriert
 - 0009539: fehlerhafte Aufrufe bei Ausführung des Cronjobs für Rechnungskauf oder Vorkasse korrigiert
 - 0009540: fehlendes Admintemplate "d3_heidelpay_views_admin_tpl_channels_sub_prepayment.tpl" eingefügt
 - 0009553: fehlende Bankdaten bei Vorkasse
 - 0009554: cron_bankaccount.php - falscher Channel bei Vorkassse
 
----
-
-## 6.1.1.1 - (2020-01-09)
-### fixed
+## [6.1.1.1](https://git.d3data.de/D3Private/Unzer/compare/6.1.1.0...6.1.1.1) - 2020-01-09
+### Fixed
 - 0009389: Modulversion 6.1.1.0 - Installation unvollständig (falsche Versionsnummer in Installationsroutine)
 
----
-
-## 6.1.1.0 - (2020-01-03)
-### added
+## [6.1.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.1.0.1...6.1.1.0) - 2020-01-03
+### Added
 - 0008760: add Wave Theme support
 
-### changed
+### Changed
 - 0000000: iDeal + Przelewy24 orders with no incoming payment and no "after lifetime action" will set to NOT_FINISHED after span of life  
 - 0000000: missing active check of channel provider data integrated  
 - 0000000: Initialization of JavaScript (web integration) heidelpayInstance may only be created once  
 
-###fixed
+### Fixed
 - 0005712: Distinction between test and live configuration when assigning "Heidelpay Channel - Oxid Payment Methods"  
 - 0009201: different modcfg version in composer.josn & InstallRoutine  
 - 0000000: Inactive channel configuration was displayed in the frontend, if an active oxid-paymenttype-assignment exists  

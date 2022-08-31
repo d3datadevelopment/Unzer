@@ -13,3 +13,5 @@ php composer require {$composerident}:^{$moduleversion} --update-no-dev
 > [!] Achten Sie darauf, dass Composer für die Installation die selbe PHP-Version verwendet, in der auch Ihr Shop ausgeführt wird. Sie erhalten sonst möglicherweise unpassende Modulpakete.
 
 > [i] Benötigt Ihre Installation einen anderen Aufruf von Composer, ändern Sie den Befehl bitte entsprechend ab. Für weitere Optionen dieses Befehls lesen Sie bitte die [Dokumentation von Composer](https://getcomposer.org/doc/03-cli.md#require).
+
+> [i] In der Enterprise Editon des Shops ist ein alternatives Modul für die Unzer-Anbindung vorhanden, welches deinstaliert wird, um Shopfehler zu vermeiden. Kontrollieren Sie bitte, ob das folgende Verzeichnis in Ihrem Shop noch existiert und löschen es bitte sonst.
