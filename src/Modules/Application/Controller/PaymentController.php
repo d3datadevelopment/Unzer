@@ -24,6 +24,7 @@ use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use RuntimeException;
+use UnzerSDK\Constants\PaymentState;
 use UnzerSDK\Exceptions\UnzerApiException;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Basket;
@@ -117,30 +118,12 @@ class PaymentController extends PaymentController_parent
             if ($orderId) {
                 /** @var Order $order */
                 $order = oxNew(Order::class);
-                $message = "Order: $orderId was not deleted";
-                if ($order->delete($orderId)) {
-                    $message = "Order: $orderId was deleted";
-                }
-                $d3log->log(
-                    d3log::INFO,
-                    __CLASS__,
-                    __FUNCTION__,
-                    __LINE__,
-                    $message
-                );
+                $order->load($orderId);
+
+                $this->d3HandleRemainingOrder($order);
             }
 
-            $session->deleteVariable($factory::HeidelpayPaymentIdSessionName);
-            $session->deleteVariable($factory::HeidelpayOrderResultSessionOrderID);
-            $session->deleteVariable($factory::HeidelpayResourceIdSessionName);
-            $session->deleteVariable($factory::HeidelpayCustomerIdSessionName);
-            $d3log->log(
-                d3log::INFO,
-                __CLASS__,
-                __FUNCTION__,
-                __LINE__,
-                'mgw: end session cleanup'
-            );
+            $this->d3EndSessionCleanup();
         }
 
         $paymentId = Registry::getSession()->getBasket()->getPaymentId();
@@ -157,6 +140,84 @@ class PaymentController extends PaymentController_parent
         if ($factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($payment->getId())) {
             Registry::getSession()->deleteVariable('sess_challenge');
         }
+    }
+
+    /**
+     * in case of aborted payment handling (canceled by user or interrupted due technical reasons)
+     * dependent on the successful handling of the temporary order by Unzer
+     * delete the order or clear basket to prevent reordering by user
+     *
+     * @param Order $order
+     *
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws SystemComponentException
+     * @throws UnzerApiException
+     */
+    protected function d3HandleRemainingOrder(Order $order)
+    {
+        $paymentId = $order->getFieldData('oxtransid');
+        $factory               = oxNew(Factory::class);
+        $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
+        $d3log = $factory->getModuleConfiguration()->d3getLog();
+
+        if ($payment && in_array($payment->getState(), [PaymentState::STATE_PENDING])) {
+            // delete the pending order
+            $message = "Order: ".$order->getId()." was not deleted";
+            if ($order->delete()) {
+                $message = "Order: ".$order->getId()." was deleted";
+            }
+            $d3log->log(
+                d3log::INFO,
+                __CLASS__,
+                __FUNCTION__,
+                __LINE__,
+                $message
+            );
+        } else {
+            // keep processed order, clear basket
+            $message = "keep already handled order: ".$order->getId();
+            $d3log->log(
+                d3log::INFO,
+                __CLASS__,
+                __FUNCTION__,
+                __LINE__,
+                $message
+            );
+
+            $this->d3EndSessionCleanup();
+            Registry::getSession()->delBasket();
+            Registry::getSession()->freeze();
+            Registry::getUtilsView()->addErrorToDisplay(
+                Registry::getLang()->translateString('D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT')
+            );
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl());
+        }
+    }
+
+    /**
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     */
+    protected function d3EndSessionCleanup()
+    {
+        $session = Registry::getSession();
+        $factory = oxNew(Factory::class);
+        $d3log = $factory->getModuleConfiguration()->d3getLog();
+
+        $session->deleteVariable($factory::HeidelpayPaymentIdSessionName);
+        $session->deleteVariable($factory::HeidelpayOrderResultSessionOrderID);
+        $session->deleteVariable($factory::HeidelpayResourceIdSessionName);
+        $session->deleteVariable($factory::HeidelpayCustomerIdSessionName);
+        $d3log->log(
+            d3log::INFO,
+            __CLASS__,
+            __FUNCTION__,
+            __LINE__,
+            'mgw: end session cleanup'
+        );
     }
 
     /**

@@ -10,6 +10,7 @@ use D3\Heidelpay\Controllers\Admin\Settings;
 use D3\Heidelpay\Modules\Application\Controller;
 use D3\Heidelpay\Modules\Application\Model;
 use D3\Heidelpay\Modules\Core;
+use D3\Heidelpay\Setup\Events;
 use D3\ModCfg\Application\Model\d3counter;
 use D3\ModCfg\Application\Model\Install\d3install;
 use OxidEsales\Eshop\Application\Controller as OxidController;
@@ -28,14 +29,14 @@ $aModule = [
         'en' => '',
     ],
     'thumbnail'      => 'picture.png',
-    'version'        => '6.3.0.0',
+    'version'        => '6.4.0.0',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',
     'events'         => [
-        'onActivate' => d3install::class . '::checkUpdateStart',
+        'onActivate' => Events::class . '::onActivate',
+        'onDeactivate' => Events::class . '::onDeactivate',
     ],
-
     'extend'         => [
         d3counter::class                         => Core\Counter::class,
         OxidCore\Email::class                    => Core\Email::class,
@@ -115,6 +116,12 @@ $aModule = [
         'd3_heidelpay_views_tpl_email_html_prepayment_owner_subj.tpl'       => 'd3/heidelpay/views/tpl/email/html/prepayment_owner_subj.tpl',
         'd3_heidelpay_views_tpl_email_plain_prepayment_cust.tpl'            => 'd3/heidelpay/views/tpl/email/plain/prepayment_cust.tpl',
         'd3_heidelpay_views_tpl_email_plain_prepayment_owner.tpl'           => 'd3/heidelpay/views/tpl/email/plain/prepayment_owner.tpl',
+        'd3_heidelpay_views_tpl_email_html_chargeback_owner.tpl'             => 'd3/heidelpay/views/tpl/email/html/chargeback_owner.tpl',
+        'd3_heidelpay_views_tpl_email_html_chargeback_owner_subj.tpl'        => 'd3/heidelpay/views/tpl/email/html/chargeback_owner_subj.tpl',
+        'd3_heidelpay_views_tpl_email_plain_chargeback_owner.tpl'            => 'd3/heidelpay/views/tpl/email/plain/chargeback_owner.tpl',
+        'd3_heidelpay_views_tpl_email_html_partlypaid_owner.tpl'             => 'd3/heidelpay/views/tpl/email/html/partlypaid_owner.tpl',
+        'd3_heidelpay_views_tpl_email_html_partlypaid_owner_subj.tpl'        => 'd3/heidelpay/views/tpl/email/html/partlypaid_owner_subj.tpl',
+        'd3_heidelpay_views_tpl_email_plain_partlypaid_owner.tpl'            => 'd3/heidelpay/views/tpl/email/plain/partlypaid_owner.tpl',
         ##azure-theme
         'd3_heidelpay_views_azure_tpl_cc_input.tpl'                         => 'd3/heidelpay/views/azure/tpl/cc_input.tpl',
         'd3_heidelpay_views_azure_tpl_order_3ds_iframe.tpl'                 => 'd3/heidelpay/views/azure/tpl/order_3ds_iframe.tpl',

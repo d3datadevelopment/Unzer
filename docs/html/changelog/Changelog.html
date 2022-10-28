@@ -91,16 +91,37 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        31.08.2022        </span>
+                        28.10.2022        </span>
                     </div>
 
     <div class="s-content">
         <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="Link--external">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="Link--external">Semantic Versioning</a>.</p>
-<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
-<h2 id="page_6-3-0-0-2022-08-30"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0" class="Link--external">6.3.0.0</a> - 2022-08-30</h2>
+<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.0.0...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
+<h2 id="page_6-4-0-0"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.4.0.0" class="Link--external">6.4.0.0</a></h2>
 <h3 id="page_Added">Added</h3>
+<ul>
+<li>Webhooks für folgende Stati hinzugefügt
+<ul>
+<li>payment.completed</li>
+<li>payment.partlypaid</li>
+<li>payment.chargeback</li>
+</ul>
+</li>
+<li>Webhooks werden zur Modulaktivierung und beim Speichern der Grundeinstellungen registriert, bei Moduldeaktivierung werden Shopwebhooks wieder entfernt</li>
+<li>Rechnungstransaktionen können nun auch im Shopadmin finalisiert werden</li>
+<li>Shipment-Details werden nun auch im Shopadmin gezeigt</li>
+</ul>
+<h3 id="page_Fixed">Fixed</h3>
+<ul>
+<li>0011707: behalte die schon von Unzer behandelte Bestellung im Fall eines Systemabbruchs, bei Abbruch durch Kunde wird weiterhin gelöscht</li>
+<li>Bestellstatus bei Kreditkartentransaktionen werden nur bei Preauthorization generell auf OK gesetzt, sonst nur bei vollständiger Bezahlung</li>
+<li>Zahlartenbeschreibungen werden passend dargestellt</li>
+<li>Einstellungskorrektur kann auch Nicht-Text-Einstellungen verarbeiten</li>
+</ul>
+<h2 id="page_6-3-0-0-2022-08-30"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0" class="Link--external">6.3.0.0</a> - 2022-08-30</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>installierbar in OXID 6.5 (CE 6.12)</li>
 <li>installierbar in PHP 8.1</li>
@@ -111,7 +132,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class=
 <li>verwendet Unzer SDK 1.2.x</li>
 <li>Dokumentation angepasst</li>
 </ul>
-<h3 id="page_Fixed">Fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>entfernt CurlHandle Serialisierungsfehler in PHP 8 (0011619)</li>
 <li>fehlende Übersetzung in englischer Sprache ergänzt</li>

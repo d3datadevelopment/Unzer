@@ -142,4 +142,29 @@
         </fieldset>
     </td>
 </tr>
+<tr>
+    <td colspan="2">
+        <fieldset>
+            <legend><strong>[{oxmultilang ident="D3HEIDELPAY_WEBHOOKS_HEADLINE"}]</strong>[{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX"}]</legend>
+            [{if !empty($registeredWebhooks)}]
+                <table style="padding: 0; width: 100%; border-spacing: unset; border: 0">
+                    <tr>
+                        <th>[{oxmultilang ident="D3HEIDELPAY_WEBHOOKS_HEADLINE_URL"}]</th>
+                        <th>[{oxmultilang ident="D3HEIDELPAY_WEBHOOKS_HEADLINE_EVENTS"}]</th>
+                        <th>[{oxmultilang ident="D3HEIDELPAY_WEBHOOKS_HEADLINE_ID"}]</th>
+                    </tr>
+                    [{foreach from=$registeredWebhooks item="webhook"}]
+                        <tr>
+                            <td class="edittext">[{$webhook->getUrl()}]</td>
+                            <td class="edittext">[{$webhook->getEvent()}]</td>
+                            <td class="edittext">[{$webhook->getId()}]</td>
+                        </tr>
+                    [{/foreach}]
+                </table>
+            [{else}]
+                <span style="display: inline-block; color: darkred; font-weight: bold; width: 100%; text-align: center">[{oxmultilang ident="D3HEIDELPAY_WEBHOOKS_NOWEBHOOKREGISTERED"}]</span>
+            [{/if}]
+        </fieldset>
+    </td>
+</tr>
 

@@ -51,6 +51,80 @@ class Email extends Email_parent
         return $this->send();
     }
 
+    public function d3SendOwnerPartlyPaidInfoMail($oOrder)
+    {
+        $oOrder->blDifferentAmount      = true;
+
+        //sets language of order
+        $iOrderLang = (int)($oOrder->oxorder__oxlang->value ?? 0);
+
+        // shop info
+        $oShop = $this->_getShop($iOrderLang);
+
+        $this->_setMailParams($oShop);
+
+        // create messages
+        /** @var Smarty $smarty */
+        $smarty = $this->_getSmarty();
+        $this->setViewData("order", $oOrder);
+
+        // Process view data array through oxoutput processor
+        $this->_processViewArray();
+
+        $this->d3AssignSmartyVars($smarty);
+
+        $this->setBody($smarty->fetch('d3_heidelpay_views_tpl_email_html_partlypaid_owner.tpl'));
+        $this->setAltBody($smarty->fetch('d3_heidelpay_views_tpl_email_plain_partlypaid_owner.tpl'));
+        $this->setSubject($smarty->fetch('d3_heidelpay_views_tpl_email_html_partlypaid_owner_subj.tpl'));
+
+        $user = $oOrder->getOrderUser();
+        $language = Registry::getLang();
+        if ($user->oxuser__oxusername->value != "admin") {
+            $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
+            $this->setReplyTo($user->oxuser__oxusername->value, $fullName);
+        }
+        $this->setRecipient($oShop->oxshops__oxowneremail->value, $language->translateString("order"));
+        $this->setFrom($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
+
+        return $this->send();
+    }
+
+    public function d3SendOwnerChargeBackInfoMail($oOrder)
+    {
+        //sets language of order
+        $iOrderLang = (int)($oOrder->oxorder__oxlang->value ?? 0);
+
+        // shop info
+        $oShop = $this->_getShop($iOrderLang);
+
+        $this->_setMailParams($oShop);
+
+        // create messages
+        /** @var Smarty $smarty */
+        $smarty = $this->_getSmarty();
+        $this->setViewData("order", $oOrder);
+
+        // Process view data array through oxoutput processor
+        $this->_processViewArray();
+
+        $this->d3AssignSmartyVars($smarty);
+
+        $this->setBody($smarty->fetch('d3_heidelpay_views_tpl_email_html_chargeback_owner.tpl'));
+        $this->setAltBody($smarty->fetch('d3_heidelpay_views_tpl_email_plain_chargeback_owner.tpl'));
+        $this->setSubject($smarty->fetch('d3_heidelpay_views_tpl_email_html_chargeback_owner_subj.tpl'));
+
+        $user = $oOrder->getOrderUser();
+        $language = Registry::getLang();
+        if ($user->oxuser__oxusername->value != "admin") {
+            $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
+            $this->setReplyTo($user->oxuser__oxusername->value, $fullName);
+        }
+        $this->setRecipient($oShop->oxshops__oxowneremail->value, $language->translateString("order"));
+        $this->setFrom($oShop->oxshops__oxinfoemail->value, $oShop->oxshops__oxname->getRawValue());
+
+        return $this->send();
+    }
+
     /**
      * Sends owner  heidelpay information e-mail
      *

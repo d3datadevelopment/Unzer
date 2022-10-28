@@ -51,7 +51,7 @@ class InstallRoutine extends d3install_updatebase
     /**
      * @var string
      */
-    public $sModVersion = '6.3.0.0';
+    public $sModVersion = '6.4.0.0';
 
     /**
      * @var string
@@ -59,18 +59,18 @@ class InstallRoutine extends d3install_updatebase
     public $sMinModCfgVersion = '5.3.0.0';
 
     /** @var string @deprecated since 2016-04-13 */
-    public $sModRevision = '6300';
+    public $sModRevision = '6400';
 
     /**
      * @var string
      */
     public $sBaseConf = '--------------------------------------------------------------------------------
-ZNBv2==Z3pRaXlQV2p4QldiYVdhRHozd2preDBrRjlrekNKL09oNG9VdmEzZyt0UVJQZ2NmSlBUaDk2K
-0ZFUmowWFRPbWk0MTZwK01rU2g3OFc2VWdoV3BodVNDcFdUVTExdkQxYlIyZnprWFNFWk9CMWNXOGtUc
-3pnYStmU0NaZ3FPTEFaTmdBOXJmajJLUnRnTjRrblcvYTlodWZ4SDh4ZFBtc1B6QzRCSWZmS0dYMnJna
-VozeXRHTEZiemtjaTNtbGJGeEt1Q3VReDAxbTZkK1VpV2d4M3Y3WXovbll1d3lJc0dNTUdHdDNQTXV6T
-kgySzFhYW5vQ0lpSzdabUxRRlFqRFJJRzJ6bk5CSlluZU5VcjRMOWFwYS9yL0ZuOE5DWFZRZkpGVEdQU
-kpkQWJPVVZzUlc1cHV3Tkh3eURZa0FzMEQ0ZFR4b3Z5U3hIRS9sWS9iWkVJenVnPT0=
+F4lv2==NFhvZm1RVHRQTlYvNC9CVXdKcmgzMDd6L0FqbGNYNXpXNmMxSnk2UmI2bUwrS1AxNW9qY3QrW
+XRmM3pqeisyRVo0R2tsNnlINElsR1F1T1oycmhSMXFsSEpkUEdrNDFOUDRIREQrSGJ0Rm1BTHNaMm5OT
+WJlVzBZa0tsV2MwRGU3ZVptWno4RFVVTExRWkJ0clVTMzkzMWp3ejR1UFMwbml3d3BPVk0waDhqZEQ5V
+kkwNStIbDNrNG5KTmNrc25LSTltMWNzVitSb0xDMWdjc2VJa2tVUGE4SkZORkZWRVlvdEhVRTI2ZGhGd
+nQzUE0xVWJBL1pXQVg2OG96ZkRZd3AzWGN6akZyYjJDQ2x4RkQyRGMxaEFkLzFqUUJuaExqUGgrYlRwR
+EVFdkJHa0l4V0RIVTErTXpQNTJKR0ErRG9PM0ZmNW9hMWh1eDhyMjlZWEtVdVlnPT0=
 --------------------------------------------------------------------------------';
 
     /**
@@ -784,7 +784,13 @@ WHERE  oxloadid IN (
     'd3_hp_vorkassemail_cust_plain',
     'd3_hp_vorkassemail_owner_text',
     'd3_hp_vorkassemail_owner_subject',
-    'd3_hp_vorkassemail_owner_plain'
+    'd3_hp_vorkassemail_owner_plain',
+    'd3_hp_chargeback_owner_plain',
+    'd3_hp_chargeback_owner_text',
+    'd3_hp_chargeback_owner_subject',
+    'd3_hp_partlypaid_owner_plain',
+    'd3_hp_partlypaid_owner_text',
+    'd3_hp_partlypaid_owner_subject'
   ) 
   AND oxshopid = '{$oShop->getId()}'
 MySQL;

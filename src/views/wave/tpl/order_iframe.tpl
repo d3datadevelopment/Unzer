@@ -33,7 +33,7 @@
 
     [{if $payment->oxpayments__oxlongdesc->value}]
         <div class="alert alert-info">
-            [{$payment->oxpayments__oxlongdesc->value}]
+            [{$payment->oxpayments__oxlongdesc->getRawValue()}]
         </div>
     [{/if}]
 
