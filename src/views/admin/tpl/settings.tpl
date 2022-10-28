@@ -27,6 +27,11 @@
         border-color: #1fb71f;
         border-width: 2px;
     }
+
+    th {
+        font-size: 12px;
+        text-align: left;
+    }
 </style>
 
 [{if $readonly}]

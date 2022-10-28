@@ -225,6 +225,8 @@ $aLang     = [
     'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CANCEL'          => 'Kunde storniert die Bestellung',
     'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_RETURN'          => 'Kunde gibt die Waren zurück',
     'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT'          => 'Der Händler gibt dem Kunden Kredit',
+    'D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_UNIQUE_INVOICEID'           => 'eindeutige Rechnungsnummer',
+    'D3_HEIDELPAY_CONTROLLERS_ADMIN_ERR_EMPTY_INVOICEID'              => 'Rechnungsnummer darf nicht leer sein.',
     'D3DYN_HEIDELPAY_PARAM_CSSPATH'                                   => 'CSS-Datei für iFrame vom Modul erkannt?',
     'D3DYN_HEIDELPAY_PARAM_CSSPATH_LINK'                              => 'Zur CSS-Datei',
     'D3DYN_HEIDELPAY_PARAM_ALLOWMULTIPLELANGUAGES'                    => 'mehrsprachige Konfigurationen erlauben',
@@ -270,6 +272,7 @@ $aLang     = [
     'D3HEIDELPAY_MGW_TRANSACTIONTYPE_charge'                            => 'Belastung',
     'D3HEIDELPAY_MGW_TRANSACTIONTYPE_cancelAuthorize'                   => 'Reservierung stornieren',
     'D3HEIDELPAY_MGW_TRANSACTIONTYPE_cancelCharge'                      => 'Belastung stornieren',
+    'D3HEIDELPAY_MGW_TRANSACTIONTYPE_finalize'                          => 'Rechnung finalisieren',
     'D3HEIDELPAY_MGW_AMOUNT_TOTAL'                                      => 'Gesamtbetrag',
     'D3HEIDELPAY_MGW_AMOUNT_REMAINING'                                  => 'verbleibender Gesamtbetrag',
     'D3HEIDELPAY_MGW_AMOUNT_CHARGED'                                    => 'gebuchter Gesamtbetrag',
@@ -308,4 +311,10 @@ $aLang     = [
     'D3HEIDELPAY_CHANNELS_SAVE'                                          => 'Zuordnung(en) speichern',
 
     'D3HEIDELPAY_TRANSACTIONLIST_INFOTEXT_ONLY_NGW'                      => 'Die Transaktionübersicht kann nur mit der Schnittstelle "NGW" verwendet werden.',
+
+    'D3HEIDELPAY_WEBHOOKS_HEADLINE'                                      => 'registrierte Webhooks',
+    'D3HEIDELPAY_WEBHOOKS_HEADLINE_URL'                                  => 'URL',
+    'D3HEIDELPAY_WEBHOOKS_HEADLINE_EVENTS'                               => 'Events',
+    'D3HEIDELPAY_WEBHOOKS_HEADLINE_ID'                                   => 'ID',
+    'D3HEIDELPAY_WEBHOOKS_NOWEBHOOKREGISTERED'                           => 'Kein Webhook registriert!',
 ];

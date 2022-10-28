@@ -32,44 +32,93 @@
     <div class="errorbox"> [{oxmultilang ident=$messageFromHeidelpayModule noerror=true}]</div>
 [{/if}]
 [{if $paymentState}]
+
     [{if $hasBasicRestrictions}]
         <div class="messagebox"> [{oxmultilang ident="D3_HEIDELPAY_RESTRICTIONINFO"}]</div>
     [{/if}]
 
-    [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
-    [{if $paymentState.isCompleted}]
-        [{assign var='inlineStyle' value="border:1px solid darkgreen;color:darkgreen;background-color: lightgreen;"}]
-    [{elseif $paymentState.isCanceled}]
-        [{assign var='inlineStyle' value="border:1px solid darkred;color:darkred;background-color: lightcoral;"}]
-    [{elseif $paymentState.isPartlyPaid}]
-        [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
-    [{/if}]
+    <div style="float: left;">
+        <table>
 
-    <span style="padding: 5px 10px; display: inline-block; [{$inlineStyle}]">[{oxmultilang ident="D3HEIDELPAY_MGW_PAYMENTSTATE_"|cat:$paymentState.stateName}]</span>
-    <span>Payment ID: [{$edit->getFieldData('oxtransid')}]</span>
-    <br>
-    <table style="min-width:300px">
-        <tr>
-            <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_CHARGED"}]</td>
-            <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_CHARGED"}]:</td>
-            <td align="right">[{$paymentState.charged}] [{$oCurr->sign}]</td>
-        </tr>
-        <tr>
-            <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_REMAINING"}]</td>
-            <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_REMAINING"}]:</td>
-            <td align="right">[{$paymentState.remaining}] [{$oCurr->sign}]</td>
-        </tr>
-        <tr>
-            <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_CANCELED"}]</td>
-            <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_CANCELED"}]:</td>
-            <td align="right">[{$paymentState.canceled}] [{$oCurr->sign}]</td>
-        </tr>
-        <tr>
-            <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_TOTAL"}]</td>
-            <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_TOTAL"}]:</td>
-            <td align="right">[{$paymentState.total}] [{$oCurr->sign}]</td>
-        </tr>
-    </table>
+            [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
+            [{if $paymentState.isCompleted}]
+                [{assign var='inlineStyle' value="border:1px solid darkgreen;color:darkgreen;background-color: lightgreen;"}]
+            [{elseif $paymentState.isCanceled}]
+                [{assign var='inlineStyle' value="border:1px solid darkred;color:darkred;background-color: lightcoral;"}]
+            [{elseif $paymentState.isPartlyPaid}]
+                [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
+            [{/if}]
+
+            <tr>
+                <th style="padding: 5px 10px;border:1px solid black;color:black;background-color: lightgrey;">Zahlungen:</th>
+                <td style="padding: 5px 10px; [{$inlineStyle}]">[{oxmultilang ident="D3HEIDELPAY_MGW_PAYMENTSTATE_"|cat:$paymentState.stateName}]</td>
+            </tr>
+
+            [{assign var="shipments" value=$payment->getShipments()}]
+            [{if $shipments|@count}]
+                [{foreach from=$shipments item="shipment" name="shipments"}]
+                    [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
+                    [{assign var="totallines" value=$smarty.foreach.shipments.total}]
+                    [{math equation="x+1" x=$smarty.foreach.shipments.total assign="linecount"}]
+
+                    [{if $shipment->isSuccess()}]
+                        [{assign var='inlineStyle' value="border:1px solid darkgreen;color:darkgreen;background-color: lightgreen;"}]
+                    [{elseif $shipment->isError()}]
+                        [{assign var='inlineStyle' value="border:1px solid darkred;color:darkred;background-color: lightcoral;"}]
+                    [{elseif $shipment->isPending()}]
+                        [{assign var='inlineStyle' value="border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;"}]
+                    [{/if}]
+
+                    [{assign var="shpmPayment" value=$shipment->getPayment()}]
+
+                    <tr>
+                        [{if $smarty.foreach.shipments.iteration == 1}]
+                            <th rowspan="[{$linecount}]" style="padding: 5px 10px; border:1px solid black;color:black;background-color: lightgrey;">
+                                Sendungen:
+                            </th>
+                        [{/if}]
+                        <td style="padding: 5px 10px; [{$inlineStyle}]">
+                            gesichert: [{$shipment->getAmount()}] [{$oCurr->sign}]<br>
+                            [{$shipment->getDate()}]<br>
+                            Rechn.nr.: [{$shpmPayment->getInvoiceId()}]
+                        </td>
+                    </tr>
+                [{/foreach}]
+                <tr>
+                    <td style="padding: 5px 10px; border:1px solid black;color:black;background-color: white;">offen: [{$paymentState.remaining}] [{$oCurr->sign}]</td>
+                </tr>
+            [{/if}]
+        </table>
+    </div>
+    <div style="float: left;">
+        <table style="min-width:300px">
+            <tr>
+                <td>Payment-Id</td>
+                <td>:</td>
+                <td align="right">[{$edit->getFieldData('oxtransid')}]</td>
+            </tr>
+            <tr>
+                <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_CHARGED"}]</td>
+                <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_CHARGED"}]:</td>
+                <td align="right">[{$paymentState.charged}] [{$oCurr->sign}]</td>
+            </tr>
+            <tr>
+                <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_REMAINING"}]</td>
+                <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_REMAINING"}]:</td>
+                <td align="right">[{$paymentState.remaining}] [{$oCurr->sign}]</td>
+            </tr>
+            <tr>
+                <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_CANCELED"}]</td>
+                <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_CANCELED"}]:</td>
+                <td align="right">[{$paymentState.canceled}] [{$oCurr->sign}]</td>
+            </tr>
+            <tr>
+                <td>[{oxmultilang ident="D3HEIDELPAY_MGW_AMOUNT_TOTAL"}]</td>
+                <td>[{oxinputhelp ident="HELP_D3HEIDELPAY_MGW_AMOUNT_TOTAL"}]:</td>
+                <td align="right">[{$paymentState.total}] [{$oCurr->sign}]</td>
+            </tr>
+        </table>
+    </div>
 
     [{assign var='transactions' value=$paymentState.transactions}]
     <table style="width:98%" cellspacing="0">
@@ -99,15 +148,17 @@
                             <input type="hidden" name="action" value="[{$action}]"/>
                             <input type="hidden" name="fnc" value="routeToAction"/>
                             <label>
-                                <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
                                 [{if $action == "cancelCharge"}]
-                                <select name="reasoncode">
-                                    <option value="">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_SELECTREASON"}]</option>
-                                    <option value="CANCEL">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CANCEL"}]</option>
-                                    <option value="RETURN">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_RETURN"}]</option>
-                                    <option value="CREDIT">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT"}]</option>
-                                </select>
-                                <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
+                                    <select name="reasoncode">
+                                        <option value="">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_SELECTREASON"}]</option>
+                                        <option value="CANCEL">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CANCEL"}]</option>
+                                        <option value="RETURN">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_RETURN"}]</option>
+                                        <option value="CREDIT">[{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT"}]</option>
+                                    </select>
+                                    <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
+                                [{elseif $action == "finalize"}]
+                                    [{oxmultilang ident="D3_HEIDELPAY_CONTROLLERS_ADMIN_ORDER_UNIQUE_INVOICEID"}]
+                                    <input type="text" name="invoiceid" value="" [{$readonly}]/>
                                 [{/if}]
                                 <button [{$readonly}]>[{oxmultilang ident="D3HEIDELPAY_MGW_TRANSACTIONTYPE_"|cat:$action}]</button>
                             </label>

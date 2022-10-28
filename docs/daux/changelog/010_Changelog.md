@@ -7,7 +7,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.0...rel_6.x_mgw)
+
+## [6.4.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.4.0.0)
+### Added
+- Webhooks für folgende Stati hinzugefügt
+  - payment.completed
+  - payment.partlypaid
+  - payment.chargeback
+- Webhooks werden zur Modulaktivierung und beim Speichern der Grundeinstellungen registriert, bei Moduldeaktivierung werden Shopwebhooks wieder entfernt
+- Rechnungstransaktionen können nun auch im Shopadmin finalisiert werden
+- Shipment-Details werden nun auch im Shopadmin gezeigt
+
+### Fixed
+- 0011707: behalte die schon von Unzer behandelte Bestellung im Fall eines Systemabbruchs, bei Abbruch durch Kunde wird weiterhin gelöscht
+- Bestellstatus bei Kreditkartentransaktionen werden nur bei Preauthorization generell auf OK gesetzt, sonst nur bei vollständiger Bezahlung
+- Zahlartenbeschreibungen werden passend dargestellt
+- Einstellungskorrektur kann auch Nicht-Text-Einstellungen verarbeiten
 
 ## [6.3.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0) - 2022-08-30
 ### Added

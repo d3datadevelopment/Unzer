@@ -775,4 +775,22 @@ class Order extends Order_parent
         $factory->getOxidProvider()->getSession()->setVariable($factory::HeidelpaySurpressEmailStateSessionName, true);
         $this->d3HeidelpayIsSurpressEMailSending = (bool)true;
     }
+
+    /**
+     * @param $payId
+     * @param $orderId
+     *
+     * @throws DatabaseConnectionException
+     * @throws StandardException
+     */
+    public function d3GetOrderByMgwPayId($payId, $orderId)
+    {
+        $query = "SELECT oxid FROM ".$this->getViewName()." WHERE oxtransid = ? AND oxordernr = ?";
+
+        $oxid = DatabaseProvider::getDb()->getOne($query, [$payId, $orderId]);
+
+        if (false == $oxid || false == $this->load($oxid)) {
+            throw oxNew(StandardException::class, 'no order loadable by transid = '.$payId.' and ordernr = '.$orderId);
+        }
+    }
 }
