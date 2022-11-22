@@ -26,6 +26,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
+use RuntimeException;
 use UnzerSDK\Exceptions\UnzerApiException;
 
 class Events
@@ -44,14 +45,14 @@ class Events
 
         try {
             oxNew( Handler::class )->registerShopWebHook();
-        } catch (UnzerApiException $e) {}
+        } catch (UnzerApiException|RuntimeException $e) {}
     }
 
     public static function onDeactivate()
     {
         try {
             oxNew( Handler::class )->deleteShopWebHooks();
-        } catch (UnzerApiException $e) {
+        } catch (UnzerApiException|RuntimeException $e) {
             Registry::getUtilsView()->addErrorToDisplay('delete shop webhooks: '.$e->getMessage());
         }
     }
