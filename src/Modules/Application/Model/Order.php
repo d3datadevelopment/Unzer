@@ -20,7 +20,6 @@ use D3\Heidelpay\Modules\Application\Controller\PaymentController as HPPaymentCo
 use D3\ModCfg\Application\Model\Configuration\d3_cfg_mod;
 use D3\ModCfg\Application\Model\Exception\d3_cfg_mod_exception;
 use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
-use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use Exception;
@@ -116,8 +115,7 @@ class Order extends Order_parent
                     $result = $result[0];
                 }
             } catch (UnzerApiException $e) {
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::ERROR,
+                $factory->getModuleConfiguration()->d3getLog()->error(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -470,8 +468,7 @@ class Order extends Order_parent
 
         $refrenceNumber = $factory->getReferenceNumber();
         if (empty($refrenceNumber)) {
-            $modulConfiguration->d3getLog()->log(
-                d3log::ERROR,
+            $modulConfiguration->d3getLog()->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -484,8 +481,7 @@ class Order extends Order_parent
         $transaction = $factory->getLatestTransactionByReference($refrenceNumber);
 
         if (false == $transaction) {
-            $modulConfiguration->d3getLog()->log(
-                d3log::WARNING,
+            $modulConfiguration->d3getLog()->warning(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -624,16 +620,14 @@ class Order extends Order_parent
             $heidelPaySettings = $factory->getSettings();
 
             if ($payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment)) {
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::INFO,
+                $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
                     'mgw: begin surpressing e-mail sendind'
                 );
                 $this->setD3HeidelpayIsSurpressEMailSending($factory);
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::INFO,
+                $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -679,8 +673,7 @@ class Order extends Order_parent
         }
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -755,8 +748,7 @@ class Order extends Order_parent
         $oUserPayment = $this->_setPayment($basket->getPaymentId());
         /** @var Factory $factory */
         $factory            = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,

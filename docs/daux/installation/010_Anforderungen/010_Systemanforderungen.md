@@ -23,8 +23,8 @@ title: Systemanforderungen
     * wave
 * D3 Modul-Connector ([kostenfrei bei D3 erhältlich](https://www.oxidmodule.com/connector/)) ab Version 5.3.0.0 
 * Installation via [Composer](https://getcomposer.org)
-* bei Verwendung der Zahlungsart „iDeal“ oder „Przelewy24“ wird ein freier Cronjob benötigt
-* bei Verwendung der Zahlungsart „Vorkasse“ oder „Rechnungskauf“ wird ein freier Cronjob benötigt
+* bei Verwendung der Zahlungsart "iDeal" oder "Przelewy24" wird ein freier Cronjob benötigt
+* bei Verwendung der Zahlungsart "Vorkasse" oder "Rechnungskauf" wird ein freier Cronjob benötigt
 
 Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für Ihre genutzte PHP-Version sowie dem auf Ihrem Server vorhandenen Decoder kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.
 

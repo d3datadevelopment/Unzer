@@ -12,7 +12,6 @@ use D3\Heidelpay\Modules\Application\Model;
 use D3\Heidelpay\Modules\Core;
 use D3\Heidelpay\Setup\Events;
 use D3\ModCfg\Application\Model\d3counter;
-use D3\ModCfg\Application\Model\Install\d3install;
 use OxidEsales\Eshop\Application\Controller as OxidController;
 use OxidEsales\Eshop\Application\Model as OxidModel;
 use OxidEsales\Eshop\Core as OxidCore;
@@ -29,7 +28,7 @@ $aModule = [
         'en' => '',
     ],
     'thumbnail'      => 'picture.png',
-    'version'        => '6.4.0.2',
+    'version'        => '6.4.1.0',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',

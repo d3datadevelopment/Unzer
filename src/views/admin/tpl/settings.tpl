@@ -132,13 +132,16 @@
                         </td>
                         <td class="edittext">
                             [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_TESTMOD_ACTIVE"}]
-                            <input type="hidden" name="value[d3_cfg_mod__d3heidelpay_blTestmode]" value="0" [{$sDisableTestModus}]>
-                            <input type="checkbox"
+                            <input type="hidden" name="logtypes[8]" value="0" [{$sDisableTestModus}]>
+                            <input id="module_debug"
                                    class="editinput"
-                                   name="value[d3_cfg_mod__d3heidelpay_blTestmode]"
+                                   type="checkbox"
+                                   name="logtypes[8]"
                                    value="1"
                                    title="[{oxmultilang ident="D3DYN_HEIDELPAY_TESTMOD_ACTIVE"}]"
-                                   [{if $edit->getValue('d3heidelpay_blTestmode') == 1}]checked[{/if}] [{$sDisableTestModus}]>
+                                   [{if $oView->getLogStatus('test', false)}]checked[{/if}]
+                                   [{$sDisableTestModus}]
+                            >
                             <br><br>
                         </td>
                     </tr>

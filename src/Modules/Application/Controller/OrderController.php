@@ -19,7 +19,6 @@ use D3\Heidelpay\Models\Verify\Exception\NotLoggedInException;
 use D3\Heidelpay\Models\Viewconfig;
 use D3\ModCfg\Application\Model\Exception\d3_cfg_mod_exception;
 use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
-use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use Exception;
@@ -113,8 +112,7 @@ class OrderController extends OrderController_parent
         $factory  = oxNew(Factory::class);
 
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -134,8 +132,7 @@ class OrderController extends OrderController_parent
             $sUniqueId   = $aDynValue['oxuid'];
 
             if (false == $transaction->load(DatabaseProvider::getDb()->getOne('SELECT * FROM d3transactionlog WHERE d3reference = ?', [$sUniqueId]))) {
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::WARNING,
+                $factory->getModuleConfiguration()->d3getLog()->warning(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -150,8 +147,7 @@ class OrderController extends OrderController_parent
             $sReturn = 'payment?payerror=2';
         }
 
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -287,8 +283,7 @@ class OrderController extends OrderController_parent
         $factory = oxNew(Factory::class);
 
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -363,8 +358,7 @@ class OrderController extends OrderController_parent
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -379,8 +373,7 @@ class OrderController extends OrderController_parent
             $mPayment = $this->getPayment();
 
             if (false === $mPayment) {
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::WARNING,
+                $factory->getModuleConfiguration()->d3getLog()->warning(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -411,8 +404,7 @@ class OrderController extends OrderController_parent
                 );
                 $mResult          = $controllerFacade->execute($oHeidelPayment);
 
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::INFO,
+                $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -422,8 +414,7 @@ class OrderController extends OrderController_parent
             }
 
             if (true === $mResult || $factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-                $factory->getModuleConfiguration()->d3getLog()->log(
-                    d3log::INFO,
+                $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -444,8 +435,7 @@ class OrderController extends OrderController_parent
                     return $this->$d3HeidelpayExceptionRouting($exception);
                 }
             }
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::ERROR,
+            $factory->getModuleConfiguration()->d3getLog()->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -458,8 +448,7 @@ class OrderController extends OrderController_parent
         $exception = oxNew(StandardException::class, Registry::getLang()->translateString('d3heidelpay_execute_error'));
         Registry::get(UtilsView::class)->addErrorToDisplay($exception);
 
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::ERROR,
+        $factory->getModuleConfiguration()->d3getLog()->error(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -509,8 +498,7 @@ class OrderController extends OrderController_parent
         $d3TransactionLogId = Registry::get(Request::class)->getRequestParameter('d3trlgid');
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -528,8 +516,7 @@ class OrderController extends OrderController_parent
 
         $return = $controllerFacade->validateTransactionlogParameters($this, $d3TransactionLogId);
 
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -627,8 +614,7 @@ class OrderController extends OrderController_parent
         $factory  = oxNew(Factory::class);
         $d3Log = $factory->getModuleConfiguration()->d3getLog();
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            $d3Log->log(
-                d3log::INFO,
+            $d3Log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -642,8 +628,7 @@ class OrderController extends OrderController_parent
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
             $result = parent::_getNextStep($mSuccess);
 
-            $d3Log->log(
-                d3log::INFO,
+            $d3Log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -654,8 +639,7 @@ class OrderController extends OrderController_parent
                 /** @var Payment $payment */
                 $payment = $this->getPayment();
                 if (false === $payment || false === $factory->getSettings()->isAssignedToHeidelPayment($payment)) {
-                    $d3Log->log(
-                        d3log::INFO,
+                    $d3Log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -669,8 +653,7 @@ class OrderController extends OrderController_parent
                 /** @var \D3\Heidelpay\Modules\Application\Model\Order $order */
                 $order = oxNew(OxidOrder::class);
                 if (empty($orderId) || false == $order->load($orderId)) {
-                    $d3Log->log(
-                        d3log::ERROR,
+                    $d3Log->error(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -700,8 +683,7 @@ class OrderController extends OrderController_parent
                 }
 
                 $order->save();
-                $d3Log->log(
-                    d3log::INFO,
+                $d3Log->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -715,8 +697,7 @@ class OrderController extends OrderController_parent
                 $session          = $factory->getOxidProvider()->getSession();
                 $getParameter     = '?stoken='.$session->getSessionChallengeToken();
                 try {
-                    $d3Log->log(
-                        d3log::INFO,
+                    $d3Log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -732,8 +713,7 @@ class OrderController extends OrderController_parent
                             ).$getParameter
                         );
 
-                    $d3Log->log(
-                        d3log::INFO,
+                    $d3Log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -741,8 +721,7 @@ class OrderController extends OrderController_parent
                         "result: $mResult"
                     );
                 } catch (UnzerApiException $exception) {
-                    $d3Log->log(
-                        d3log::ERROR,
+                    $d3Log->error(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -757,8 +736,7 @@ class OrderController extends OrderController_parent
 
                 if (Factory::RESPONSE_REDIRECT === $mResult) {
                     $redirectUrl = $controllerFacade->getRedirectUrl();
-                    $d3Log->log(
-                        d3log::INFO,
+                    $d3Log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -776,8 +754,7 @@ class OrderController extends OrderController_parent
         if ($mSuccess === 'Show3DSecureFrame') {
             $sTemplateFor3DSecure = 'd3_heidelpay_views_azure_tpl_order_3ds_iframe.tpl';
 
-            $d3Log->log(
-                d3log::INFO,
+            $d3Log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -801,8 +778,7 @@ class OrderController extends OrderController_parent
 
         $mNextStep = $controllerFacade->getNextOrderStep($sReturn, $mSuccess);
 
-        $d3Log->log(
-            d3log::INFO,
+        $d3Log->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -828,8 +804,7 @@ class OrderController extends OrderController_parent
     {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -854,8 +829,7 @@ class OrderController extends OrderController_parent
     {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -884,8 +858,7 @@ class OrderController extends OrderController_parent
     {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -929,8 +902,7 @@ class OrderController extends OrderController_parent
     {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -955,8 +927,7 @@ class OrderController extends OrderController_parent
     {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -968,8 +939,7 @@ class OrderController extends OrderController_parent
             $userStoredData->aDynValue          = unserialize($userStoredData->d3hpuid__oxpaymentdata->rawValue);
             $userStoredData->aDynValue['oxuid'] = $userStoredData->getFieldData('oxuid');
             $this->getSession()->setVariable('dynvalue', $userStoredData->aDynValue);
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,

@@ -75,8 +75,7 @@ class PaymentController extends PaymentController_parent
 
         $d3log = $factory->getModuleConfiguration()->d3getLog();
         if (false == $factory->getModuleConfiguration()->isActive()) {
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -102,8 +101,7 @@ class PaymentController extends PaymentController_parent
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
             $session = $factory->getOxidProvider()->getSession();
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -157,42 +155,44 @@ class PaymentController extends PaymentController_parent
      */
     protected function d3HandleRemainingOrder(Order $order)
     {
-        $paymentId = $order->getFieldData('oxtransid');
-        $factory               = oxNew(Factory::class);
-        $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
-        $d3log = $factory->getModuleConfiguration()->d3getLog();
+        try {
+            $paymentId = $order->getFieldData('oxtransid');
+            $factory               = oxNew(Factory::class);
+            $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
+            $d3log = $factory->getModuleConfiguration()->d3getLog();
 
-        if ($payment && in_array($payment->getState(), [PaymentState::STATE_PENDING])) {
-            // delete the pending order
-            $message = "Order: ".$order->getId()." was not deleted";
-            if ($order->delete()) {
-                $message = "Order: ".$order->getId()." was deleted";
+            if ($payment && in_array($payment->getState(), [PaymentState::STATE_PENDING])) {
+                // delete the pending order
+                $message = "Order: ".$order->getId()." was not deleted";
+                if ($order->delete()) {
+                    $message = "Order: ".$order->getId()." was deleted";
+                }
+                $d3log->info(
+                    __CLASS__,
+                    __FUNCTION__,
+                    __LINE__,
+                    $message
+                );
+            } else {
+                // keep processed order, clear basket
+                $message = "keep already handled order: ".$order->getId();
+                $d3log->info(
+                    __CLASS__,
+                    __FUNCTION__,
+                    __LINE__,
+                    $message
+                );
+
+                $this->d3EndSessionCleanup();
+                Registry::getSession()->delBasket();
+                Registry::getSession()->freeze();
+                Registry::getUtilsView()->addErrorToDisplay(
+                    Registry::getLang()->translateString('D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT')
+                );
+                Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl());
             }
-            $d3log->log(
-                d3log::INFO,
-                __CLASS__,
-                __FUNCTION__,
-                __LINE__,
-                $message
-            );
-        } else {
-            // keep processed order, clear basket
-            $message = "keep already handled order: ".$order->getId();
-            $d3log->log(
-                d3log::INFO,
-                __CLASS__,
-                __FUNCTION__,
-                __LINE__,
-                $message
-            );
-
-            $this->d3EndSessionCleanup();
-            Registry::getSession()->delBasket();
-            Registry::getSession()->freeze();
-            Registry::getUtilsView()->addErrorToDisplay(
-                Registry::getLang()->translateString('D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT')
-            );
-            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl());
+        } catch (UnzerApiException $e) {
+            Registry::getUtilsView()->addErrorToDisplay($exception);
         }
     }
 
@@ -211,8 +211,7 @@ class PaymentController extends PaymentController_parent
         $session->deleteVariable($factory::HeidelpayOrderResultSessionOrderID);
         $session->deleteVariable($factory::HeidelpayResourceIdSessionName);
         $session->deleteVariable($factory::HeidelpayCustomerIdSessionName);
-        $d3log->log(
-            d3log::INFO,
+        $d3log->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -243,8 +242,7 @@ class PaymentController extends PaymentController_parent
                     $translation = Registry::getLang()->translateString($string);
 
                     if ($translation === $string) {
-                        $factory->getModuleConfiguration()->d3getLog()->log(
-                            d3log::ERROR,
+                        $factory->getModuleConfiguration()->d3getLog()->error(
                             __CLASS__,
                             __FUNCTION__,
                             __LINE__,
@@ -308,8 +306,7 @@ class PaymentController extends PaymentController_parent
 
                 if ($this->d3HasInvalidBirthdateInput($birthdate, $paymentId)) {
                     // log message
-                    $factory->getModuleConfiguration()->d3getLog()->log(
-                        d3log::WARNING,
+                    $factory->getModuleConfiguration()->d3getLog()->warning(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -355,8 +352,7 @@ class PaymentController extends PaymentController_parent
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
             $d3log = $factory->getModuleConfiguration()->d3getLog();
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -364,8 +360,7 @@ class PaymentController extends PaymentController_parent
             );
 
             $heidelPayment = $heidelPaySettings->getPayment($payment);
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -386,8 +381,7 @@ class PaymentController extends PaymentController_parent
                 }
 
                 $heidelpayResult = $request->getRequestParameter('unzer-result');
-                $d3log->log(
-                    d3log::INFO,
+                $d3log->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -398,8 +392,7 @@ class PaymentController extends PaymentController_parent
                 $reader->read($heidelpayResult);
                 $heidelpayCustomerId = $reader->getCustomerReference();
                 if (empty($heidelpayCustomerId)) {
-                    $d3log->log(
-                        d3log::INFO,
+                    $d3log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -409,8 +402,7 @@ class PaymentController extends PaymentController_parent
                         $oxUser,
                         $factory
                     );
-                    $d3log->log(
-                        d3log::INFO,
+                    $d3log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -422,8 +414,7 @@ class PaymentController extends PaymentController_parent
 
                 $heidelpayResourceId = $reader->getId();
                 if (empty($heidelpayResourceId)) {
-                    $d3log->log(
-                        d3log::ERROR,
+                    $d3log->error(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -457,8 +448,7 @@ class PaymentController extends PaymentController_parent
 
                 $this->avoidEmptyCustomerName($factory, $heidelpayCustomerId, $oxUser, $d3log);
 
-                $d3log->log(
-                    d3log::INFO,
+                $d3log->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -468,8 +458,7 @@ class PaymentController extends PaymentController_parent
                 $factory->getOxidProvider()->getSession()->setVariable(Factory::HeidelpayResourceIdSessionName, $heidelpayResourceId);
 
                 if ($oxUser->hasAccount()) {
-                    $d3log->log(
-                        d3log::INFO,
+                    $d3log->info(
                         __CLASS__,
                         __FUNCTION__,
                         __LINE__,
@@ -485,8 +474,7 @@ class PaymentController extends PaymentController_parent
                         $paymentId
                     );
                     if (false === $result) {
-                        $d3log->log(
-                            d3log::WARNING,
+                        $d3log->warning(
                             __CLASS__,
                             __FUNCTION__,
                             __LINE__,
@@ -495,8 +483,7 @@ class PaymentController extends PaymentController_parent
                     }
                 }
 
-                $d3log->log(
-                    d3log::INFO,
+                $d3log->info(
                     __CLASS__,
                     __FUNCTION__,
                     __LINE__,
@@ -570,8 +557,7 @@ class PaymentController extends PaymentController_parent
         $factory  = oxNew(Factory::class);
         $transactionlog = oxNew(d3transactionlog::class, oxNew(ReaderHeidelpay::class));
         if (false == $transactionlog->load($easycreditTransactionIds[$paymentId])) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::ERROR,
+            $factory->getModuleConfiguration()->d3getLog()->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -587,8 +573,7 @@ class PaymentController extends PaymentController_parent
         $redirectUrl = $response->getRedirecturl();
 
         if (empty($redirectUrl)) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::ERROR,
+            $factory->getModuleConfiguration()->d3getLog()->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -599,8 +584,7 @@ class PaymentController extends PaymentController_parent
             return 'payment?paymenterror=-99';
         }
 
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $factory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,
@@ -749,8 +733,7 @@ class PaymentController extends PaymentController_parent
 
         //<editor-fold desc="MGW - way">
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive() && $this->hasD3HeidelpayMGWAssignments()) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -776,8 +759,7 @@ class PaymentController extends PaymentController_parent
             );
             $this->addTplParam('d3HeidelpayMappedThemeId', $factory->getModuleConfiguration()->getMappedThemeId());
 
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::INFO,
+            $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -1020,8 +1002,7 @@ class PaymentController extends PaymentController_parent
         $birthdateParameters = [$paymentId => $heidelpayParameters[$paymentId]['COMPANY.EXECUTIVE.1.BIRTHDATE']];
         if (strtolower(CompanyData::COMPANYDATA_REGISTERED) !== strtolower($heidelpayParameters[$paymentId]['COMPANY.REGISTRATIONTYPE'])
             && $this->d3HasInvalidBirthdateInput($birthdateParameters, $paymentId)) {
-            $factory->getModuleConfiguration()->d3getLog()->log(
-                d3log::WARNING,
+            $factory->getModuleConfiguration()->d3getLog()->warning(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -1264,8 +1245,7 @@ class PaymentController extends PaymentController_parent
             $newCustomerInterface = $factory->getHeidelpayInterface()
                 ->createOrUpdateCustomer($customerInterface);
             $currentCustomerId = $newCustomerInterface->getId();
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -1277,8 +1257,7 @@ class PaymentController extends PaymentController_parent
                 $currentCustomerId
             );
         } catch (UnzerApiException $e) {
-            $d3log->log(
-                d3log::ERROR,
+            $d3log->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -1287,8 +1266,7 @@ class PaymentController extends PaymentController_parent
             );
         } catch (RuntimeException $e) {
             /** @var $e RuntimeException */
-            $d3log->log(
-                d3log::ERROR,
+            $d3log->error(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,
@@ -1343,8 +1321,7 @@ class PaymentController extends PaymentController_parent
                 );
             }
         } catch (UnzerApiException $e) {
-            $d3log->log(
-                d3log::INFO,
+            $d3log->info(
                 __CLASS__,
                 __FUNCTION__,
                 __LINE__,

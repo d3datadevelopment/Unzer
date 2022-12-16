@@ -19,7 +19,6 @@ use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Webhooks\ResponseHandler;
 use D3\Heidelpay\Models\Webhooks\UnauthorizedCallException;
 use D3\Heidelpay\Models\Webhooks\WebhookExceptionInterface;
-use D3\ModCfg\Application\Model\Log\d3LogLevel;
 use UnzerSDK\Exceptions\UnzerApiException;
 
 // @codeCoverageIgnoreStart
@@ -85,7 +84,7 @@ class Webhook
             $json = json_decode($jsonRequest);
 
             $log = oxNew(Factory::class)->getModuleConfiguration()->d3getLog();
-            $log->log(d3LogLevel::INFO, __CLASS__, __FUNCTION__, __LINE__, 'webhook', $jsonRequest);
+            $log->info(__CLASS__, __FUNCTION__, __LINE__, 'webhook', $jsonRequest);
 
             if (!isset($json->publicKey) || $json->publicKey !== $factory->getModuleConfiguration()->getValue('mgwPublicKey')) {
                 throw new UnauthorizedCallException();
@@ -96,7 +95,7 @@ class Webhook
             oxNew(ResponseHandler::class, $event, $resource);
         } catch (UnzerApiException|WebhookExceptionInterface $e) {
             $log = oxNew(Factory::class)->getModuleConfiguration()->d3getLog();
-            $log->log(d3LogLevel::WARNING, __CLASS__, __FUNCTION__, __LINE__, $e->getMessage());
+            $log->warning(__CLASS__, __FUNCTION__, __LINE__, $e->getMessage());
         }
     }
 }

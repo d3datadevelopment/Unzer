@@ -4,14 +4,14 @@
     </td>
     <td class="edittext">
         [{oxinputhelp ident="HELP_D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE"}]
-        <input type="hidden" name="value[d3_cfg_mod__debugMode]" value="0"/>
-        <input type="checkbox"
+        <input type="hidden" name="logtypes[7]" value="0">
+        <input id="module_debug"
                class="editinput"
-               name="value[d3_cfg_mod__debugMode]"
-               id="d3_cfg_mod__debugMode"
+               type="checkbox"
+               name="logtypes[7]"
                value="1"
                title="[{oxmultilang ident="D3HEIDELPAY_SETTINGS_MGW_DEBUGMODE"}]"
-                [{if $edit->getValue('debugMode')}]checked[{/if}]
+               [{if $oView->getLogStatus('debug', false)}]checked[{/if}]
         >
     </td>
 </tr>
@@ -21,14 +21,8 @@
     </td>
     <td class="edittext">
         [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_INTERNALLOG"}]
-        <select name="loglevel" class="edittext"
-                title="[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_INTERNALLOG"}]">
-            <option value="userdefined">[{oxmultilang ident="D3_CFG_LOG_TYPE_USERDEFINED"}]</option>
-            <option value="error" [{if $oView->getLogStatus('error')}] selected[{/if}]>[{oxmultilang ident="D3_CFG_LOG_TYPE_ERROR"}]</option>
-            <option value="warning" [{if $oView->getLogStatus('warning')}] selected[{/if}]>[{oxmultilang ident="D3_CFG_LOG_TYPE_WARNING"}]</option>
-            <option value="notice" [{if $oView->getLogStatus('notice')}] selected[{/if}]>[{oxmultilang ident="D3_CFG_LOG_TYPE_NOTICE"}]</option>
-            <option value="info" [{if $oView->getLogStatus('info')}] selected[{/if}]>[{oxmultilang ident="D3_CFG_LOG_TYPE_INFO"}]</option>
-        </select>
+        [{assign var="oLogSet" value=$oView->getLogSet()}]
+        [{include file="d3loglevel_form.tpl" oLogSet=$oLogSet oModule=false}]
     </td>
 </tr>
 <tr>
