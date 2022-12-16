@@ -7,7 +7,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.2...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...rel_6.x_mgw)
+
+## [6.4.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.2...6.4.1.0)
+### Added
+- installable in OXID 6.5.1
+- show bank brand selector on iDeal payments
+
+### Changed
+- move test mode from custom variable to log level
+- update set log item calls
+- catch Unzer API errors while handle remaining order
+
+### Fixed
+- update debug switch
+  - prevents destroyed log levels, when debug were set
+  - update getting debug level
 
 ## [6.4.0.2](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.1...6.4.0.2)
 ### Fixed

@@ -8,7 +8,6 @@ use D3\Heidelpay\Models\Response\Parser;
 use D3\Heidelpay\Models\Transactionlog\Reader\Heidelpay as TransactionlogReader;
 use D3\ModCfg\Application\Model\Exception\d3_cfg_mod_exception;
 use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
-use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
 use OxidEsales\Eshop\Application\Model\Payment;
@@ -65,8 +64,7 @@ class PaymentGateway extends PaymentGateway_parent
 
         $mReturn = $oGatewayFacade->executePayment($this->getPayment(), $oParser);
 
-        $oFactory->getModuleConfiguration()->d3getLog()->log(
-            d3log::INFO,
+        $oFactory->getModuleConfiguration()->d3getLog()->info(
             __CLASS__,
             __FUNCTION__,
             __LINE__,

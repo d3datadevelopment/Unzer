@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <fieldset title="[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_LIVE_HEADER"}]" [{if $edit->getValue('d3heidelpay_blTestmode') == 0}] class="active"[{/if}]>
+        <fieldset title="[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_LIVE_HEADER"}]" [{if $edit->getLogStatus('test') == 0}] class="active"[{/if}]>
             <legend>
                 <b>[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_LIVE_HEADER"}]</b>[{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_LOGIN_LIVE_HEADER"}]
             </legend>
@@ -51,7 +51,7 @@
         </fieldset>
     </td>
     <td>
-        <fieldset title="[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_TEST_HEADER"}]" [{if $edit->getValue('d3heidelpay_blTestmode') == 1}] class="active"[{/if}]>
+        <fieldset title="[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_TEST_HEADER"}]" [{if $edit->getLogStatus('test') == 1}] class="active"[{/if}]>
             <legend>
                 <b>[{oxmultilang ident="D3DYN_HEIDELPAY_LOGIN_TEST_HEADER"}]</b>[{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_LOGIN_TEST_HEADER"}]
             </legend>

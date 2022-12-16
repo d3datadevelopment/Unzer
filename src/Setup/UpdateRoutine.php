@@ -111,7 +111,7 @@ class UpdateRoutine extends d3install_updatebase
                         $d3CfgMod->save();
                         continue;
                     }
-                    $isTestMode = (bool)$d3CfgMod->getValue('d3heidelpay_blTestmode');
+                    $isTestMode = (bool)$d3CfgMod->getLogStatus('test');
 
                     /** @var Factory $factory */
                     $factory    = oxNew(Factory::class)->setModuleConfiguration($d3CfgMod);

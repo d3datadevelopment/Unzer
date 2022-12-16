@@ -64,8 +64,7 @@ if ($noCriterionFound) {
     try {
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        $factory->getModuleConfiguration()->d3getLog()->log(
-            D3\ModCfg\Application\Model\Log\d3log::WARNING,
+        $factory->getModuleConfiguration()->d3getLog()->warning(
             basename(__FILE__),
             'none',
             __LINE__,
@@ -88,8 +87,7 @@ if ($noCriterionFound) {
 try {
     /** @var Factory $factory */
     $factory  = oxNew(Factory::class);
-    $factory->getModuleConfiguration()->d3getLog()->log(
-        D3\ModCfg\Application\Model\Log\d3log::INFO,
+    $factory->getModuleConfiguration()->d3getLog()->info(
         basename(__FILE__),
         'none',
         __LINE__,

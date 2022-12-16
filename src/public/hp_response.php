@@ -2,7 +2,6 @@
 
 use D3\Heidelpay\Controllers\Response;
 use D3\Heidelpay\Models\Factory;
-use D3\ModCfg\Application\Model\Log\d3log;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\ComposerPlugin\Installer\Package\ShopPackageInstaller;
 use OxidEsales\Eshop\Core\Registry;
@@ -73,8 +72,7 @@ ksort($_POST);
 try {
     /** @var Factory $factory */
     $factory = oxNew(Factory::class);
-    $factory->getModuleConfiguration()->d3getLog()->log(
-        d3log::INFO,
+    $factory->getModuleConfiguration()->d3getLog()->info(
         D3_HEIDELPAY_PUBLIC_FILE,
         'none',
         __LINE__,
@@ -97,8 +95,7 @@ try {
 }
 
 try {
-    $factory->getModuleConfiguration()->d3getLog()->log(
-        d3log::INFO,
+    $factory->getModuleConfiguration()->d3getLog()->info(
         D3_HEIDELPAY_PUBLIC_FILE,
         'none',
         __LINE__,
