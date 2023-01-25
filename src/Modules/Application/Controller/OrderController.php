@@ -355,6 +355,8 @@ class OrderController extends OrderController_parent
      */
     public function execute()
     {
+        ignore_user_abort();
+
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
         if (false == $factory->getModuleConfiguration()->isActive()) {
@@ -626,7 +628,22 @@ class OrderController extends OrderController_parent
         }
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-            $result = parent::_getNextStep($mSuccess);
+
+            if ( $mSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS &&
+                 Registry::getSession()->getVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS)
+            ) {
+                $result = 'payment?payerror=2';
+                $d3Log->info(
+                    __CLASS__,
+                    __FUNCTION__,
+                    __LINE__,
+                    'mgw: nextStep: '. $result
+                );
+                return $result;
+            } else {
+                Registry::getSession()->deleteVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS);
+                $result = parent::_getNextStep( $mSuccess );
+            }
 
             $d3Log->info(
                 __CLASS__,

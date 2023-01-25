@@ -14,6 +14,9 @@ use D3\ModCfg\Application\Model\Install\d3install_updatebase;
 use D3\ModCfg\Application\Model\Installwizzard\d3installconfirmmessage;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception as DoctrineDriverException;
+use Doctrine\DBAL\Exception as DoctrineException;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Exception;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\ConnectionException;
@@ -23,6 +26,10 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * This Software is the property of Data Development and is protected
@@ -51,7 +58,7 @@ class InstallRoutine extends d3install_updatebase
     /**
      * @var string
      */
-    public $sModVersion = '6.4.1.0';
+    public $sModVersion = '6.4.1.1';
 
     /**
      * @var string
@@ -59,18 +66,18 @@ class InstallRoutine extends d3install_updatebase
     public $sMinModCfgVersion = '5.3.0.0';
 
     /** @var string @deprecated since 2016-04-13 */
-    public $sModRevision = '6410';
+    public $sModRevision = '6411';
 
     /**
      * @var string
      */
     public $sBaseConf = '--------------------------------------------------------------------------------
-63Fv2==U3hDbGd6c0lzWjR3M291ek56NGNHSW1RdFhDNzFwbTlnMDM3T25aa3lNakFYdjJyZDV2THdub
-2MvbkxxNHg4aEp0cS94VjZvbmNuNTMwclp4MG5ZUjZLQkREdTE5dDd0dE1LNzlzTnE2L2pTaHBGeHp3S
-WJac29jWGxOeFZKZWRmZkgvOFp5T0NGbm1sSGN2c2tsNVJmVjJ2VFRQbkszRHN4NUV4OWlpeXJrYUJ0b
-UNxaEVhTUZoQks2Y2lGYnphdlIyLzJOZmxMNEZCQjUvV0VIaC9sV0wzS1VYQlFub29JU2hvZFdsT2RCS
-m9xazFrVURNS29wMHZtaVNXMFh2NDNyMkg3QjFtZUpiVFpML2dHdit3YlRMZzJkVlV5QkxRMEQ3MW1XR
-E4rdm56Rnh0ZmVrS0ttT09ubE5UV083Q0Y0WXhnQjNEU0I3eWFVNGNMMkIxcHBBPT0=
+2Z8v2==dGxYR21vQytGUFk5Z1hOSlFOSFRESFI5SkFEemR6TS94N3poaC9tTU1TMDd1UzhqTEZlKzVTb
+HY2bEVnZit3WEUzWERJYmZkd2phL21QU2tuSDFOd01aV1JidUVFWEpjTG9IOWZzUVNieTJheUh3by9DN
+UZMaC91VVBtdzJwV0ttSXRsbUF6R1VnTDRvN0hibWdyZ0tQM3ZZRk1yRHI4TmF3VVVUU0N6RFg3enVOW
+St2ZG40TUlaNC9Kb0lKRDd4N2RjcmM2SWhVT0FUdVV6djY1REFSUU5PeklxSlYrRE8zQUdlM2xZSEl3b
+EYrZTBCb0dRWnpxODJzNnhld3l5bnlNdkM0M0lnWFpSWUVuMHU0OVIvOHpnQjRwREdXaVBLczBlc2lNN
+VVtTUI3dFVYbC9ZelExNVE5NEJvMUlHdFcrTTJ4Q1JQdTl5cUd4ZDNTZzBEbTh3PT0=
 --------------------------------------------------------------------------------';
 
     /**
@@ -762,6 +769,10 @@ WHERE d3transactionlog.oxid IS NOT NULL;'
      * @throws ConnectionException
      * @throws DBALException
      * @throws DatabaseConnectionException
+     * @throws DoctrineDriverException
+     * @throws DoctrineException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function checkOxcontentEntrysExist()
     {
@@ -772,32 +783,41 @@ WHERE d3transactionlog.oxid IS NOT NULL;'
             return $blRet;
         }
 
+        $db = DatabaseProvider::getDb();
+
         foreach ($this->getShopListByActiveModule($this->sModKey) as $oShop) {
             /** @var $oShop BaseModel */
 
-            $query = /** @lang MySQL */
-                <<<MySQL
-SELECT count(*) FROM oxcontents
-WHERE  oxloadid IN (
-    'd3_hp_vorkassemail_cust_text',
-    'd3_hp_vorkassemail_cust_subject',
-    'd3_hp_vorkassemail_cust_plain',
-    'd3_hp_vorkassemail_owner_text',
-    'd3_hp_vorkassemail_owner_subject',
-    'd3_hp_vorkassemail_owner_plain',
-    'd3_hp_chargeback_owner_plain',
-    'd3_hp_chargeback_owner_text',
-    'd3_hp_chargeback_owner_subject',
-    'd3_hp_partlypaid_owner_plain',
-    'd3_hp_partlypaid_owner_text',
-    'd3_hp_partlypaid_owner_subject'
-  ) 
-  AND oxshopid = '{$oShop->getId()}'
-MySQL;
+            /** @lang MySQL */
+            /** @var QueryBuilder $qb */
+            $qb = ContainerFactory::getInstance()->getContainer()->get(QueryBuilderFactoryInterface::class)->create();
+            $qb->select('count(*)')
+                ->from('oxcontents')
+                ->where(
+                    $qb->expr()->and(
+                        $qb->expr()->in(
+                            'oxloadid',
+                            [
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_text'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_subject'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_plain'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_text'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_subject'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_plain'),
+                                $qb->createNamedParameter('d3_hp_chargeback_owner_plain'),
+                                $qb->createNamedParameter('d3_hp_partlypaid_owner_plain')
+                            ]
+                        ),
+                        $qb->expr()->eq(
+                            'oxshopid',
+                            $qb->createNamedParameter($oShop->getId())
+                        )
+                    )
+                );
 
             $blInstallationIsNotComplete = $this->checkModCfgSameRevision();
 
-            if ((DatabaseProvider::getDb()->getOne($query)) && $blInstallationIsNotComplete) {
+            if ($qb->execute()->fetchOne() && $blInstallationIsNotComplete) {
                 $blRet = true;
             }
         }

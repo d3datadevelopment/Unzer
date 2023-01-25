@@ -112,6 +112,7 @@ class PaymentController extends PaymentController_parent
                 'HeidelpayCustomerIdSessionName: ' . $session->getVariable($factory::HeidelpayCustomerIdSessionName) . PHP_EOL
             );
 
+            Registry::getSession()->deleteVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS);
             $orderId = $session->getVariable($factory::HeidelpayOrderResultSessionOrderID);
             if ($orderId) {
                 /** @var Order $order */
@@ -161,7 +162,7 @@ class PaymentController extends PaymentController_parent
             $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
             $d3log = $factory->getModuleConfiguration()->d3getLog();
 
-            if ($payment && in_array($payment->getState(), [PaymentState::STATE_PENDING])) {
+            if ($payment && in_array($payment->getState(), $this->d3GetOrderPendingStates())) {
                 // delete the pending order
                 $message = "Order: ".$order->getId()." was not deleted";
                 if ($order->delete()) {
@@ -173,7 +174,7 @@ class PaymentController extends PaymentController_parent
                     __LINE__,
                     $message
                 );
-            } else {
+            } elseif ($payment && in_array($payment->getState(), $this->d3GetOrderProcessedStates())) {
                 // keep processed order, clear basket
                 $message = "keep already handled order: ".$order->getId();
                 $d3log->info(
@@ -194,6 +195,28 @@ class PaymentController extends PaymentController_parent
         } catch (UnzerApiException $e) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function d3GetOrderPendingStates()
+    {
+        return [
+            PaymentState::STATE_PENDING
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function d3GetOrderProcessedStates()
+    {
+        return [
+            PaymentState::STATE_COMPLETED,
+            PaymentState::STATE_PARTLY,
+            PaymentState::STATE_CHARGEBACK
+        ];
     }
 
     /**

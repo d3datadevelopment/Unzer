@@ -7,12 +7,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...rel_6.x_mgw)
 
-## [6.4.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.2...6.4.1.0)
+## [6.4.1.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...6.4.1.1) - 2023-01-25
+### Fixed
+- abgebrochener Zahlungsprozess führt zu geleertem Warenkorb
+- Bypass umgeht Anzeige des Zahlungsprozesses
+
+## [6.4.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.2...6.4.1.0) - 2022-12-16
 ### Added
-- installable in OXID 6.5.1
-- show bank brand selector on iDeal payments
+- installierbar in OXID 6.5.1
+- zeige Bankenauswahl bei iDeal Zahlungen
 
 ### Changed
 - move test mode from custom variable to log level
@@ -24,15 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - prevents destroyed log levels, when debug were set
   - update getting debug level
 
-## [6.4.0.2](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.1...6.4.0.2)
+## [6.4.0.2](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.1...6.4.0.2) - 2022-11-22
 ### Fixed
 - catch Unzer runtime exceptions in case of invalid private key
 
-## [6.4.0.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.0...6.4.0.1)
+## [6.4.0.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.0.0...6.4.0.1) - 2022-11-01
 ### Fixed
 - fix wrong PHP dependency
 
-## [6.4.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.4.0.0)
+## [6.4.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.4.0.0) - 2022-10-28
 ### Added
 - Webhooks für folgende Stati hinzugefügt
   - payment.completed
