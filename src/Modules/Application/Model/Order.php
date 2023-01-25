@@ -48,6 +48,8 @@ use stdClass;
  */
 class Order extends Order_parent
 {
+    const MGW_ORDERINPROGRESS = 'd3_mgw_order_is_in_progress';
+
     protected $d3HeidelpayIsSurpressEMailSending = false;
 
     /**
@@ -614,6 +616,9 @@ class Order extends Order_parent
         $modulConfiguration = $factory->getModuleConfiguration();
 
         if (false == $blRecalculatingOrder && $modulConfiguration->isActive() && $factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
+
+            Registry::getSession()->setVariable(self::MGW_ORDERINPROGRESS, true);
+
             $sPaymentid = $oxBasket->getPaymentId();
             /** @var OxidPayment $payment */
             $payment = oxNew(OxidPayment::class);
