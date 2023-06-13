@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...rel_6.x_mgw)
 
+## [6.2.7.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.2.7.0) - 2023-06-13
+### Changed
+- bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt
+
 ## [6.2.6.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.1...6.2.6.2) - 2022-07-18
 ### Fixed
 - verhindert, dass die Liste der Zahlungsarten abgerufen wird, bevor die vorherige ShipSetId bereinigt wurde, wenn die Benutzerländer gewechselt werden
