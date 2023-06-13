@@ -217,7 +217,7 @@ Schalten Sie ggf. das D³ Logging (/Unzer/Einstellungen/Einstellungen zu Modul-L
     'D3HEIDELPAY_PAYMENT_COMPANY_ARTS_ENTERTAINMENT_AND_RECREATION'                            => 'Kreative, künstlerische und unterhaltende Tätigkeiten',
     'D3HEIDELPAY_PAYMENT_COMPANY_REGISTERED'                                                   => 'registriert',
     'D3HEIDELPAY_PAYMENT_COMPANY_NOT_REGISTERED'                                               => 'nicht registriert',
-    'D3HEIDELPAY_PAYMENT_COMPANY_COMPANYNAME'                                                  => 'Name inkl. Rectsform',
+    'D3HEIDELPAY_PAYMENT_COMPANY_COMPANYNAME'                                                  => 'Name inkl. Rechtsform',
     'D3HEIDELPAY_PAYMENT_COMPANY_COMPANY_VATID'                                                => 'USt-IdNr.',
     'D3HEIDELPAY_PAYMENT_COMPANY_COMMERCIALREGISTERNUMBER'                                     => 'Handelsregisternummer',
     'D3HEIDELPAY_PAYMENT_COMPANY_COMMERCIALSECTOR'                                             => 'Branche',
@@ -257,4 +257,6 @@ Schalten Sie ggf. das D³ Logging (/Unzer/Einstellungen/Einstellungen zu Modul-L
     'D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_TEXT'                                                 => 'Ich ermächtige {NAME_OF_MERCHANT}, Zahlungen von meinem Konto mittels SEPA Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an, die von {NAME_OF_MERCHANT} auf mein Konto gezogenen SEPA Lastschriften einzulösen.<br/><br/>
 Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrags verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.<br/><br/>
 Für den Fall der Nichteinlösung der Lastschriften oder des Widerspruchs gegen die Lastschriften weise ich meine Bank unwiderruflich an, {NAME_OF_MERCHANT} oder Dritten auf Anforderung meinen Namen, Adresse und Geburtsdatum vollständig mitzuteilen.',
+
+    'D3UNZER_PAYMENT_MGW_EMPTY_PAYMENT_ID'                                                      => 'Aus der vorherigen Session ist keine Payment-ID verfügbar.',
 ];

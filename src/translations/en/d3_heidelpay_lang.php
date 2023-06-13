@@ -246,4 +246,6 @@ If necessary switch the D³ Logging (/Unzer/Settings/Settings for module logging
     'D3HEIDELPAY_PAYMENT_MGW_SEPA_MANDAT_TEXT'                                                 => 'By signing this mandate form, you authorise {NAME_OF_MERCHANT} to send instructions to your bank to debit your account and your bank to debit your account in accordance with the instructions from {NAME_OF_MERCHANT}.<br/><br/>
 Note: As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited. Your rights regarding this SEPA mandate are explained in a statement that you can obtain from your bank.<br/><br/>
 In case of refusal or rejection of direct debit payment I instruct my bank irrevocably to inform {NAME_OF_MERCHANT} or any third party upon request about my name, address and date of birth.',
+
+    'D3UNZER_PAYMENT_MGW_EMPTY_PAYMENT_ID'                                                      => 'No payment ID is available from the previous session.',
 ];
