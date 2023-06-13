@@ -616,15 +616,14 @@ class Order extends Order_parent
         $modulConfiguration = $factory->getModuleConfiguration();
 
         if (false == $blRecalculatingOrder && $modulConfiguration->isActive() && $factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-
-            Registry::getSession()->setVariable(self::MGW_ORDERINPROGRESS, true);
-
             $sPaymentid = $oxBasket->getPaymentId();
             /** @var OxidPayment $payment */
             $payment = oxNew(OxidPayment::class);
             $heidelPaySettings = $factory->getSettings();
 
             if ($payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment)) {
+                Registry::getSession()->setVariable(self::MGW_ORDERINPROGRESS, true);
+
                 $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
                     __FUNCTION__,

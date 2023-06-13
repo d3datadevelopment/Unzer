@@ -629,7 +629,13 @@ class OrderController extends OrderController_parent
 
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
 
-            if ( $mSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS &&
+            $sPaymentid = $this->getBasket()->getPaymentId();
+            /** @var Payment $payment */
+            $payment = oxNew(Payment::class);
+            $heidelPaySettings = $factory->getSettings();
+            
+            if ( $payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment) && 
+                 $mSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS &&
                  Registry::getSession()->getVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS)
             ) {
                 $result = 'payment?payerror=2';

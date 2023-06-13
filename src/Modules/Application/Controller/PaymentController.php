@@ -162,7 +162,7 @@ class PaymentController extends PaymentController_parent
             $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
             $d3log = $factory->getModuleConfiguration()->d3getLog();
 
-            if ($payment && in_array($payment->getState(), $this->d3GetOrderPendingStates())) {
+            if ($payment && in_array($payment->getState(), $this->d3GetOrderNotProcessedStates())) {
                 // delete the pending order
                 $message = "Order: ".$order->getId()." was not deleted";
                 if ($order->delete()) {
@@ -200,10 +200,11 @@ class PaymentController extends PaymentController_parent
     /**
      * @return array
      */
-    protected function d3GetOrderPendingStates()
+    protected function d3GetOrderNotProcessedStates()
     {
         return [
-            PaymentState::STATE_PENDING
+            PaymentState::STATE_PENDING,
+            PaymentState::STATE_CANCELED
         ];
     }
 
