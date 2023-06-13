@@ -7,6 +7,8 @@ Die Unzer GmbH bietet Händlern ein Zahlungssystem für alle gängigen Zahlungsv
 
 Die Anforderungen des Moduls, Installations- und Konfigurationshinweise, Changelog und weitere Informationen entnehmen Sie bitte der Dokumentation [online](https://docs.oxidmodule.com/Unzer/) und im docs-Verzeichnis dieses Paketes. 
 
+Beachten Sie, dass bei Verwendung der NGW-Schnittstelle der Config-Parameter "disallowForceSessionIdInRequest" nicht aktiviert sein darf.
+
 ## Changelog
 Siehe [CHANGELOG](docs/daux/changelog/010_Changelog.md) für weitere Informationen.
 

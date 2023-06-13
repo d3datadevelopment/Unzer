@@ -248,4 +248,6 @@ If necessary switch the D³ Logging (/Unzer/Settings/Settings for module logging
 Note: As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited. Your rights regarding this SEPA mandate are explained in a statement that you can obtain from your bank.<br/><br/>
 In case of refusal or rejection of direct debit payment I instruct my bank irrevocably to inform {NAME_OF_MERCHANT} or any third party upon request about my name, address and date of birth.',
     'D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT'                                              => 'An error occurred while processing the payment, please contact the shop operator. Thank you very much.',
+
+    'D3UNZER_PAYMENT_MGW_EMPTY_PAYMENT_ID'                                                      => 'No payment ID is available from the previous session.',
 ];

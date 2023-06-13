@@ -91,7 +91,7 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        25.01.2023        </span>
+                        13.06.2023        </span>
                     </div>
 
     <div class="s-content">
@@ -99,7 +99,18 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="Link--external">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="Link--external">Semantic Versioning</a>.</p>
 <h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
-<h2 id="page_6-4-1-1-2023-01-25"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...6.4.1.1" class="Link--external">6.4.1.1</a> - 2023-01-25</h2>
+<h2 id="page_6-4-2-0-2023-06-13"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...6.4.2.0" class="Link--external">6.4.2.0</a> - 2023-06-13</h2>
+<h3 id="page_Changed">Changed</h3>
+<ul>
+<li>Kundendaten werden vor Übergabe getrimmt um unnötige Übertragungen zu verhindern und Reproduktionsfälle zu ermöglichen</li>
+<li>im Fehlerfall wird das protokollierte Charge-Objekt gekürzt, um die Fehlermeldung zuverlässiger zu erhalten</li>
+<li>&quot;Order in progress&quot; Status wird nur von Unzer bearbeiteten Zahlungen zugewiesen</li>
+<li>Meldungen bei Charge-Fehlern werden separat protokolliert</li>
+<li>löscht vorangelegte Bestellungen bei Abbruch (canceled)</li>
+<li>Payerror 2 wird bei bei Unzer zugeordneten Zahlungsarten gesetzt</li>
+<li>bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt</li>
+</ul>
+<h2 id="page_6-4-1-1-2023-03-08"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...6.4.1.1" class="Link--external">6.4.1.1</a> - 2023-03-08</h2>
 <h3 id="page_Fixed">Fixed</h3>
 <ul>
 <li>abgebrochener Zahlungsprozess führt zu geleertem Warenkorb</li>
@@ -111,7 +122,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class=
 <li>installierbar in OXID 6.5.1</li>
 <li>zeige Bankenauswahl bei iDeal Zahlungen</li>
 </ul>
-<h3 id="page_Changed">Changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>move test mode from custom variable to log level</li>
 <li>update set log item calls</li>

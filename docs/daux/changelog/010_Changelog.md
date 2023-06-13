@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...rel_6.x_mgw)
 
-## [6.4.1.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...6.4.1.1) - 2023-01-25
+## [6.4.2.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...6.4.2.0) - 2023-06-13
+### Changed
+- Kundendaten werden vor Übergabe getrimmt um unnötige Übertragungen zu verhindern und Reproduktionsfälle zu ermöglichen
+- im Fehlerfall wird das protokollierte Charge-Objekt gekürzt, um die Fehlermeldung zuverlässiger zu erhalten
+- "Order in progress" Status wird nur von Unzer bearbeiteten Zahlungen zugewiesen
+- Meldungen bei Charge-Fehlern werden separat protokolliert
+- löscht vorangelegte Bestellungen bei Abbruch (canceled)
+- Payerror 2 wird bei bei Unzer zugeordneten Zahlungsarten gesetzt
+- bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt
+
+## [6.4.1.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.0...6.4.1.1) - 2023-03-08
 ### Fixed
 - abgebrochener Zahlungsprozess führt zu geleertem Warenkorb
 - Bypass umgeht Anzeige des Zahlungsprozesses
