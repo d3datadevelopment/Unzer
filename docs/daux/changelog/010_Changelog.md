@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...rel_6.x_mgw)
 
+## [6.3.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.3.1.0) - 2023-06-13
+### Changed
+- bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt
+
 ## [6.3.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0) - 2022-08-30
 ### Added
 - installierbar in OXID 6.5 (CE 6.12)
