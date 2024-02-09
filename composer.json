@@ -1,0 +1,79 @@
+{
+  "name": "d3/unzer",
+  "description": "Unzer client module for oxid eShop v7",
+  "type": "oxideshop-module",
+  "authors": [
+    {
+      "name": "D3 Data Development (Inh. Thomas Dartsch)",
+      "email": "info@shopmodule.com",
+      "homepage": "http://www.oxidmodule.com",
+      "role": "Owner"
+    }
+  ],
+  "support": {
+    "email": "support@shopmodule.com"
+  },
+  "keywords": [
+    "oxid",
+    "modules",
+    "eShop",
+    "d3",
+    "heidelpay",
+    "Unzer",
+    "creditcard",
+    "debitcard",
+    "payment"
+  ],
+  "homepage": "https://www.oxidmodule.com/",
+  "license": [
+    "proprietary"
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-sourceguardian": "^14",
+    "lib-curl": ">=7.34.0",
+    "lib-openssl": ">=1.0.1",
+    "ext-curl": "*",
+    "ext-openssl": "*",
+    "ext-libxml": "*",
+    "ext-dom": "*",
+    "ext-simplexml": "*",
+    "ext-bcmath": "*",
+    "ext-json": "*",
+    "oxid-esales/oxideshop-ce": "7.0 - 7.0",
+    "d3/modcfg": "^7",
+    "unzerdev/php-sdk": "~1.2.3.0",
+    "beberlei/assert": "^3.3",
+    "oxid-esales/smarty-component": "*"
+  },
+  "require-dev": {
+    "mikey179/vfsstream": "~1.6.5",
+    "boxblinkracer/phpunuhi": "^1.14",
+    "friendsofphp/php-cs-fixer": "~3.13.0",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^9.6",
+    "rector/rector": "^0.18.13"
+  },
+  "replace": {
+    "d3/heidelpay": "*",
+    "oxid-esales/unzer": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "D3\\Unzer\\": ""
+    }
+  },
+  "bin": ["Cron/collectpayments", "Cron/cron_bankaccount"],
+  "scripts": {
+    "php-cs-fixer": "./vendor/bin/php-cs-fixer fix --config=vendor/d3/unzer/.php-cs-fixer.php",
+
+    "phpstan": "./vendor/bin/phpstan --configuration=vendor/d3/unzer/phpstan.neon analyse",
+    "phpstan-report": "./vendor/bin/phpstan --configuration=vendor/d3/unzer/phpstan.neon analyse --error-format=json > vendor/d3/unzer/tests/phpstan.report.json",
+
+    "phpunit": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --bootstrap=source/bootstrap.php --config=vendor/d3/unzer/Tests/",
+
+    "rector": "./vendor/bin/rector process --dry-run --config ./vendor/d3/unzer/rector.php",
+
+    "phpunuhi": "./vendor/bin/phpunuhi --configuration=vendor/d3/unzer/phpunuhi.xml validate"
+  }
+}

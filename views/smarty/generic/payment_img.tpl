@@ -1,0 +1,1 @@
+<img src="[{$sImageUrl}]" alt="[{$sBrandIdent}]" style="vertical-align: middle; width: 65px">

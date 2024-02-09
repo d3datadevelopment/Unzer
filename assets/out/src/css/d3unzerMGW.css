@@ -1,0 +1,14 @@
+.d3UnzerSepaNote {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.d3UnzerErrorNotice {
+    font-size: 14px;
+    font-weight: bold;
+    color:red;
+}
+
+#payment label b {
+    margin-right:10px;
+}
