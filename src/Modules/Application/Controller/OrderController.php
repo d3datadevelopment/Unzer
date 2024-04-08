@@ -694,17 +694,6 @@ class OrderController extends OrderController_parent
                 ]);
                 $type = "pending";
 
-                $heidelpayment = $factory->getSettings()->getPayment($payment);
-
-                if ($heidelpayment instanceof Prepayment
-                    || $heidelpayment instanceof Secured
-                    || $heidelpayment instanceof Unsecured) {
-                    $order->assign([
-                        'oxtransstatus' => $factory::HeidelpayOrderStateOK,
-                    ]);
-                    $type = "ok";
-                }
-
                 $order->save();
                 $d3Log->info(
                     __CLASS__,
