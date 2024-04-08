@@ -7,9 +7,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.0...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/7.0.0.1...rel_7.x)
+
+## [7.0.0.1](https://git.d3data.de/D3Private/Unzer/compare/7.0.0.0...7.0.0.1) - 2024-04-08
 ### Fixed
-- unserialization config values
+- Standardstatus der Vorabbestellungen mit Zahlart Rechnung bzw. Vorauskasse zu "NOT FINISHED"
+
+## [7.0.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.1...7.0.0.0) - 2024-02-01
+### Added
+- installierbar in OXID 7.0
+### Removed
+- nicht installierbar in OXID 6
+
+**Major version upgrade notice: there are some backward-incompatible changes to this release.**
+
+## [6.4.2.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.0...6.4.2.1) - 2024-04-08
+### Fixed
+- Standardstatus der Vorabbestellungen mit Zahlart Rechnung bzw. Vorauskasse zu "NOT FINISHED"
+- Trim der Konfigurationseinstellungen
+- verhindert Änderung des Admin-Status bei der Container Kompilierung
 
 ## [6.4.2.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...6.4.2.0) - 2023-06-13
 ### Changed

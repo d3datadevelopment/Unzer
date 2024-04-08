@@ -1,6 +1,6 @@
 {
   "name": "d3/unzer",
-  "description": "Unzer client module for oxid eShop v7",
+  "description": "Unzer client module for OXID eShop",
   "type": "oxideshop-module",
   "authors": [
     {
@@ -30,7 +30,7 @@
   ],
   "require": {
     "php": "^8.0",
-    "ext-sourceguardian": "^14",
+    "ext-sourceguardian": ">=14",
     "lib-curl": ">=7.34.0",
     "lib-openssl": ">=1.0.1",
     "ext-curl": "*",
