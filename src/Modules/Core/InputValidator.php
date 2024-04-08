@@ -17,7 +17,6 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class InputValidator extends InputValidator_parent
 {
-
     /**
      * @param string $sPaymentId
      * @param array  $aDynvalue

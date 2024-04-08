@@ -7,7 +7,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.1...rel_6.x_mgw)
+
+## [6.4.2.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.0...6.4.2.1) - 2024-04-08
+### Fixed
+- Standardstatus der Vorabbestellungen mit Zahlart Rechnung bzw. Vorauskasse zu "NOT FINISHED"
+- Trim der Konfigurationseinstellungen
+- verhindert Änderung des Admin-Status bei der Container Kompilierung
 
 ## [6.4.2.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.1.1...6.4.2.0) - 2023-06-13
 ### Changed
@@ -63,6 +69,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zahlartenbeschreibungen werden passend dargestellt
 - Einstellungskorrektur kann auch Nicht-Text-Einstellungen verarbeiten
 
+## [6.3.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.3.0.0...6.3.1.0) - 2023-06-13
+### Changed
+- bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt
+
 ## [6.3.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.3.0.0) - 2022-08-30
 ### Added
 - installierbar in OXID 6.5 (CE 6.12)
@@ -76,6 +86,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - entfernt CurlHandle Serialisierungsfehler in PHP 8 (0011619)
 - fehlende Übersetzung in englischer Sprache ergänzt
+
+## [6.2.7.0](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.2...6.2.7.0) - 2023-06-13
+### Changed
+- bei gelöschten Unzer Bestellungen werden keine Zahlungsdaten abgefragt
 
 ## [6.2.6.2](https://git.d3data.de/D3Private/Unzer/compare/6.2.6.1...6.2.6.2) - 2022-07-18
 ### Fixed

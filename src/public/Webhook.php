@@ -19,6 +19,7 @@ use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Webhooks\ResponseHandler;
 use D3\Heidelpay\Models\Webhooks\UnauthorizedCallException;
 use D3\Heidelpay\Models\Webhooks\WebhookExceptionInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use UnzerSDK\Exceptions\UnzerApiException;
 
 // @codeCoverageIgnoreStart
@@ -52,10 +53,22 @@ if (!(file_exists($bootstrapFileName) && !is_dir($bootstrapFileName))) {
     die($message);
 }
 
-if (false === defined('OXID_PHP_UNIT')) {
+function willCompiled()
+{
+    return in_array(true,
+        array_map(
+            function ($traceItem) {
+                return isset($traceItem['class'])
+                    && $traceItem['class'] === ContainerBuilder::class;
+            },
+            debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
+        )
+    );
+}
+
+if (!willCompiled() && !defined('OXID_PHP_UNIT')) {
     require_once($bootstrapFileName);
 
-    // required for recalculating order and generating pdf
     define('OX_IS_ADMIN', false);
 }
 

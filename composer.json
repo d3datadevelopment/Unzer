@@ -35,7 +35,7 @@
   },
   "require": {
     "php": "^8.0",
-    "ext-sourceguardian": "*",
+    "ext-sourceguardian": ">=14",
     "lib-curl": ">=7.34.0",
     "lib-openssl": ">=1.0.1",
     "ext-curl": "*",
