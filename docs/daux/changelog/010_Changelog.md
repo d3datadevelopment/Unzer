@@ -7,7 +7,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.1...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.2...rel_6.x_mgw)
+
+## [6.4.2.2](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.1...6.4.2.2) - 2024-04-10
+### Fixed
+- instabiles Verhalten bei Verwendung von Konstanten aus überladender Klasse
 
 ## [6.4.2.1](https://git.d3data.de/D3Private/Unzer/compare/6.4.2.0...6.4.2.1) - 2024-04-08
 ### Fixed

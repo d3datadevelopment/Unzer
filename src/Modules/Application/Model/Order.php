@@ -2,6 +2,7 @@
 
 namespace D3\Heidelpay\Modules\Application\Model;
 
+use D3\Heidelpay\Models\Constants;
 use D3\Heidelpay\Models\Containers\Criterions;
 use D3\Heidelpay\Models\Containers\PrepaymentData;
 use D3\Heidelpay\Models\Factory;
@@ -48,8 +49,6 @@ use stdClass;
  */
 class Order extends Order_parent
 {
-    const MGW_ORDERINPROGRESS = 'd3_mgw_order_is_in_progress';
-
     protected $d3HeidelpayIsSurpressEMailSending = false;
 
     /**
@@ -622,7 +621,7 @@ class Order extends Order_parent
             $heidelPaySettings = $factory->getSettings();
 
             if ($payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment)) {
-                Registry::getSession()->setVariable(self::MGW_ORDERINPROGRESS, true);
+                Registry::getSession()->setVariable( Constants::MGW_ORDERINPROGRESS, true);
 
                 $factory->getModuleConfiguration()->d3getLog()->info(
                     __CLASS__,
