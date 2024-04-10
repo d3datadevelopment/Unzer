@@ -646,7 +646,7 @@ class OrderController extends OrderController_parent
 
             if ($payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment) &&
                 $iSuccess === OxidOrder::ORDER_STATE_ORDEREXISTS &&
-                Registry::getSession()->getVariable( OrderAlias::MGW_ORDERINPROGRESS)
+                Registry::getSession()->getVariable(Constants::MGW_ORDERINPROGRESS)
             ) {
                 $result = 'payment?payerror=2';
                 $d3Log->info(

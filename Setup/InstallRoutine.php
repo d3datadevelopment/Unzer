@@ -60,7 +60,7 @@ class InstallRoutine extends d3install_updatebase
     /**
      * @var string
      */
-    public $sModVersion = '7.0.0.1';
+    public $sModVersion = '7.0.0.2';
 
     /**
      * @var string
@@ -68,18 +68,18 @@ class InstallRoutine extends d3install_updatebase
     public $sMinModCfgVersion = '7.0.0.0';
 
     /** @var string @deprecated since 2016-04-13 */
-    public $sModRevision = '7001';
+    public $sModRevision = '7002';
 
     /**
      * @var string
      */
     public $sBaseConf = '--------------------------------------------------------------------------------
-d95v2==NHV0VVBVZisrZ3owemVGS1pnUG9NWDgzSUtDWXd3dnhRVk41TklETndjcWRuTFJmSGE3RE80R
-mN6RjBKbXlvRVY2TGx3RVZ0UzJXL3BhYjFmTng5OGp4SzNTSDJwWjZyYTZiK0FPWlVxK09rQUNib2dYL
-0Q2WmtxVDNTSXROLytycUZlVjZrZzcyNjJHOVFoTmtEdHdNb04zM3ZDbThBOCt6dm50N3NHUWo4RzBjb
-lhXdUpCV3FFbjdKNXdwRnZDYWhLSDdyYTRWbDQwU0tVSXRSS3U3dlo0K1QyYTY4eUc4ZEZWeUU3MTRnc
-EljT1ZGVURpK0ppalNBQTQxMDVtNlJNT2ROZDA2c3ZCSjI0dXlRYWN6cldObk9ob1pVR0lnYm5DbGMva
-ENrMU1LRWdYZi9TeXB0L09HSmtUejN5RmU=
+9VYv2==YlpLM0RacmNBOWZjN25haVAxbk5iZ2pDZDdraCt5dldFL0tXVnE1bkFFT1E4VVJ3M0s4d3FJQ
+itnQWJPdHBwOTRtSFhpMmY2NHN4SkZvZmlkQ0VtTmdueG5vRCtlSlA2OUZTNWZKYzlPMXpqU3BudjBFR
+FJuTHdsbVVkK291SzJxeU9ZNjFya3Mzdy9IaGNtSDR2TXpKUEx6NW4rM3RPL0JzanJ3aTNjdklyeUhTM
+210RCs0emJITSt2S24vbnZtU3kzZjNhMlVqUzNLTkZKdjNTYlJtOVBURXJQY3NpaDBFcGI5dHNaaHZxZ
+3UwVE8xL21OUVNyRXk5QW91b1NLVWlyS2hDdFVzOWxkNW1ONXRmTXJ4RlZ1aFNublI0dGNmSTRqY2RYa
+HZJK2JCZ3VrNTh3ZHZ4MlkrZWUyMDlEU2U=
 --------------------------------------------------------------------------------';
 
     /**

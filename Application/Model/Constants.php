@@ -18,4 +18,6 @@ namespace D3\Unzer\Application\Model;
 class Constants
 {
     public const OXID_MODULE_ID = 'd3unzer';
+
+    public const MGW_ORDERINPROGRESS = 'd3_mgw_order_is_in_progress';
 }

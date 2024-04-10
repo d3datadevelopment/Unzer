@@ -2,6 +2,7 @@
 
 namespace D3\Unzer\Modules\Application\Model;
 
+use D3\Unzer\Application\Model\Constants;
 use D3\Unzer\Application\Model\Containers\Criterions;
 use D3\Unzer\Application\Model\Containers\PrepaymentData;
 use D3\Unzer\Application\Model\Factory;
@@ -48,8 +49,6 @@ use stdClass;
  */
 class Order extends Order_parent
 {
-    public const MGW_ORDERINPROGRESS = 'd3_mgw_order_is_in_progress';
-
     protected $d3HeidelpayIsSurpressEMailSending = false;
 
     /**
@@ -613,7 +612,7 @@ class Order extends Order_parent
             $heidelPaySettings = $factory->getSettings();
 
             if ($payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment)) {
-                Registry::getSession()->setVariable(self::MGW_ORDERINPROGRESS, true);
+                Registry::getSession()->setVariable(Constants::MGW_ORDERINPROGRESS, true);
 
                 $factory->getModuleConfiguration()->d3getLog()->info(
                     self::class,

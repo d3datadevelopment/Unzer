@@ -43,7 +43,7 @@ $aModule = [
         'en' => '',
     ],
     'thumbnail'      => 'picture.svg',
-    'version'        => '7.0.0.1',
+    'version'        => '7.0.0.2',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',

@@ -113,7 +113,7 @@ class PaymentController extends PaymentController_parent
                 'HeidelpayCustomerIdSessionName: ' . $session->getVariable($factory::HeidelpayCustomerIdSessionName) . PHP_EOL
             );
 
-            Registry::getSession()->deleteVariable(\D3\Unzer\Modules\Application\Model\Order::MGW_ORDERINPROGRESS);
+            Registry::getSession()->deleteVariable(Constants::MGW_ORDERINPROGRESS);
             $orderId = $session->getVariable($factory::HeidelpayOrderResultSessionOrderID);
             if ($orderId) {
                 /** @var Order $order */
