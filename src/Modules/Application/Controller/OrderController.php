@@ -4,6 +4,7 @@ namespace D3\Heidelpay\Modules\Application\Controller;
 
 use D3\Heidelpay\Controllers\MgwOrder;
 use D3\Heidelpay\Controllers\Order;
+use D3\Heidelpay\Models\Constants;
 use D3\Heidelpay\Models\Containers\Criterions;
 use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Payment\Easycredit;
@@ -636,7 +637,7 @@ class OrderController extends OrderController_parent
             
             if ( $payment->load($sPaymentid) && $heidelPaySettings->isAssignedToHeidelPayment($payment) && 
                  $mSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS &&
-                 Registry::getSession()->getVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS)
+                 Registry::getSession()->getVariable( Constants::MGW_ORDERINPROGRESS)
             ) {
                 $result = 'payment?payerror=2';
                 $d3Log->info(
@@ -647,7 +648,7 @@ class OrderController extends OrderController_parent
                 );
                 return $result;
             } else {
-                Registry::getSession()->deleteVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS);
+                Registry::getSession()->deleteVariable( Constants::MGW_ORDERINPROGRESS);
                 $result = parent::_getNextStep( $mSuccess );
             }
 

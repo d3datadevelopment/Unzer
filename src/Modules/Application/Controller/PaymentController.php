@@ -2,6 +2,7 @@
 
 namespace D3\Heidelpay\Modules\Application\Controller;
 
+use D3\Heidelpay\Models\Constants;
 use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Parameter\Group\CompanyData;
 use D3\Heidelpay\Models\Payment\Btobbillpurchase;
@@ -112,7 +113,7 @@ class PaymentController extends PaymentController_parent
                 'HeidelpayCustomerIdSessionName: ' . $session->getVariable($factory::HeidelpayCustomerIdSessionName) . PHP_EOL
             );
 
-            Registry::getSession()->deleteVariable(\D3\Heidelpay\Modules\Application\Model\Order::MGW_ORDERINPROGRESS);
+            Registry::getSession()->deleteVariable( Constants::MGW_ORDERINPROGRESS);
             $orderId = $session->getVariable($factory::HeidelpayOrderResultSessionOrderID);
             if ($orderId) {
                 /** @var Order $order */
