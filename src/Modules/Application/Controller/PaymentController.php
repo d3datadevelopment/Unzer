@@ -157,27 +157,27 @@ class PaymentController extends PaymentController_parent
      */
     protected function d3HandleRemainingOrder(Order $order)
     {
+        $factory               = oxNew(Factory::class);
+        $d3log = $factory->getModuleConfiguration()->d3getLog();
+
         try {
             $paymentId = $order->getFieldData('oxtransid');
-            $factory               = oxNew(Factory::class);
-            $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
-            $d3log = $factory->getModuleConfiguration()->d3getLog();
 
-            if ($payment && in_array($payment->getState(), $this->d3GetOrderNotProcessedStates())) {
-                // delete the pending order
-                $message = "Order: ".$order->getId()." was not deleted";
-                if ($order->delete()) {
-                    $message = "Order: ".$order->getId()." was deleted";
-                }
-                $d3log->info(
-                    __CLASS__,
-                    __FUNCTION__,
-                    __LINE__,
-                    $message
+            if (!$paymentId || !strlen(trim($paymentId))) {
+                throw new UnzerApiException('missing payment id');
+            }
+            $payment = $factory->getMgwResourceHandler()->fetchPaymentByID($paymentId);
+
+            if (in_array($payment->getState(), $this->d3GetOrderNotProcessedStates())) {
+                // delete not processed order
+                $message = $this->d3DeleteRemainingOrder(
+                    $order,
+                    sprintf("Order %s isn't processed by Unzer, State: %s", $order->getId(), $payment->getState())
                 );
-            } elseif ($payment && in_array($payment->getState(), $this->d3GetOrderProcessedStates())) {
+                $d3log->info(__CLASS__, __FUNCTION__, __LINE__, $message);
+            } elseif (in_array($payment->getState(), $this->d3GetOrderProcessedStates())) {
                 // keep processed order, clear basket
-                $message = "keep already handled order: ".$order->getId();
+                $message = sprintf("keep already handled order: %s ", $order->getId());
                 $d3log->info(
                     __CLASS__,
                     __FUNCTION__,
@@ -194,14 +194,19 @@ class PaymentController extends PaymentController_parent
                 Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl());
             }
         } catch (UnzerApiException $e) {
-            Registry::getUtilsView()->addErrorToDisplay($exception);
+            // delete order not handled by Unzer
+            $message = $this->d3DeleteRemainingOrder(
+                $order,
+                sprintf("Order %s isn't handled by Unzer", $order->getId())
+            );
+            $d3log->info(__CLASS__, __FUNCTION__, __LINE__, $message);
         }
     }
 
     /**
      * @return array
      */
-    protected function d3GetOrderNotProcessedStates()
+    protected function d3GetOrderNotProcessedStates(): array
     {
         return [
             PaymentState::STATE_PENDING,
@@ -212,13 +217,29 @@ class PaymentController extends PaymentController_parent
     /**
      * @return array
      */
-    protected function d3GetOrderProcessedStates()
+    protected function d3GetOrderProcessedStates(): array
     {
         return [
             PaymentState::STATE_COMPLETED,
             PaymentState::STATE_PARTLY,
             PaymentState::STATE_CHARGEBACK
         ];
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return string
+     */
+    protected function d3DeleteRemainingOrder(Order $order, string $baseMessage = ''): string
+    {
+        // delete the pending order
+        $message = "Order should be deleted";
+        $order->cancelOrder();
+        if ($order->delete()) {
+            $message = "Order has been deleted";
+        }
+        return $baseMessage.', '.$message;
     }
 
     /**
