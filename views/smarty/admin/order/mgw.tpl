@@ -156,7 +156,7 @@
                                         <option value="CREDIT">[{oxmultilang ident="D3_UNZER_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT"}]</option>
                                     </select>
                                     <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
-                                [{elseif $action == "charge"}]
+                                [{elseif $action == "charge" || $action == 'cancelAuthorize'}]
                                     <input type="text" name="amount" value="[{$transaction.amount}]" [{$readonly}]/>
                                 [{elseif $action == "finalize"}]
                                     [{oxmultilang ident="D3_UNZER_CONTROLLERS_ADMIN_ORDER_UNIQUE_INVOICEID"}]
