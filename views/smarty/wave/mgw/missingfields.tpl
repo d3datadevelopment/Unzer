@@ -4,7 +4,7 @@
             [{if $oxidFieldname == 'oxbirthdate'}]
                 <div class="form-group oxDate req">
                     <label class="control-label col-xs-12 col-lg-3 req">
-                        [{oxmultilang ident="BIRTHDATE"}]
+                        [{oxmultilang ident="BIRTHDATE"}]*
                     </label>
                     <div class="col-xs-3 col-lg-3">
                         <input class="oxDay form-control" name="d3UnzerMissingUserData[[{$sPaymentID}]][[{$oxidFieldname}]][day]" type="text"

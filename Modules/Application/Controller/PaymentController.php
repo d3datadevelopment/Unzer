@@ -426,6 +426,35 @@ class PaymentController extends PaymentController_parent
                     }
                 }
 
+                if ($heidelPayment instanceof Secured
+                    || $heidelPayment instanceof Unsecured
+                    || $heidelPayment instanceof DirectdebitSecured
+                ) {
+
+                    $missingUserData = Registry::getRequest()->getRequestEscapedParameter('d3UnzerMissingUserData');
+                    $birthdate[$paymentId] = $missingUserData[$paymentId]['oxbirthdate'] ?? null;
+
+                    if ($this->d3HasInvalidBirthdateInput($birthdate, $paymentId)) {
+                        // log message
+                        $factory->getModuleConfiguration()->d3getLog()->warning(
+                            __CLASS__,
+                            __FUNCTION__,
+                            __LINE__,
+                            'birthdate is empty but required',
+                            'user didn\'t set the birthdate for invoice payment. input: ' . var_export($birthdate, true)
+                        );
+                        $this->_sPaymentError = 1;
+
+                        return null;
+                    }
+
+                    $oxUser->assign(
+                        ['oxbirthdate' => $birthdate[$paymentId]]
+                    );
+
+                    $oxUser->save();
+                }
+
                 $heidelpayResult = $request->getRequestParameter('unzer-result');
                 $d3log->info(
                     self::class,
