@@ -1,0 +1,72 @@
+{% if isset(d3UnzerMissingUserParameter[oxidPaymentId]) %}
+    <style>
+        .d3UnzerMissingFields .oxDate .row label {
+            position: absolute;
+            left: -3000px;
+        }
+    </style>
+
+    <div class="d3UnzerMissingFields">
+        {% for oxidFieldname, unzerFieldname in d3UnzerMissingUserParameter[oxidPaymentId] %}
+            {% if oxidFieldname == 'oxbirthdate' %}
+                <div class="form-group oxDate">
+                    <label class="control-label col-12 req">
+                        {{ translate({ ident: "BIRTHDATE", suffix: "COLON" }) }}
+                    </label>
+                    <div class="row">
+                        <div class="col col-3">
+                            <label for="unzerDayField">{{ translate({ ident: "DAY" }) }}</label>
+                            <input id="unzerDayField"
+                                   class="oxDay form-control"
+                                   name="d3UnzerMissingUserData[{{ sPaymentID }}][{{ oxidFieldname }}][day]"
+                                   type="text"
+                                   maxlength="2" value=""
+                                   placeholder="{{ translate({ ident: "DAY" }) }}" required>
+                        </div>
+                        <div class="col col-6">
+                            <label for="unzerMonthField">{{ translate({ ident: "MONTH" }) }}</label>
+                            <select id="unzerMonthField"
+                                    class="oxMonth form-control"
+                                    name="d3UnzerMissingUserData[{{ sPaymentID }}][{{ oxidFieldname }}][month]"
+                                    required="">
+                                <option value="" label="-">-</option>
+                                {% for month in 1..12 %}
+                                    <option value="{{ loop.index }}">
+                                        {{ translate({ ident: "MONTH_NAME_" ~ loop.index }) }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col col-3">
+                            <label for="unzerYearField">{{ translate({ ident: "YEAR" }) }}</label>
+                            <input id="unzerYearField"
+                                   class="oxYear form-control js-oxValidate js-oxValidate_notEmpty"
+                                   name="d3UnzerMissingUserData[{{ sPaymentID }}][{{ oxidFieldname }}][year]"
+                                   type="text"
+                                   maxlength="4" value=""
+                                   placeholder="{{ translate({ ident: "YEAR" }) }}" required="">
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <label class="control-label col-lg-3 req" for="{{ sPaymentID }}_{{ oxidFieldname }}">
+                        {{ translate({ ident: "D3UNZER_PAYMENT_MGW_MISSINGFIELD_INPUT_" ~ oxidFieldname, suffix: "COLON" }) }}
+                    </label>
+                    <div class="col-lg-5">
+                        <input id="{{ sPaymentID }}_{{ oxidFieldname }}"
+                               type="text"
+                               class="form-control js-oxValidate js-oxValidate_notEmpty"
+                               size="20"
+                               data-validation-required-message="{{ translate({ ident: "ERROR_MESSAGE_INPUT_NOTALLFIELDS" }) }}"
+                               required
+                               minlength="1"
+                               name="d3UnzerMissingUserData[{{ sPaymentID }}][{{ oxidFieldname }}]"
+                               value="">
+                        <div class="help-block"></div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

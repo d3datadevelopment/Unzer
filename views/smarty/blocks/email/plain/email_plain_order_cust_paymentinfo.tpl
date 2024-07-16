@@ -1,4 +1,5 @@
 [{d3modcfgcheck modid='d3unzer'}][{/d3modcfgcheck}][{if $mod_d3unzer }][{assign var="oPrePaymentData" value=$order->getHeidelpayBankTransferData()}]
+[{* deprecated there is no easycredit support anymore *}]
 [{assign var="easyCreditInformations" value=$order->getHeidelpayEasyCreditInformations()}]
 [{if is_object($oPrePaymentData)}]##########################################################
 

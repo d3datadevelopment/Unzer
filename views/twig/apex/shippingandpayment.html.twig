@@ -1,0 +1,19 @@
+{% if d3HpShowEasyCreditParameter %}
+    {% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/') %}
+    {% set sBrandIdent = 'EASYCREDIT' %}
+    {% set sFullImageUrl = sImageUrl ~ 'logo_ratenkauf_ec.jpg' %}
+    <div class="card card-default d3EasyCreditNotes">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_TITLE" }) }}
+                {% include "@d3unzer/generic/payment_img.html.twig" with {sImageUrl: sFullImageUrl, sBrandIdent: sBrandIdent} %}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div>{{ d3HPEASYCREDIT_AMORTISATIONTEXT }}</div>
+            <a href="{{ d3HPEASYCREDIT_PRECONTRACTINFORMATIONURL }}" target="easyCredit"
+               class="fontunderline">{{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_LINK" }) }}</a>
+        </div>
+    </div>
+{% endif %}
+

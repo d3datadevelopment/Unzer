@@ -1,0 +1,304 @@
+{% include "headitem.html.twig" with {title: "GENERAL_ADMIN_TITLE"|translate} %}
+
+{% if readonly %}
+    {% set readonly = "readonly disabled" %}
+{% else %}
+    {% set readonly = "" %}
+{% endif %}
+
+{% set oCurr = edit.getOrderCurrency() %}
+{% set banktransferData = edit.getHeidelpayBankTransferData() %}
+
+<form name="transfer" id="transfer" action="{{ oViewConf.getSelfLink() }}" method="post">
+    {{ oViewConf.getHiddenSid()|raw }}
+    <input type="hidden" name="cur" value="{{ oCurr.id }}">
+    <input type="hidden" name="oxid" value="{{ oxid }}">
+    <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+</form>
+
+{% if oHeidelpayViewConfig.isModuleDemoVersion() %}
+    <div class="extension_warning">{{ translate({ ident: "D3_UNZER_IS_DEMO" }) }}</div>
+{% endif %}
+{% if heidelpayTransactionMessage %}
+    <div class="extension_error"> {{ heidelpayTransactionMessage }}</div>
+{% endif %}
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+    {% if banktransferData %}
+        <tr>
+            <td valign="top" class="edittext" width="100%">
+                <table border="0" width="100%" border="0" class="listTable box">
+                    <tr>
+                        <th colspan="2">
+                            <h2>{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_BANKTRANSFERDATA" }) }}</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_HOLDER" }) }}</td>
+                        <td class="listitem">{{ banktransferData.Holder }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_IBAN" }) }}</td>
+                        <td class="listitem">{{ banktransferData.Iban }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_BIC" }) }}</td>
+                        <td class="listitem">{{ banktransferData.Bic }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_AMOUNT" }) }}</td>
+                        <td class="listitem">{{ banktransferData.Amount }} {{ banktransferData.Currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_REASON" }) }}</td>
+                        <td class="listitem">{{ banktransferData.Reference }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_UNIQUEID" }) }}</td>
+                        <td class="listitem">{{ banktransferData.UniqueID }}</td>
+                    </tr>
+                    <tr>
+                        <td class="listitem">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_TRANSACTIONID" }) }}</td>
+                        <td class="listitem">{{ banktransferData.TransactionID }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    {% endif %}
+    <tr>
+        <td valign="top" class="edittext" width="100%">
+            {% block admin_order_heidelpay_form %}
+
+                {# showing all transactions for this order #}
+                {% set transactions = oView.getTransactions() %}
+                {% set transactions = transactions.reverse() %}
+
+                {% if not empty(transactions) %}
+                    <table border="0" class="d3hptransactions box" id="d3hptransactions">
+                        <tr>
+                            <th colspan="3">{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_RESULT" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_DATE" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_CARDS" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_METHOD" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_PAYMENTTYPE" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_TXNID" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_UNIQUEID" }) }}</th>
+                            <th>{{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_SHORTID" }) }}</th>
+                        </tr>
+                        {% for index, transaction in transactions %}
+
+                            {% set transactionLogReader = transaction.getTransactiondata() %}
+                            {% set sClassName = 'class="listitem"' %}
+                            {% set blTransactionSuccessfull = false %}
+                            {% set sAmount = transactionLogReader.getAmount() %}
+                            {% set sPaymentType = transactionLogReader.getPaymentcode()|substr(0, 2) %}
+                            {% set sPaymentMethod = transactionLogReader.getPaymentcode()|substr(3) %}
+                            {% set sUniqueId = transactionLogReader.getUniqueid() %}
+                            {% set criterionTags = transactionLogReader.getCriterionTags() %}
+                            {% if false == empty(sUniqueId) %}
+                                {% if loop.index0 "is" "odd" %}
+                                    {% set sClassName = 'class="listitem2"' %}
+                                {% endif %}
+                                {% if transactionLogReader.getResult() == 'ACK' %}
+                                    {% set blTransactionSuccessfull = true %}
+                                {% endif %}
+
+                                {% if not blTransactionSuccessfull %}
+                                    {% set sAmount = "<del>" ~ sAmount ~ "</del>" %}
+                                {% endif %}
+
+                                {% if sPaymentMethod == 'PA' %}
+                                    {% set sAmount = "(" ~ sAmount ~ ")" %}
+                                {% endif %}
+                                <tr>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}"
+                                           class="d3hpopen d3hpdisplay"><i class="fas fa-plus-circle d3fa-17x d3fa-color-disabled"></i></a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen "
+                                           title="{{ transactionLogReader.getResult() }}">
+                                            <i class="fas d3fa-17x {% if blTransactionSuccessfull %} fa-check-circle d3fa-color-green{% else %} fa-times-circle d3fa-color-red{% endif %}"></i>
+                                        </a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen">{{ transactionLogReader.getReason() }}</a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}"
+                                           class="d3hpopen">{{ transactionLogReader.getTimestamp() }}</a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen">
+                                            {{ sAmount }} {{ transactionLogReader.getCurrency() }}
+                                        </a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen">
+                                            {{ translate({ ident: 'D3_UNZER_METHOD_' ~ sPaymentMethod }) }}
+                                            ({{ sPaymentMethod }})
+                                        </a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen">
+                                            {{ translate({ ident: 'D3_UNZER_PAYMENT_' ~ sPaymentType }) }}
+                                            ({{ sPaymentType }})
+                                        </a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}"
+                                           class="d3hpopen">{{ transactionLogReader.getTransactionid() }}</a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}"
+                                           class="d3hpopen">{{ sUniqueId }}</a>
+                                    </td>
+                                    <td {{ sClassName }}>
+                                        <a rel="d3{{ index }}" class="d3hpopen">{{ transactionLogReader.getShortid() }}</a>
+                                    </td>
+                                </tr>
+                                {% if criterionTags.count() > 0 %}
+                                    <tr class="d3hphidden d3{{ index }}" data-visible="false">
+                                        <td colspan="10" {{ sClassName }} style="text-align:left;">
+                                            <div class="d3hpslider">
+                                                <h4>{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_CRITERIONTAGS" }) }}</h4>
+                                                <div style="overflow:auto;height: 140px;width: 960px;">
+                                                    <table width="100%">
+                                                        {% for criterionName, criterionValue in criterionTags %}
+                                                            {% set criterionClassname = "listitem" %}
+
+                                                            {% if loop.index is even %}
+                                                                {% set criterionClassname = "listitem2" %}
+                                                            {% endif %}
+                                                            <tr >
+                                                                <td class="{{ criterionClassname }}" style="text-align:left;">{{ translate({ ident: criterionName, noerror: true }) }}:</td>
+                                                                <td class="{{ criterionClassname }}" style="text-align:left;">
+                                                                    <div style="width: 666px;overflow-y: hidden;">{{ criterionValue }}</div>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </table>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr class="d3hphidden d3{{ index }}" data-visible="false">
+                                    <td colspan="9" {{ sClassName }}>
+                                        <div class="d3hpslider">
+                                            <form action="{{ oViewConf.getSelfLink() }}" method="post">
+                                                <div>
+                                                    {{ oViewConf.getHiddenSid()|raw }}
+                                                    <input type="hidden" name="cur" value="{{ oCurr.id }}">
+                                                    <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+                                                    <input type="hidden" name="fnc" value="runPaymentAction">
+                                                    <input type="hidden" name="oxid" value="{{ oxid }}">
+                                                    <input type="hidden" name="editval[oxorder__oxid]" value="{{ oxid }}">
+                                                    <input type="hidden" name="d3TransactionId" value="{{ index }}">
+                                                    <input type="hidden"
+                                                           name="d3TransactionUniqueId"
+                                                           value="{{ sUniqueId }}">
+                                                    <input type="hidden"
+                                                           id="paymentActiond3{{ index }}"
+                                                           name="paymentAction"
+                                                           value="">
+
+                                                </div>
+                                                <ul class="hpactions">
+                                                    {% for button in oView.getActions(transactionLogReader) %}
+                                                        <li>
+                                                            <button name="{{ button.name }}" value="{{ button.value }}"
+                                                                    {% if (button.disabled) or (transactionLogReader.getResult()) != 'ACK' %}disabled="disabled"{% endif %}
+                                                                    rel="d3{{ index }}"
+                                                                    class="d3hptransaction">{{ button.title }}</button>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                <div class="hpfieldset" id="fieldsetd3{{ index }}">
+                                                    <label class="d3hplabel">
+                                                        Betrag
+                                                        <input type="text"
+                                                               name="data[betrag]"
+                                                               value="{{ transactionLogReader.getAmount() }}">
+                                                        &nbsp;{{ edit.oxorder__oxcurrency.value }}
+                                                    </label>
+                                                    <label class="d3modcfg_btn icon">
+                                                        <input type="submit"
+                                                               id="submitd3{{ index }}"
+                                                               value="{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_SUBMIT" }) }}">
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td {{ sClassName }} valign="top">
+                                        <a rel="d3{{ index }}" class="d3modcfg_icon d3hpclose action_minus_inactive"
+                                           title="{{ translate({ ident: "CATEGORY_UPDATE_CLOSE" }) }}"></a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    {% if oView.isBasicLicence() %}
+                        <div class="extension_warning">{{ translate({ ident: "D3_UNZER_RESTRICTIONINFO_ORDER" }) }}</div>
+                    {% endif %}
+
+                {% else %}
+                    {{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_IS_NOT_HEIDELPAY" }) }}
+                {% endif %}
+            {% endblock %}
+        </td>
+    </tr>
+</table>
+
+{% set doNotShow %}
+    <script type="text/javascript">
+        {% set javaScript %}
+            jQuery(".d3hpopen").click(function () {
+                current = jQuery(this);
+                className = current.attr("rel");
+                isVisible = jQuery("." + className).attr("data-visible");
+
+                if ("false" === isVisible) {
+                    jQuery("#d3hptransactions")
+                        .find(".d3hphidden." + className).show()
+                        .find('.d3hpslider').animate({height: "toggle"}, "slow");
+                    jQuery("." + className).attr("data-visible", 'true');
+                } else {
+                    element = jQuery("#d3hptransactions")
+                        .find(".d3hphidden." + className);
+
+                    element.find('.d3hpslider').animate({height: "toggle"}, "slow", function () {
+                        element.hide();
+                    });
+                    jQuery("." + className).attr("data-visible", 'false');
+                }
+            });
+            jQuery(".d3hphidden, .d3hpslider").hide();
+            var originalValue = "";
+            jQuery("button.d3hptransaction").click(function () {
+                var hiddenId = "#paymentAction" + jQuery(this).attr("rel");
+                var submitId = "#submit" + jQuery(this).attr("rel");
+                var fieldsetId = "#fieldset" + jQuery(this).attr("rel");
+                jQuery(hiddenId).attr("name", jQuery(this).attr("name"));
+                jQuery(hiddenId).attr("value", jQuery(this).attr("value"));
+
+                if (originalValue == "") {
+                    originalValue = jQuery(submitId).attr("value");
+                }
+
+                jQuery(submitId).attr("value", jQuery(this).text() + " " + originalValue);
+                jQuery(fieldsetId).show();
+                return false;
+            });
+        {% endset %}
+    </script>
+{% endset %}
+
+{{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
+
+{% include "bottomnaviitem.html.twig" %}
+
+{% include "@d3modcfg_lib/admin/inc/inc.html.twig" %}

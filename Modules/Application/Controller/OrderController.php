@@ -8,9 +8,6 @@ use D3\Unzer\Application\Model\Constants;
 use D3\Unzer\Application\Model\Containers\Criterions;
 use D3\Unzer\Application\Model\Factory;
 use D3\Unzer\Application\Model\Payment\Easycredit;
-use D3\Unzer\Application\Model\Payment\Prepayment;
-use D3\Unzer\Application\Model\Payment\Invoice\Secured;
-use D3\Unzer\Application\Model\Payment\Invoice\Unsecured;
 use D3\Unzer\Application\Model\Payment\Exception\PaymentNotReferencedToUnzerException;
 use D3\Unzer\Application\Model\Transactionlog\Reader\Unzer as ReaderHeidelpay;
 use D3\Unzer\Application\Model\Verify\Exception\AgbNotAcceptedException;
@@ -24,6 +21,7 @@ use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use D3\Unzer\Modules\Application\Model\Order as OrderAlias;
 use Doctrine\DBAL\DBALException;
 use Exception;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use UnzerSDK\Exceptions\UnzerApiException;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order as OxidOrder;
@@ -260,11 +258,14 @@ class OrderController extends OrderController_parent
         $oBasket    = $this->getBasket();
         $sPaymentid = $oBasket->getPaymentId();
 
+        $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                             ->getParameter('oxid_esales.templating.engine_template_extension');
+
         if ($this->hasUserHPStoreData($sPaymentid) && is_null($blUseHPStore)) {
-            return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/storeduid.tpl';
+            return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/storeduid.'.$templateExtension;
         }
 
-        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/order_iframe.tpl';
+        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/order_iframe.'.$templateExtension;
     }
 
     /**
@@ -558,8 +559,10 @@ class OrderController extends OrderController_parent
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
         $mappedThemeId = $factory->getModuleConfiguration()->getMappedThemeId();
+        $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                             ->getParameter('oxid_esales.templating.engine_template_extension');
 
-        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/'.$templateName.'.tpl';
+        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/'.$templateName.'.'.$templateExtension;
     }
 
     /**
@@ -571,6 +574,7 @@ class OrderController extends OrderController_parent
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
+     * @deprecated there is no easycredit support anymore
      */
     public function getHeidelpayEasyCreditInformations()
     {
@@ -658,7 +662,7 @@ class OrderController extends OrderController_parent
                 return $result;
             }
 
-            Registry::getSession()->deleteVariable( OrderAlias::MGW_ORDERINPROGRESS);
+            Registry::getSession()->deleteVariable( Constants::MGW_ORDERINPROGRESS);
             $result = parent::getNextStep($iSuccess);
 
             $d3Log->info(
@@ -773,8 +777,11 @@ class OrderController extends OrderController_parent
             return $result;
         }
 
+        // NGW only:
         if ($iSuccess === 'Show3DSecureFrame') {
-            $sTemplateFor3DSecure = 'd3_unzer_views_azure_tpl_order_3ds_iframe.tpl';
+            $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                                 ->getParameter('oxid_esales.templating.engine_template_extension');
+            $sTemplateFor3DSecure = 'd3_unzer_views_azure_tpl_order_3ds_iframe.'.$templateExtension;
 
             $d3Log->info(
                 self::class,

@@ -321,8 +321,8 @@ return array(
     'D3UNZER_WEBHOOKS_HEADLINE_EVENTS'                               => 'Events',
     'D3UNZER_WEBHOOKS_HEADLINE_ID'                                   => 'Id',
     'D3UNZER_WEBHOOKS_NOWEBHOOKREGISTERED'                           => 'No webhook registered!',
-    'D3UNZER_WEBHOOKS_ERR_CLEARING'                                  => 'Webhook(s) bereinigen: %1$s',
-    'D3UNZER_WEBHOOKS_ERR_CREATE'                                    => 'Webhook anlegen: %1$s',
-    'D3UNZER_WEBHOOKS_ERR_GET'                                       => 'Webhook(s) abfragen: %1$s',
-    'D3UNZER_WEBHOOKS_ERR_NOTBLANK'                                  => '%1$s darf nicht leer sein',
+    'D3UNZER_WEBHOOKS_ERR_CLEARING'                                  => 'clear webhook(s): %1$s',
+    'D3UNZER_WEBHOOKS_ERR_CREATE'                                    => 'create webhook: %1$s',
+    'D3UNZER_WEBHOOKS_ERR_GET'                                       => 'request webhook(s): %1$s',
+    'D3UNZER_WEBHOOKS_ERR_NOTBLANK'                                  => '%1$s mustn\'t blank',
 );

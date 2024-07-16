@@ -21,3 +21,13 @@
 .d3EasyCreditNotesAzure a{ color:#1d7e96;}
 
 .payment-option.activePayment {display:block;}
+
+.payment-option-form > label {min-height: 40px}
+
+.payment-option label.unzerimg {padding-left: 75px;margin-left: 10px; background-repeat: no-repeat; background-size: 64px auto; margin-bottom: 5px;}
+
+.payment-option label.unzerimg.noicon {background-image: none !important; padding-left: inherit; margin-left: inherit}
+
+.d3UnzerMissingFields > .form-group {margin-bottom: 20px; margin-left: 30px;}
+
+.unzerUI.form {margin-left: 30px;}

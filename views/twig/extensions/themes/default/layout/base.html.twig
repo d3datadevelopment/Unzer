@@ -1,0 +1,13 @@
+{% extends "layout/base.html.twig" %}
+
+{% block base_style %}
+    {{ parent() }}
+
+    {% if (oViewConf.getActiveClassName() == 'payment') or (oViewConf.getActiveClassName() == 'order') %}
+        {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+        {% if mod_d3unzer %}
+            {{ style({ include: oViewConf.getModuleUrl('d3unzer', 'out/src/css/d3unzer.css') }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

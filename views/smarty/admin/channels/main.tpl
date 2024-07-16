@@ -180,7 +180,6 @@
                 </div>
                 [{/if}]
 
-                [{include file=$subTemplateName}]
                 <div class="form-group">
                     <div class="alert alert-info" style="padding:5px;text-align:right;">
                         <button class="btn btn-primary" type="submit">

@@ -35,6 +35,7 @@ class PaymentGateway extends PaymentGateway_parent
      * @throws DatabaseErrorException
      * @throws DatabaseException
      * @throws StandardException
+     * @deprecated NGW interface
      */
     public function executePayment($dAmount, &$oOrder)
     {

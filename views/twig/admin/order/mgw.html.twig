@@ -1,0 +1,221 @@
+{% include "headitem.html.twig" with {title: "GENERAL_ADMIN_TITLE"|translate} %}
+{% set oCurr = edit.getOrderCurrency() %}
+<style>
+    input[type="number"], select {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .075) inset;
+        color: #555;
+        min-height: 15px;
+        line-height: 1.42857;
+        padding: 3px;
+        font-size: 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        background: #fff;
+    }
+</style>
+
+{% if (readonly) or (hasBasicRestrictions) %}
+    {% set readonly = "readonly disabled" %}
+{% else %}
+    {% set readonly = "" %}
+{% endif %}
+
+<form name="transfer" id="transfer" action="{{ oViewConf.getSelfLink() }}" method="post">
+    {{ oViewConf.getHiddenSid()|raw }}
+    <input type="hidden" name="cur" value="{{ oCurr.id }}">
+    <input type="hidden" name="oxid" value="{{ oxid }}">
+    <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+</form>
+
+{% if messageFromHeidelpayModule %}
+    <div class="errorbox"> {{ translate({ ident: messageFromHeidelpayModule, noerror: true }) }}</div>
+{% endif %}
+{% if paymentState %}
+
+    {% if hasBasicRestrictions %}
+        <div class="messagebox"> {{ translate({ ident: "D3_UNZER_RESTRICTIONINFO" }) }}</div>
+    {% endif %}
+
+    <div style="float: left;">
+        <table>
+
+            {% set inlineStyle = "border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;" %}
+            {% if paymentState.isCompleted %}
+                {% set inlineStyle = "border:1px solid darkgreen;color:darkgreen;background-color: lightgreen;" %}
+            {% elseif paymentState.isCanceled %}
+                {% set inlineStyle = "border:1px solid darkred;color:darkred;background-color: lightcoral;" %}
+            {% elseif paymentState.isPartlyPaid %}
+                {% set inlineStyle = "border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;" %}
+            {% endif %}
+
+            <tr>
+                <th style="padding: 5px 10px;border:1px solid black;color:black;background-color: lightgrey;">Zahlungen:</th>
+                <td style="padding: 5px 10px; {{ inlineStyle }}">{{ translate({ ident: "D3UNZER_MGW_PAYMENTSTATE_" ~ paymentState.stateName }) }}</td>
+            </tr>
+
+            {% set shipments = payment.getShipments() %}
+            {% if shipments|length %}
+                {% for shipment in shipments %}
+                    {% set inlineStyle = "border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;" %}
+                    {% set totallines = loop.length %}
+                    {% set linecount = totallines+1 %}
+
+                    {% if shipment.isSuccess() %}
+                        {% set inlineStyle = "border:1px solid darkgreen;color:darkgreen;background-color: lightgreen;" %}
+                    {% elseif shipment.isError() %}
+                        {% set inlineStyle = "border:1px solid darkred;color:darkred;background-color: lightcoral;" %}
+                    {% elseif shipment.isPending() %}
+                        {% set inlineStyle = "border:1px solid darkgoldenrod;color:darkgoldenrod;background-color: lightyellow;" %}
+                    {% endif %}
+
+                    {% set shpmPayment = shipment.getPayment() %}
+
+                    <tr>
+                        {% if loop.index == 1 %}
+                            <th rowspan="{{ linecount }}" style="padding: 5px 10px; border:1px solid black;color:black;background-color: lightgrey;">
+                                Sendungen:
+                            </th>
+                        {% endif %}
+                        <td style="padding: 5px 10px; {{ inlineStyle }}">
+                            gesichert: {{ shipment.getAmount() }} {{ oCurr.sign }}<br>
+                            {{ shipment.getDate() }}<br>
+                            Rechn.nr.: {{ shpmPayment.getInvoiceId() }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="padding: 5px 10px; border:1px solid black;color:black;background-color: white;">offen: {{ paymentState.remaining }} {{ oCurr.sign }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    <div style="float: left;">
+        <table style="min-width:300px">
+            <tr>
+                <td>Payment-Id</td>
+                <td>:</td>
+                <td style="text-align: right;">{{ edit.getFieldData('oxtransid') }}</td>
+            </tr>
+            <tr>
+                <td>{{ translate({ ident: "D3UNZER_MGW_AMOUNT_CHARGED" }) }}</td>
+                <td>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_MGW_AMOUNT_CHARGED"), sHelpText: help_text("HELP_D3UNZER_MGW_AMOUNT_CHARGED")} %}:</td>
+                <td style="text-align: right;">{{ paymentState.charged }} {{ oCurr.sign }}</td>
+            </tr>
+            <tr>
+                <td>{{ translate({ ident: "D3UNZER_MGW_AMOUNT_REMAINING" }) }}</td>
+                <td>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_MGW_AMOUNT_REMAINING"), sHelpText: help_text("HELP_D3UNZER_MGW_AMOUNT_REMAINING")} %}:</td>
+                <td style="text-align: right;">{{ paymentState.remaining }} {{ oCurr.sign }}</td>
+            </tr>
+            <tr>
+                <td>{{ translate({ ident: "D3UNZER_MGW_AMOUNT_CANCELED" }) }}</td>
+                <td>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_MGW_AMOUNT_CANCELED"), sHelpText: help_text("HELP_D3UNZER_MGW_AMOUNT_CANCELED")} %}:</td>
+                <td style="text-align: right;">{{ paymentState.canceled }} {{ oCurr.sign }}</td>
+            </tr>
+            <tr>
+                <td>{{ translate({ ident: "D3UNZER_MGW_AMOUNT_TOTAL" }) }}</td>
+                <td>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_MGW_AMOUNT_TOTAL"), sHelpText: help_text("HELP_D3UNZER_MGW_AMOUNT_TOTAL")} %}:</td>
+                <td style="text-align: right;">{{ paymentState.total }} {{ oCurr.sign }}</td>
+            </tr>
+        </table>
+    </div>
+
+    {% set transactions = paymentState.transactions %}
+    <table style="width:98%">
+        {% for transaction in transactions %}
+            <tr>
+                <td></td>
+                <th style="border-bottom: 1px solid rgb(128,128,128)">Typ</th>
+                <th style="border-bottom: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_AMOUNT" }) }}</th>
+                <th style="border-bottom: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_SHORTID" }) }}</th>
+                <th style="border-bottom: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_TRANSACTIONTIME" }) }}</th>
+                <th style="border-bottom: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_ACTIONS" }) }}</th>
+            </tr>
+            <tr>
+                <td style="border-right: 1px solid rgb(128,128,128)">&nbsp;</td>
+                <td>{{ translate({ ident: "D3UNZER_MGW_TRANSACTIONTYPE_" ~ transaction.type }) }}</td>
+                <td>{{ transaction.formattedAmount }} {{ transaction.currency }}</td>
+                <td>{{ transaction.shortid }}</td>
+                <td>{{ transaction.timestamp }}</td>
+                <td rowspan="3" style="border-right: 1px solid rgb(128,128,128)">
+                    {% for action in transaction.actions %}
+                        <form action="{{ oViewConf.getSelfLink() }}" method="post" {{ readonly }}>
+                            {{ oViewConf.getHiddenSid()|raw }}
+                            <input type="hidden" name="cur" value="{{ oCurr.id }}">
+                            <input type="hidden" name="oxid" value="{{ oxid }}">
+                            <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+                            <input type="hidden" name="resourceId" value="{{ transaction.id }}"/>
+                            <input type="hidden" name="action" value="{{ action }}"/>
+                            <input type="hidden" name="fnc" value="routeToAction"/>
+                            <label>
+                                {% if action == "cancelCharge" %}
+                                    <select name="reasoncode">
+                                        <option value="">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_REASONCODE_SELECTREASON" }) }}</option>
+                                        <option value="CANCEL">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_REASONCODE_CANCEL" }) }}</option>
+                                        <option value="RETURN">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_REASONCODE_RETURN" }) }}</option>
+                                        <option value="CREDIT">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_REASONCODE_CREDIT" }) }}</option>
+                                    </select>
+                                    <input type="text" name="amount" value="{{ transaction.amount }}" {{ readonly }}/>
+                                {% elseif (action == 'charge') or (action == 'cancelAuthorize') %}
+                                    <input type="text" name="amount" value="{{ transaction.amount }}" {{ readonly }}/>
+                                {% elseif action == "finalize" %}
+                                    {{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_UNIQUE_INVOICEID" }) }}
+                                    <input type="text" name="invoiceid" value="" {{ readonly }}/>
+                                {% endif %}
+                                <button {{ readonly }}>{{ translate({ ident: "D3UNZER_MGW_TRANSACTIONTYPE_" ~ action }) }}</button>
+                            </label>
+                        </form>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_MESSAGE" }) }}</th>
+                <td colspan="4">{{ transaction.message }}</td>
+            </tr>
+            {% if transaction.code %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_CODE" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.code }}</td>
+                </tr>
+            {% endif %}
+            {% if transaction.iban %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_IBAN" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.iban }}</td>
+                </tr>
+            {% endif %}
+            {% if transaction.bic %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_BIC" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.bic }}</td>
+                </tr>
+            {% endif %}
+            {% if transaction.holder %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_HOLDER" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.holder }}</td>
+                </tr>
+            {% endif %}
+            {% if transaction.descriptor %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_DESCRIPTOR" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.descriptor }}</td>
+                </tr>
+            {% endif %}
+            {% if transaction.paymentReference %}
+                <tr>
+                    <th style="border-right: 1px solid rgb(128,128,128)">{{ translate({ ident: "D3_UNZER_CONTROLLERS_ADMIN_ORDER_HEIDELPAY_PAYMENTREFERENCE" }) }}</th>
+                    <td colspan="5" style="border-right: 1px solid rgb(128,128,128)">{{ transaction.paymentReference }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td style="border-right: 1px solid rgb(128,128,128);">&nbsp;</td>
+                <td colspan="5"  style="border-right: 1px solid rgb(128,128,128);border-bottom: 1px solid rgb(128,128,128);">&nbsp;</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% include "bottomnaviitem.html.twig" %}
+
+{% include "@d3modcfg_lib/admin/inc/inc.html.twig" %}

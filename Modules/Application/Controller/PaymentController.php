@@ -24,6 +24,7 @@ use D3\ModCfg\Application\Model\Exception\d3ShopCompatibilityAdapterException;
 use D3\ModCfg\Application\Model\Log\d3log;
 use D3\ModCfg\Application\Model\Transactionlog\d3transactionlog;
 use Doctrine\DBAL\DBALException;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use RuntimeException;
 use UnzerSDK\Constants\PaymentState;
 use UnzerSDK\Exceptions\UnzerApiException;
@@ -414,13 +415,12 @@ class PaymentController extends PaymentController_parent
             );
 
             if ($heidelPayment->isMGWPayment()) {
-                /** @var Request $request */
-                $request         = oxNew(Request::class);
+                $request         = Registry::getRequest();;
                 if (
                     ($heidelPayment instanceof DirectdebitSecured || $heidelPayment instanceof Directdebit) &&
                     (bool) $factory->getModuleConfiguration()->getValue(self::OPTION_DONT_SHOW_DD_MANDATE) === false
                 ) {
-                    $isSepaValidated = (bool)($request->getRequestParameter('unzerSepaValidation')[$paymentId]);
+                    $isSepaValidated = (bool)($request->getRequestEscapedParameter('unzerSepaValidation')[$paymentId]);
                     if (false == $isSepaValidated) {
                         return 'payment?d3unzersepamandatnotchecked=1';
                     }
@@ -618,6 +618,7 @@ class PaymentController extends PaymentController_parent
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
+     * @deprecated there is no easycredit support anymore
      */
     protected function handleD3HeidelpayEasyCredit($paymentId)
     {
@@ -709,7 +710,7 @@ class PaymentController extends PaymentController_parent
         if ($factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($payment->getId())) {
             $heidelpayPayment = $settings->getPayment($payment);
             $result           = $heidelpayPayment->getTemplateName($mappedThemeId, $factory->getModuleProvider()->getHeidelpayInterfaceType());
-            if (false == empty($result)) {
+            if ( ! empty( $result ) ) {
                 return $result;
             }
         }
@@ -723,15 +724,18 @@ class PaymentController extends PaymentController_parent
     public function d3GetDefaultPaymentFormTemplateName(Payment $oPayment)
     {
         $sPaymentId = $oPayment->getId();
+        $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                             ->getParameter('oxid_esales.templating.engine_template_extension');
+
         if ($sPaymentId == "oxidcashondel") {
-            return "page/checkout/inc/payment_oxidcashondel.tpl";
+            return "page/checkout/inc/payment_oxidcashondel.".$templateExtension;
         }
 
         if ($sPaymentId == "oxiddebitnote") {
-            return "page/checkout/inc/payment_oxiddebitnote.tpl";
+            return "page/checkout/inc/payment_oxiddebitnote.".$templateExtension;
         }
 
-        return "page/checkout/inc/payment_other.tpl";
+        return "page/checkout/inc/payment_other.".$templateExtension;
     }
 
     /**
@@ -873,6 +877,8 @@ class PaymentController extends PaymentController_parent
 
     /**
      * @return bool
+     * @deprecated NGW interface
+     * @deprecated there is no easycredit support anymore
      */
     protected function isEasyCreditConsentNotConfirmed()
     {
@@ -888,12 +894,13 @@ class PaymentController extends PaymentController_parent
     }
 
     /**
-     *
      * @return bool
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws SystemComponentException
+     * @deprecated NGW interface
+     * @deprecated there is no easycredit support anymore
      */
     public function isHeidelpayEasycreditAllowed(Basket $oxBasket)
     {
@@ -928,6 +935,7 @@ class PaymentController extends PaymentController_parent
      *
      * @return bool
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     public function isPaymentAllowedForCountryAndCurrency($sCountryIsoAlpha2, $sCurrencyName)
     {
@@ -953,6 +961,7 @@ class PaymentController extends PaymentController_parent
     /**
      * @return bool
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     protected function d3HeidelpayHasSameAdresses()
     {
@@ -986,12 +995,12 @@ class PaymentController extends PaymentController_parent
     }
 
     /**
-     *
      * @return bool
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     public function isHeidelpayInvoiceSecuredAllowed(Basket $oxBasket)
     {
@@ -1018,7 +1027,10 @@ class PaymentController extends PaymentController_parent
         $factory  = oxNew(Factory::class);
         $mappedThemeId = $factory->getModuleConfiguration()->getMappedThemeId();
 
-        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/messages.tpl';
+        $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                             ->getParameter('oxid_esales.templating.engine_template_extension');
+
+        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/messages.'.$templateExtension;
     }
 
     /**
@@ -1026,6 +1038,7 @@ class PaymentController extends PaymentController_parent
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     protected function addHeidelpayFormularParameter()
     {
@@ -1059,6 +1072,7 @@ class PaymentController extends PaymentController_parent
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
+     * @deprecated there is no B2B Bill Purchase support anymore
      */
     protected function handleD3HeidelpayBtobbillpurchase($paymentId)
     {
@@ -1097,6 +1111,7 @@ class PaymentController extends PaymentController_parent
     /**
      * @return bool
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     protected function isHeidelpayBasketAmountInLimits(Basket $oxBasket, HeidelpayAbstractPayment $payment)
     {
@@ -1111,12 +1126,13 @@ class PaymentController extends PaymentController_parent
     }
 
     /**
-     *
      * @return bool
      * @throws DBALException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws SystemComponentException
+     * @deprecated NGW interface
+     * @deprecated there is no B2B Bill Purchase support anymore
      */
     protected function isHeidelpayBtoBBillPurchaseAllowed(Basket $basket)
     {
@@ -1131,6 +1147,8 @@ class PaymentController extends PaymentController_parent
     /**
      * @return array
      * @throws SystemComponentException
+     * @deprecated NGW interface
+     * @deprecated there is no easycredit support anymore
      */
     protected function getEasyCreditLimits()
     {
@@ -1148,6 +1166,7 @@ class PaymentController extends PaymentController_parent
     /**
      * @return array
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     protected function getInvoiceSecuredLimits()
     {
@@ -1165,6 +1184,7 @@ class PaymentController extends PaymentController_parent
     /**
      * @return array
      * @throws SystemComponentException
+     * @deprecated NGW interface
      */
     protected function getBtoBBillPurchaseLimits()
     {
@@ -1247,6 +1267,10 @@ class PaymentController extends PaymentController_parent
             $fileUrl .= '?' . $fileTime;
         }
 
+        $mappedThemeId = (oxNew(Factory::class))->getModuleConfiguration()->getMappedThemeId();
+        if (strtolower($mappedThemeId) === 'apex') {
+            $javaScriptRegistrator->addFile( 'https://cdn.jsdelivr.net/npm/jquery@2.1.4/dist/jquery.min.js', 3 );
+        }
         $javaScriptRegistrator->addFile($fileUrl, 3, false);
     }
 
@@ -1302,7 +1326,7 @@ class PaymentController extends PaymentController_parent
             $oxUser,
             $this->getD3HeidelpayDeliveryAddress(),
             (bool)trim($oxUser->getFieldData('oxcompany')),
-            $heidelpayCustomerId
+            $oxUser->getId()
         );
 
         $d3log             = $factory->getModuleConfiguration()->d3getLog();

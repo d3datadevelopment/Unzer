@@ -1,0 +1,79 @@
+{% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/') %}
+{% set dynvalue = oView.getDynValue() %}
+{% set oHeidelPaySettings = oHeidelpayViewConfig.getSettings() %}
+{% set oHeidelPayment = oHeidelPaySettings.getPayment(paymentmethod) %}
+{% set aBrands = oHeidelpayViewConfig.getHeidelpayNgwBrands(paymentmethod, oHeidelPayment, oxcmp_user) %}
+{% set sBrandIdentEPS = 'EPS' %}
+{% set sFullImageUrl = sImageUrl ~ 'logo_eps.jpg' %}
+
+{% block heidelpay_eps %}
+    <div class="well well-sm">
+        <dl>
+            <dt>
+                <input type="radio"
+                     {% if blD3HeidelpayAllowEPS %}
+                       id="payment_{{ sPaymentID }}"
+                       name="paymentid"
+                       value="{{ sPaymentID }}"
+                       {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}checked{% endif %}
+                    {% else %}
+                        disabled
+                    {% endif %}
+                >
+                <label for="payment_{{ sPaymentID }}">
+                    <b>{{ paymentmethod.oxpayments__oxdesc.value }}</b>
+                    {% include "@d3unzer/generic/payment_img.html.twig" with {sImageUrl: sFullImageUrl, sBrandIdent: sBrandIdent} %}
+                </label>
+                {% if false == blD3HeidelpayAllowEPS %}
+                    <dfn id="d3HeidelayEpsNotice"
+                         class="alert alert-danger">{{ translate({ ident: "D3UNZER_PAYMENT_EPS_NOTICE" }) }}</dfn>
+                {% endif %}
+            </dt>
+            <dd class="payment-option {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}activePayment{% endif %}">
+                <div class="form-group">
+                    <label class="req col-lg-3" for="d3heidelpay_eps_{{ paymentmethod.oxpayments__oxid.value }}">
+                        {{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK_ACCOUNTHOLDER" }) }}
+                    </label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               class="form-control js-oxValidate js-oxValidate_notEmpty"
+                               size="20"
+                               maxlength="64"
+                               id="d3heidelpay_eps_{{ paymentmethod.oxpayments__oxid.value }}"
+                               name="dynvalue[lsktoinhaber]"
+                               title="{{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK_ACCOUNTHOLDER" }) }}"
+                               value="{% if dynvalue.lsktoinhaber %}{{ dynvalue.lsktoinhaber }}{% else %}{{ oxcmp_user.oxuser__oxfname.value }} {{ oxcmp_user.oxuser__oxlname.value }}{% endif %}">
+                    </div>
+                </div>
+                {% if blD3HeidelpayAllowEPS %}
+                    <div class="form-group">
+                        <label class="req col-lg-3"
+                               for="payment_{{ sPaymentID }}_1">{{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK" }) }}</label>
+                        <input type="hidden" name="dynvalue[lsland]" value="AT">
+                        <div class="col-lg-9">
+                            <select class="form-control" id="payment_{{ sPaymentID }}_1" name="dynvalue[lsbankname]">
+                                <option value="">{{ translate({ ident: "D3PAYMENT_EXT_SELECTPLEASE" }) }}</option>
+                                {% for sBrandIdent, sBrandName in aBrands %}
+                                    <option value="{{ sBrandIdent }}"
+                                            {% if (dynvalue.lsbankname == sBrandIdent) %}selected{% endif %}>{{ sBrandName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% block checkout_payment_longdesc %}
+                    {% if paymentmethod.oxpayments__oxlongdesc.value %}
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-9 offset-lg-3">
+                                <div class="alert alert-info desc">
+                                    {{ paymentmethod.oxpayments__oxlongdesc.getRawValue() }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </dd>
+        </dl>
+    </div>
+{% endblock %}

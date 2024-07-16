@@ -60,7 +60,7 @@ class InstallRoutine extends d3install_updatebase
     /**
      * @var string
      */
-    public $sModVersion = '7.0.1.1';
+    public $sModVersion = '7.1.0.0';
 
     /**
      * @var string
@@ -68,18 +68,18 @@ class InstallRoutine extends d3install_updatebase
     public $sMinModCfgVersion = '7.0.0.0';
 
     /** @var string @deprecated since 2016-04-13 */
-    public $sModRevision = '7011';
+    public $sModRevision = '7100';
 
     /**
      * @var string
      */
     public $sBaseConf = '--------------------------------------------------------------------------------
-65Uv2==TEgrTjMrR09mdmt5RkF4cmswVWlCMnFla2tWYkdEVjJMUC9LZGt1VW5YeS9mN1RPVUVLZStZU
-StFS0VqNFNZRmwvZENMTkZCWU11UnpwZ1R4RVZLRFhPeUVhY2xlWHVhS0FUYW5jQUVHUWxMTnlxTXRxc
-HhYRGYvMWVpeS85djc5dWdueENRT3VjWGgxblEzdmp6Yms3VnZDRlQ5QTNVelRMVGxmZEFpb200NHFOV
-GNNTTlrT2h2NDlmb0FOMDgvU1VzZk1POHdVZW9nV3pIQVUwKzVuWFc3azlhWUVJd3NjcTdpKzhxclMze
-VlIay9MQmpaRFFXUFFqY1ZLZXJRcmtqV2p2SGtSL2NuZ0VnSjYyVmQ3d29yL2xseDRoSjBHWDB0V3pwa
-jUwcGgxdVk2MmtjemZCOVJCU0dTN3grckY=
+E6Ev2==Y1J2Z25TZGZXV0hrRWtDUm14RGJZTG56M252VVE5QnA1RnNQSkg2Mi9zNEtoT2hVWlB1d2lHL
+zlpdzd4bVcyTitoL2hCZFVrQ0ZPVXdsZ3F4UTZkelFuS3l0SEZGM2dWejFXbHl2RjJ3NXNuZUI2UzdTN
+DV4bzl6WjZaa2h2bHJFMXkrdk9vOW80ZVliNjN1NDBHSUMxQnF2Q21yN3Z6c3ZMVnJMWWU5MnEyemtEe
+VNtRWFuYjlKQkxtVjVnN1Zhb2NiTWxqbGJPUVMwVFYyNkhCTGJReFllSS9WMEJmV3NiZ0tYbEhFV21tZ
+TRmRk54RjdNOWI1WTBPYTloSFhyVlFkZ2tjMCtiSG91QzhqQkJJRjlaRHg1VjU5TGdjM24rTWthNitNS
+W9tM0Mra0ZBeE9KQk5YNzRmMkRZZXVCNnc=
 --------------------------------------------------------------------------------';
 
     /**
@@ -367,6 +367,10 @@ jUwcGgxdVk2MmtjemZCOVJCU0dTN3grckY=
         [
             'check' => 'checkIndizes',
             'do'    => 'fixIndizes'
+        ],
+        [
+            'check' => 'hasModProfileMultilangSetting',
+            'do'    => 'addModProfileMultilangSetting'
         ],
         [
             'check' => 'checkModCfgSameRevision', // Prueft auf nachgezogene Revisionsnummer
@@ -853,13 +857,21 @@ WHERE d3transactionlog.oxid IS NOT NULL;'
                             'oxloadid',
                             [
                                 $qb->createNamedParameter('d3_hp_vorkassemail_cust_text'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_tex_twig'),
                                 $qb->createNamedParameter('d3_hp_vorkassemail_cust_subject'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_sub_twig'),
                                 $qb->createNamedParameter('d3_hp_vorkassemail_cust_plain'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_cust_pl_twig'),
                                 $qb->createNamedParameter('d3_hp_vorkassemail_owner_text'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_te_twig'),
                                 $qb->createNamedParameter('d3_hp_vorkassemail_owner_subject'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_su_twig'),
                                 $qb->createNamedParameter('d3_hp_vorkassemail_owner_plain'),
+                                $qb->createNamedParameter('d3_hp_vorkassemail_owner_pl_twig'),
                                 $qb->createNamedParameter('d3_hp_chargeback_owner_plain'),
-                                $qb->createNamedParameter('d3_hp_partlypaid_owner_plain')
+                                $qb->createNamedParameter('d3_hp_chargeback_owner_pl_twig'),
+                                $qb->createNamedParameter('d3_hp_partlypaid_owner_plain'),
+                                $qb->createNamedParameter('d3_hp_partlypaid_owner_pl_twig')
                             ]
                         ),
                         $qb->expr()->eq(

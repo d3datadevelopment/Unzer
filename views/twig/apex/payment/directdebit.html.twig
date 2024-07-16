@@ -1,0 +1,186 @@
+{% set dynvalue = oView.getDynValue() %}
+{% set iPayError = oView.getPaymentError() %}
+{% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/') %}
+{% set oHeidelPaySettings = oHeidelpayViewConfig.getSettings() %}
+{% set oHeidelPayment = oHeidelPaySettings.getPayment(paymentmethod) %}
+{% set aBrands = oHeidelpayViewConfig.getHeidelpayNgwBrands(paymentmethod, oHeidelPayment, oxcmp_user) %}
+{% set sBrandIdentELV = 'ELV' %}
+{% set sFullImageUrl = sImageUrl ~ 'unzer_direct_debit.png' %}
+{% set blShowPaymentMethod = true %}
+{% if get_class(oHeidelPayment) === "D3\Unzer\Application\Model\Payment\Directdebit\Secured" %}
+    {% set blShowPaymentMethod = blD3HeidelpayHasSameAdresses %}
+{% endif %}
+
+{% set doNotShow %}
+    <script type="text/javascript">
+        {% set javaScript %}
+            $('#sCountrySelected_{{ sPaymentID }}').on('change', function (e) {
+                var valueSelected = this.value;
+                var hideableLi = $('#sBIC_{{ sPaymentID }}').first();
+
+                if (valueSelected == 'DE') {
+                    hideableLi.hide();
+                    hideableLi.find('input').attr('disabled', 'disabled');
+                } else {
+                    hideableLi.show();
+                    hideableLi.find('input').removeAttr('disabled');
+                }
+            });
+        {% endset %}
+    </script>
+{% endset %}
+{{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
+
+{% block heidelpay_debitnote %}
+    {% if get_class(oHeidelPayment) === "D3\Unzer\Application\Model\Payment\Directdebit\Secured" %}
+        {% set iBirthdayMonth = 0 %}
+        {% set iBirthdayDay = 0 %}
+        {% set iBirthdayYear = 0 %}
+
+        {% if oxcmp_user.oxuser__oxbirthdate.value and oxcmp_user.oxuser__oxbirthdate.value != "0000-00 - 00" %}
+            {% set iBirthdayMonth = oxcmp_user.oxuser__oxbirthdate.value|regex_replace("/^([0-9]{4)})[-]/":""|regex_replace('/[-]([0-9]{1,) 2})$/':"" %}
+            {% set iBirthdayDay = oxcmp_user.oxuser__oxbirthdate.value|regex_replace("/^([0-9]{4)})[-]([0-9]{1, 2})[-]/":"" %}
+            {% set iBirthdayYear = oxcmp_user.oxuser__oxbirthdate.value|regex_replace('/[-]([0-9]{1,) 2})[-]([0-9]{1, 2})$/':"" %}
+        {% endif %}
+    {% endif %}
+    <div class="well well-sm">
+        <dl>
+            <dt>
+                <input type="radio"
+                        {% if blShowPaymentMethod %}
+                            id="payment_{{ sPaymentID }}"
+                            name="paymentid"
+                            value="{{ sPaymentID }}"
+                            {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}checked{% endif %}
+                        {% else %}
+                            disabled
+                        {% endif %}
+                >
+                <label for="payment_{{ sPaymentID }}">
+                    <b>{{ paymentmethod.oxpayments__oxdesc.value }}</b>
+                    {% if sPaymentID != 'oxiddebitnote' %}
+                        {% include "@d3unzer/generic/payment_img.html.twig" with {sImageUrl: sFullImageUrl, sBrandIdent: paymentmethod.oxpayments__oxdesc.value} %}
+                    {% endif %}
+                </label>
+                {% if false == blShowPaymentMethod %}
+                    <dfn class="alert alert-danger d3HeidelaySameAddressNotice">{{ translate({ ident: "D3UNZER_PAYMENT_NOTSAMEADDRESS_NOTICE" }) }}</dfn>
+                {% endif %}
+            </dt>
+            <dd class="payment-option {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}activePayment{% endif %}">
+                {% set oPaymentPrice = paymentmethod.getPrice() %}
+                {% if oPaymentPrice.getPrice() %}
+                    {% if oViewConf.isFunctionalityEnabled('blShowVATForPayCharge') %}
+                        ({{ format_price(oPaymentPrice.getNettoPrice(), { currency: currency }) }}
+                        {% if oPaymentPrice.getVatValue() > 0 %}
+                            {{ translate({ ident: "PLUS_VAT" }) }} {{ format_price(oPaymentPrice.getVatValue(), { currency: currency }) }}
+                        {% endif %})
+                    {% else %}
+                        ({{ format_price(oPaymentPrice.getBruttoPrice(), { currency: currency }) }})
+                    {% endif %}
+                {% endif %}
+                {% if get_class(oHeidelPayment) === "D3\Unzer\Application\Model\Payment\Directdebit\Secured" %}
+                    <div class="form-group oxDate">
+                        <label class="col-xs-12 col-lg-3 req">
+                            {{ translate({ ident: "BIRTHDATE" }) }}
+                            {% if oView.getPaymentError() == 1 %}*{% endif %}
+                        </label>
+                        <div class="col-xs-3 col-lg-3">
+                            <input class="oxDay form-control" name="d3birthdate[{{ sPaymentID }}][day]" type="text"
+                                   maxlength="2" value="{% if iBirthdayDay > 0 %}{{ iBirthdayDay }}{% endif %}"
+                                   placeholder="{{ translate({ ident: "DAY" }) }}" required="">
+                        </div>
+                        <div class="col-xs-6 col-lg-3">
+                            <select class="oxMonth form-control" name="d3birthdate[{{ sPaymentID }}][month]"
+                                    required="">
+                                <option value="" label="-">-</option>
+                                {% for month in 1..13 %}
+                                    <option value="{{ loop.index0 }}"
+                                            label="{{ loop.index0 }}"
+                                            {% if iBirthdayMonth == loop.index %} selected="selected" {% endif %}>
+                                        {{ translate({ ident: "MONTH_NAME_" ~ loop.index }) }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-3 col-lg-3">
+                            <input class="oxYear form-control" name="d3birthdate[{{ sPaymentID }}][year]" type="text"
+                                   maxlength="4" value="{% if iBirthdayYear %}{{ iBirthdayYear }}{% endif %}"
+                                   placeholder="{{ translate({ ident: "YEAR" }) }}" required="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-9 offset-lg-3">
+                            <div class="alert alert-info">{{ translate({ ident: "COMPLETE_MARKED_FIELDS" }) }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="req col-lg-3"
+                           for="sCountrySelected_{{ sPaymentID }}">{{ translate({ ident: "D3UNZER_CC_INPUT_COUNTRY" }) }}</label>
+                    <div class="col-lg-9">
+                        <select class="form-control" id="sCountrySelected_{{ sPaymentID }}" name="dynvalue[lsland]">
+                            <option value="">{{ translate({ ident: "D3PAYMENT_EXT_SELECTPLEASE" }) }}</option>
+                            {% for sBrandIdent, sBrandName in aBrands %}
+                                <option value="{{ sBrandIdent }}">{{ sBrandName }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if not empty(dynvalue.lsland) %}
+                            {% set doNotShow %}
+                                <script type="text/javascript">
+                                    {% set javaScript %}
+                                        $('#sCountrySelected_{{ sPaymentID }}').val('{{ dynvalue.lsland }}').trigger('change');
+                                    {% endset %}
+                                </script>
+                            {% endset %}
+                            {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group" id="sBIC_{{ sPaymentID }}">
+                    <label class="req col-lg-3"
+                           for="sCountrySelected_{{ sPaymentID }}lsblz">{{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK_BIC" }) }}</label>
+                    <div class="col-lg-9">
+                        <input id="sCountrySelected_{{ sPaymentID }}lsblz" type="text" class="form-control js-oxValidate"
+                               size="20"
+                               maxlength="64" name="dynvalue[lsblz]" autocomplete="off" value="{{ dynvalue.lsblz }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="req col-lg-3"
+                           for="sCountrySelected_{{ sPaymentID }}lsktonr">{{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK_IBAN" }) }}</label>
+                    <div class="col-lg-9">
+                        <input id="sCountrySelected_{{ sPaymentID }}lsktonr" type="text"
+                               class="form-control js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64"
+                               name="dynvalue[lsktonr]" autocomplete="off" value="{{ dynvalue.lsktonr }}"
+                               required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="req col-lg-3"
+                           for="sCountrySelected_{{ sPaymentID }}lsktoinhaber">{{ translate({ ident: "D3UNZER_PAYMENT_INPUT_BANK_ACCOUNTHOLDER" }) }}</label>
+                    <div class="col-lg-9">
+                        <input id="sCountrySelected_{{ sPaymentID }}lsktoinhaber" type="text"
+                               class="form-control js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64"
+                               name="dynvalue[lsktoinhaber]"
+                               required="required"
+                               value="{% if dynvalue.lsktoinhaber %}{{ dynvalue.lsktoinhaber }}{% else %}{{ oxcmp_user.oxuser__oxfname.value }} {{ oxcmp_user.oxuser__oxlname.value }}{% endif %}">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                {% block checkout_payment_longdesc %}
+                    {% if paymentmethod.oxpayments__oxlongdesc.value %}
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-9 offset-lg-3">
+                                <div class="alert alert-info desc">
+                                    {{ paymentmethod.oxpayments__oxlongdesc.getRawValue() }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </dd>
+        </dl>
+    </div>
+{% endblock %}

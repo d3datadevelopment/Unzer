@@ -1,0 +1,51 @@
+{% set parameterName = d3hpPaymentFormular.parameter %}
+
+{% if isset(attribute(d3HeidelpayB2BParameters, parameterName)) %}
+    {% set d3hpPaymentFormularValue = attribute(d3HeidelpayB2BParameters, parameterName) %}
+{% elseif isset(d3hpPaymentFormular.value) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.value %}
+{% elseif "NOT" empty(d3hpPaymentFormular.valueFromUser) %}
+    {% set d3hpPaymentFormularValue = oxcmp_user.getFieldData(d3hpPaymentFormular.valueFromUser) %}
+{% elseif "NOT" empty(d3hpPaymentFormular.standard) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.standard %}
+{% endif %}
+
+{% set birthdateFormAttributes %}
+    {% for attributeName, attributeValue in d3hpPaymentFormular.attributes %}
+        {{ attributeName }}="{{ attributeValue }}"
+    {% endfor %}
+    {% for attributeName, attributeValue in d3hpPaymentFormular.translationAttributes %}
+        {{ attributeName }}="{{ translate({ ident: attributeValue, noerror: 1 }) }}"
+    {% endfor %}
+{% endset %}
+
+<div class="row oxDate form-group{% if d3hpPaymentFormular.registrationType %} {{ d3hpPaymentFormular.registrationType }}{% endif %}">
+    <label class="control-label col-sm-12 col-lg-3 {% if in_array('required', d3hpPaymentFormular.attributes) %} req{% endif %}">
+        {{ translate({ ident: d3hpPaymentFormular.name }) }}
+    </label>
+    <div class="col-sm-3 col-lg-3">
+        <input class="oxDay form-control" name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}][day]"
+            {{ birthdateFormAttributes }}
+           value="{% if d3hpPaymentFormularValue.day %}{{ d3hpPaymentFormularValue.day }}{% endif %}"
+           placeholder="{{ translate({ ident: "DAY" }) }}" type="text" maxlength="4" class="form-control" >
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <select class="oxMonth form-control" name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}][month]"
+            {{ birthdateFormAttributes }}
+                >
+            <option value="" label="-">-</option>
+            {% for month in 1..13 %}
+            <option value="{{ loop.index0 }}"
+                {% if d3hpPaymentFormularValue.month == loop.index %} selected="selected" {% endif %}>
+                {{ translate({ ident: "MONTH_NAME_" ~ loop.index }) }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-3 col-lg-3">
+        <input class="oxYear form-control" name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}][year]" type="text"
+               value="{% if d3hpPaymentFormularValue.year %}{{ d3hpPaymentFormularValue.year }}{% endif %}"
+            {{ birthdateFormAttributes }}
+               maxlength="4" placeholder="{{ translate({ ident: "YEAR" }) }}">
+    </div>
+</div>

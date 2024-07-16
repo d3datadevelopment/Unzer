@@ -1,0 +1,63 @@
+{% extends "page/checkout/payment.html.twig" %}
+
+{# workaround for PR #}
+{% block checkout_payment %}
+    {% set originalContent = parent() %}
+    {% set re = '/(?<=onclick=["\\\']{1})document\\\.getElementById\\\(["\\\']{1}payment["\\\']{1}\\\)\\\.submit\\\(\\\);(?=["\\\']{1}>)/ms' %}
+    {% set replacement = "document.querySelector('#payment').requestSubmit(); return false;" %}
+    {{ originalContent|preg_replace( re, replacement )|raw }}
+{% endblock %}
+
+{% block change_payment %}
+    {% if not oUnzerViewConfig %}
+        {{ parent() }}
+    {% else %}
+        {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+        {% if mod_d3unzer %}
+            {{ parent() }}
+
+            {% set doNotUse %}
+                <script type="text/javascript">
+                    {% set d3JavaScriptForHeidelpay %}
+                        let ddna = $('#payment').find('dl dd').not('.activePayment');
+                        ddna.find('input, select, textarea').attr('disabled', 'disabled');
+                        {# required for flow themes only #}
+                        ddna.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').addClass("disabled");
+                        $('#payment dl dt input[type=radio]').click(function () {
+                            let dds = $('#payment').find('dd')
+                            dds.find('input, select, textarea').attr('disabled', 'disabled');
+                            {# required for flow themes only #}
+                            dds.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').addClass("disabled");
+                            let dls = $(this).parents('dl');
+                            dls.find('input, select, textarea').removeAttr('disabled');
+                            {# required for flow themes only #}
+                            dls.find('.bootstrap-select, .bootstrap-select .dropdown-toggle').removeClass('disabled');
+                        });
+                    {% endset %}
+                </script>
+            {% endset %}
+
+            {{ script({ add: d3JavaScriptForHeidelpay.__toString(), dynamic: __oxid_include_dynamic }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block select_payment %}
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer and oView.d3IsHeidelpayPaymentMethode(paymentmethod) %}
+        {% include oView.d3GetPaymentFormTemplateName(paymentmethod) %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block checkout_payment_errors %}
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer and d3heidelpayErrorCodes and oHeidelpayViewConfig.getPaymentError() == -99 %}
+        {% include oView.d3GetMessageTemplateName() %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

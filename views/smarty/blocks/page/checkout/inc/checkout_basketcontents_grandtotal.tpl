@@ -2,6 +2,7 @@
 [{d3modcfgcheck modid='d3unzer'}][{/d3modcfgcheck}]
 
 [{if $mod_d3unzer && $oViewConf->getActiveClassname() === 'order'}]
+    [{* deprecated there is no easycredit support anymore *}]
     [{assign var="easyCreditInformations" value=$oView->getHeidelpayEasyCreditInformations()}]
     [{if isset($easyCreditInformations)}]
         [{include file=$oView->d3GetTemplateName('order_easycreditcriterions') easyCreditInformations=$easyCreditInformations}]

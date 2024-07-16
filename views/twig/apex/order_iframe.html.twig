@@ -1,0 +1,190 @@
+{{ script({ include: oViewConf.getModuleUrl('d3unzer', 'out/src/js/jquery.simple.timer/jquery.simple.timer.js'): 'out/src/js/jquery.simple.timer/jquery.simple.timer.js'), dynamic: __oxid_include_dynamic }) }}
+
+{% set payment = oView.getPayment() %}
+{% set oHeidelPaySettings = oHeidelpayViewConfig.getSettings() %}
+{% set oHeidelPayment = oHeidelPaySettings.getPayment(payment) %}
+{% set cardTypeTimeOut = oHeidelpayViewConfig.getHeidelpayConfVar('cardtypetimeout') %}
+{% if false == cardTypeTimeOut %}
+    {% set cardTypeTimeOut = "600" %}
+{% endif %}
+
+<form id="paymentFrameForm">
+    <div class="d3timeOut">
+        {{ translate({ ident: "D3UNZER_TIMEOUT_TIMER" }) }}
+        <div class='timer' data-seconds-left="{{ cardTypeTimeOut }}"></div>
+    </div>
+    {% if isThreeDSecure %}
+        {% set o3DSecure = oHeidelpayViewConfig.get3dSecureResponse() %}
+        {% set iframeUrl = o3DSecure.sRedirectURL %}
+        {% for key, value in o3DSecure.aRedirectRarams %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+    {% else %}
+        {% set iframeUrl = oHeidelpayViewConfig.getHeidelpayNgwIFrameUrl(oHeidelPayment) %}
+    {% endif %}
+
+    {# <input type="hidden" name="PROCESSING.RECOVERABLE" value="TRUE"/> #}
+
+    {% if iframeUrl %}
+        <iframe id="paymentFrameIframe" src="{{ iframeUrl }}" frameborder="0" scrolling="no">
+            Your Browser doesn\'t support iFrames
+        </iframe>
+    {% endif %}
+
+    {% if payment.oxpayments__oxlongdesc.value %}
+        <div class="alert alert-info">
+            {{ payment.oxpayments__oxlongdesc.getRawValue() }}
+        </div>
+    {% endif %}
+
+    <div class="card bg-light cart-buttons">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <a href="{{ seo_url({ ident: oViewConf.getSelfLink() ~ "cl=order" }) }}" class="btn btn-outline-dark float-left prevStep submitButton largeButton" id="userBackStepBottom"><i class="fa fa-caret-left"></i> {{ translate({ ident: "D3UNZER_ORDER_PAGE_BACKSTEPT" }) }}</a>
+                </div>
+                {% if iframeUrl %}
+                    <div class="col-12 col-md-6 text-right">
+                        <button id="paymentNextStepBottom" class="btn btn-primary pull-right submitButton largeButton nextStep" name="userform" type="submit">{{ translate({ ident: "D3UNZER_ORDER_PAGE_NEXTSTEP" }) }} <i class="fa fa-caret-right"></i></button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</form>
+{% if iframeUrl %}
+    {% set emptyCapture %}
+        <script type="text/javascript">
+            {% set d3JavaScript %}
+                var targetOrigin = getDomainFromUrl('{{ iframeUrl }}');
+
+                // ### Sending postMessages ###
+                var paymentFrameForm = document.getElementById('paymentFrameForm');
+                var paymentFrameIframe = document.getElementById('paymentFrameIframe');
+
+                // Add an event listener that will execute the sendMessage() function
+                // when the send button is clicked.
+                if (paymentFrameForm.addEventListener) { // W3C DOM
+                    paymentFrameForm.addEventListener('submit', sendMessage);
+                } else if (paymentFrameForm.attachEvent) { // IE DOM
+                    paymentFrameForm.attachEvent('onsubmit', sendMessage);
+                }
+
+                // A function to handle sending messages.
+                function sendMessage(e) {
+
+                    {% if isHeidelpayDebugMode %}
+                    console.log("sendMessage");
+                    {% endif %}
+
+                    // Prevent any default browser behaviour.
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    } else {
+                        e.returnValue = false;
+                    }
+
+                    // save the form data in an object
+                    var data = {};
+                    for (var i = 0, len = paymentFrameForm.length; i < len; ++i) {
+                        var input = paymentFrameForm[i];
+                        if (input.name) {
+                            data[input.name] = input.value;
+                        }
+                    }
+                    {% if isHeidelpayDebugMode %}
+                    console.log(targetOrigin);
+                    console.log(data);
+                    {% endif %}
+
+                    // Send a json message with the form data to the iFrame receiver window.
+                    paymentFrameIframe.contentWindow.postMessage(JSON.stringify(data), targetOrigin);
+                }
+
+                // ### Utils ###
+                // extract protocol, domain and port from url
+                function getDomainFromUrl(url) {
+                    var arr = url.split("/");
+                    return arr[0] + "//" + arr[2];
+                }
+
+                // Setup an event listener that calls receiveMessage() when the window
+                // receives a new MessageEvent.
+                if (window.addEventListener) {  // W3C DOM
+                    window.addEventListener('message', receiveMessage);
+                } else if (window.attachEvent) { // IE DOM
+                    window.attachEvent('onmessage', receiveMessage);
+                }
+
+                // ### Receiving postMessages ###
+                function receiveMessage(e) {
+                    {% if isHeidelpayDebugMode %}
+                    console.log('recieveMessage');
+                    {% endif %}
+    // Check to make sure that this message came from the correct domain.
+                    if (e.origin !== targetOrigin) {
+                        {% if isHeidelpayDebugMode %}
+                        console.log('recieveMessage -> out');
+                        {% endif %}
+                        return;
+                    }
+                    $('#d3HeidelpayWait').modal('hide');
+                    $('#paymentNextStepBottom').attr('disabled', false);
+    // Do something with the data
+                    {% if isHeidelpayDebugMode %}
+                    console.log(e.data);
+                    {% endif %}
+                }
+
+                $('#paymentFrameForm').submit(function () {
+                    //$('#d3HeidelpayWait').dialog('open');
+                    $('#d3HeidelpayWait').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    $('#paymentNextStepBottom').attr('disabled', true);
+                });
+
+                $('.timer').startTimer({
+                    onComplete: function (element) {
+                        element.addClass('isComplete');
+                        $('#paymentFrameForm').find('input, button, textarea').attr('disabled', 'disabled');
+                        $('#d3HeidelpayOutOfTime').modal({
+                            keyboard: false,
+                            backdrop: 'static'
+                        });
+                    }
+                });
+            {% endset %}
+        </script>
+    {% endset %}
+{% endif %}
+{{ script({ add: d3JavaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
+
+<div id="d3HeidelpayWait" class="modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="d3HeidelpayWaitTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-info">{{ translate({ ident: "D3UNZER_SENDING_FORMULAR" }) }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="d3HeidelpayOutOfTime" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    {% set cardTypeTimeOut = cardTypeTimeOut|date_format("i:s") %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-danger">{{ translate({ ident: "D3UNZER_OUTOFTIME_FORMULAR", args: cardTypeTimeOut }) }}</div>
+                <div class="well well-sm text-center">
+                    <a href="{{ seo_url({ ident: oViewConf.getOrderLink() }) }}"
+                       class="btn btn-default prevStep submitButton largeButton">{{ translate({ ident: "D3UNZER_OUTOFTIME_LINK" }) }}</a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

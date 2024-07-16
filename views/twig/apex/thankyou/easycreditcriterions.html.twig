@@ -1,0 +1,12 @@
+{% if easyCreditInformations %}
+    <div class="alert alert-info">
+        <p>
+            {{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_ACCRUINGINTEREST" }) }} {{ format_price(easyCreditInformations.criterion_easycredit_accruinginterest, { currency: currency }) }}
+            <br/>
+            {{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_TOTALAMOUNT" }) }} {{ format_price(easyCreditInformations.criterion_easycredit_totalamount, { currency: currency }) }}
+            <br/>
+            <a href="{{ easyCreditInformations.criterion_easycredit_precontractinformationurl }}" target="easyCredit"
+               class="btn">{{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_LINK" }) }}</a>
+        </p>
+    </div>
+{% endif %}

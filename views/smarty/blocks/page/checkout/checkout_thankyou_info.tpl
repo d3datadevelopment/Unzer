@@ -4,6 +4,7 @@
 
 [{if $mod_d3unzer }]
     [{assign var="oPrePaymentData" value=$order->getHeidelpayBankTransferData()}]
+    [{* deprecated there is no easycredit support anymore *}]
     [{assign var="easyCreditInformations" value=$order->getHeidelpayEasyCreditInformations()}]
 
     [{if $oPrePaymentData}]

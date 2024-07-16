@@ -1,0 +1,38 @@
+{% set parameterName = d3hpPaymentFormular.parameter %}
+
+{% if isset(attribute(d3HeidelpayB2BParameters, parameterName)) %}
+    {% set d3hpPaymentFormularValue = attribute(d3HeidelpayB2BParameters, parameterName) %}
+{% elseif isset(d3hpPaymentFormular.d3hpPaymentFormularValue) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.d3hpPaymentFormularValue %}
+{% elseif isset(d3hpPaymentFormular.d3hpPaymentFormularValueTranslation) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.d3hpPaymentFormularValueTranslation|translate %}
+{% elseif "NOT" empty(d3hpPaymentFormular.valueFromUser) %}
+    {% set d3hpPaymentFormularValue = oxcmp_user.getFieldData(d3hpPaymentFormular.valueFromUser) %}
+{% elseif "NOT" empty(d3hpPaymentFormular.valuesFromUser) %}
+    {% for valueFromUser in d3hpPaymentFormular.valuesFromUser %}
+        {% if loop.index > 1 %}
+            {% set d3hpPaymentFormularValue = d3hpPaymentFormularValue ~ ' ' %}
+        {% endif %}
+        {% set d3hpPaymentFormularValue = d3hpPaymentFormularValue ~ oxcmp_user.getFieldData("valueFromUser") %}
+    {% endfor %}
+{% endif %}
+
+<div class="row form-group {% if d3hpPaymentFormular.registrationType %}{{ d3hpPaymentFormular.registrationType }}{% endif %}">
+    <label class="control-label col-lg-3{% if in_array('required', d3hpPaymentFormular.attributes) %} req{% endif %}"
+           for="d3HeidelpayBToBBillPurchase_{{ sPaymentID }}_{{ d3hpPaymentFormular.parameter }}">
+        {{ translate({ ident: d3hpPaymentFormular.name }) }}
+    </label>
+    <div class="col-lg-9">
+        <input class="form-control" type="text"
+               id="d3HeidelpayBToBBillPurchase_{{ sPaymentID }}_{{ d3hpPaymentFormular.parameter }}"
+               name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}]"
+               value="{% if d3hpPaymentFormularValue %}{{ d3hpPaymentFormularValue }}{% endif %}"
+        {% for attributeName, attributeValue in d3hpPaymentFormular.attributes %}
+            {{ attributeName }}="{{ attributeValue }}"
+        {% endfor %}
+        {% for attributeName, attributeValue in d3hpPaymentFormular.translationAttributes %}
+            {{ attributeName }}="{{ translate({ ident: attributeValue, noerror: 1 }) }}"
+        {% endfor %}
+        >
+    </div>
+</div>

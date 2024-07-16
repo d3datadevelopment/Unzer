@@ -1,0 +1,164 @@
+<tr>
+    <td class="edittext">
+        {{ translate({ ident: "D3UNZER_SETTINGS_MGW_DEBUGMODE" }) }}
+    </td>
+    <td class="edittext">
+        {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_SETTINGS_MGW_DEBUGMODE"), sHelpText: help_text("HELP_D3UNZER_SETTINGS_MGW_DEBUGMODE")} %}
+        <input type="hidden" name="logtypes[7]" value="0">
+        <input id="module_debug"
+               class="editinput"
+               type="checkbox"
+               name="logtypes[7]"
+               value="1"
+               title="{{ translate({ ident: "D3UNZER_SETTINGS_MGW_DEBUGMODE" }) }}"
+               {% if oView.getLogStatus('debug', false) %}checked{% endif %}
+        >
+    </td>
+</tr>
+<tr>
+    <td class="edittext">
+        {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_INTERNALLOG" }) }}
+    </td>
+    <td class="edittext">
+        {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_INTERNALLOG"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_INTERNALLOG")} %}
+        {% set oLogSet = oView.getLogSet() %}
+        {% include "@d3modcfg_lib/admin/inc/loglevel_form.html.twig" with {oLogSet: oLogSet, oModule: false} %}
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <fieldset title="{{ translate({ ident: "D3DYN_HEIDELPAY_LOGIN_LIVE_HEADER" }) }}">
+            <legend>
+                <b>{{ translate({ ident: "D3UNZER_LOGIN_MGW_HEADER" }) }}</b>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3UNZER_LOGIN_MGW_HEADER"), sHelpText: help_text("HELP_D3UNZER_LOGIN_MGW_HEADER")} %}
+            </legend>
+            <table style="width: 50%">
+                <tr>
+                    <td class="edittext">
+                        {{ translate({ ident: "D3UNZER_SETTINGS_MGW_PRIVATE" }) }}
+                    </td>
+                    <td class="edittext">
+                        <input type="text"
+                               class="editinput"
+                               name="value[d3_cfg_mod__mgwPrivateKey]"
+                               id="d3_cfg_mod__mgwPrivateKey"
+                               value="{{ edit.getValue('mgwPrivateKey') }}"
+                               title="{{ translate({ ident: "D3UNZER_SETTINGS_MGW_PRIVATE" }) }}"
+                               style="width: 100%"
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td class="edittext">
+                        {{ translate({ ident: "D3UNZER_SETTINGS_MGW_PUBLIC" }) }}
+                    </td>
+                    <td class="edittext">
+                        <input type="text"
+                               class="editinput"
+                               name="value[d3_cfg_mod__mgwPublicKey]"
+                               id="d3_cfg_mod__mgwPublicKey"
+                               value="{{ edit.getValue('mgwPublicKey') }}"
+                               title="{{ translate({ ident: "D3UNZER_SETTINGS_MGW_PUBLIC" }) }}"
+                               style="width: 100%"
+                        >
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </td>
+</tr>
+<tr><td colspan="2"><br></td></tr>
+<tr>
+    <td colspan="2">
+        <fieldset>
+        <legend><strong>{{ translate({ ident: "D3DYN_HEIDELPAY_EXTENDED_SETTINGS" }) }}</strong></legend>
+        <table cellspacing="5" cellpadding="0" border="0" width="100%">
+            <tr>
+                <td class="edittext">
+                    {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE" }) }}
+                </td>
+                <td class="edittext">
+                    {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE")} %}
+                    <select class="edittext"
+                            name="value[d3_cfg_mod__d3heidelpay_sTransType]"
+                            title="{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE" }) }}">
+                        <option value="auth">{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_DIRECT" }) }}</option>
+                        <option value="preauth"
+                                {% if (edit.getValue("d3heidelpay_sTransType") == "preauth") %}selected{% endif %}>
+                            {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_RESERVE" }) }}
+                        </option>
+                        <option value="auth_but_foreign_preauth"
+                                {% if (edit.getValue("d3heidelpay_sTransType") == "auth_but_foreign_preauth") %}selected{% endif %}>
+                            {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_FOREIGNRESERVE" }) }}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="edittext">
+                    {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL" }) }}
+                </td>
+                <td class="edittext">
+                    {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL")} %}
+                    <select class="edittext"
+                            name="value[d3_cfg_mod__d3heidelpay_sVATransType]"
+                            title="{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL" }) }}">
+                        <option value="auth">{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_DIRECT" }) }}</option>
+                        <option value="preauth"
+                                {% if (edit.getValue("d3heidelpay_sVATransType") == "preauth") %}selected{% endif %}>
+                            {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_RESERVE" }) }}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="edittext">
+                    <label for="showSepaGuranteedCustomerFormular">{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR" }) }}</label>
+                </td>
+                <td class="edittext">
+                    {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_SHOWSEPAGURANTEEDCUSTOMERFORMULAR")} %}
+                    <input type="hidden" value="0" name="value[d3_cfg_mod__showSepaGuranteedCustomerFormular]"/>
+                    <input id="showSepaGuranteedCustomerFormular" value="1" type="checkbox" name="value[d3_cfg_mod__showSepaGuranteedCustomerFormular]"
+                        {% if (edit.getValue("showSepaGuranteedCustomerFormular")) %}checked{% endif %}>
+                </td>
+            </tr>
+            <tr>
+                <td class="edittext">
+                    <label for="dontShowDirectDebitMandateCheckbox">{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX" }) }}</label>
+                </td>
+                <td class="edittext">
+                    {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_DONTSHOWDIRECTDEBITMANDATECHECKBOX")} %}
+                    <input type="hidden" value="0" name="value[d3_cfg_mod__dontShowDirectDebitMandateCheckbox]"/>
+                    <input id="dontShowDirectDebitMandateCheckbox" value="1" type="checkbox" name="value[d3_cfg_mod__dontShowDirectDebitMandateCheckbox]"
+                        {% if (edit.getValue("dontShowDirectDebitMandateCheckbox")) %}checked{% endif %}>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <fieldset>
+            <legend><strong>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE" }) }}</strong>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_UNZER_WEBHOOK"), sHelpText: help_text("HELP_D3DYN_UNZER_WEBHOOK")} %}</legend>
+            {% if not empty(registeredWebhooks) %}
+                <table style="padding: 0; width: 100%; border-spacing: unset; border: 0">
+                    <tr>
+                        <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_URL" }) }}</th>
+                        <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_EVENTS" }) }}</th>
+                        <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_ID" }) }}</th>
+                    </tr>
+                    {% for webhook in registeredWebhooks %}
+                        <tr>
+                            <td class="edittext">{{ webhook.getUrl() }}</td>
+                            <td class="edittext">{{ webhook.getEvent() }}</td>
+                            <td class="edittext">{{ webhook.getId() }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <span style="display: inline-block; color: darkred; font-weight: bold; width: 100%; text-align: center">{{ translate({ ident: "D3UNZER_WEBHOOKS_NOWEBHOOKREGISTERED" }) }}</span>
+            {% endif %}
+        </fieldset>
+    </td>
+</tr>
+

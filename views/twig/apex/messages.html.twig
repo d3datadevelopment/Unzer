@@ -1,0 +1,17 @@
+<div class="alert alert-danger">
+    {% if d3heidelpayErrorCodes.OXCODE %}
+        {% set langident = d3heidelpayErrorCodes.OXCODE %}
+        {{ translate({ ident: "d3heidelpay" ~ langident }) }}
+    {% else %}
+        {{ translate({ ident: "D3PAYMENT_EXT_NOTEXT" }) }}
+    {% endif %}
+    <br>
+
+    {% if d3heidelpayErrorCodes.OXTYPE == "1" %}    {# Fehlerkategorie: Eingabefehler #}
+        {{ translate({ ident: "D3PAYMENT_EXT_CHECK" }) }}
+    {% elseif d3heidelpayErrorCodes.OXTYPE == "2" %}    {# Fehlerkategorie: Technischer Fehler #}
+        {{ translate({ ident: "D3PAYMENT_EXT_TRYLATER" }) }}
+    {% elseif d3heidelpayErrorCodes.OXTYPE == "3" %}    {# Fehlerkategorie: Betrugsversuch? #}
+        {{ translate({ ident: "D3PAYMENT_EXT_CHANGEPAYMENT" }) }}
+    {% endif %}
+</div>

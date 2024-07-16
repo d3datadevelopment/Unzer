@@ -3,6 +3,7 @@
 namespace D3\Unzer\Modules\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use ReflectionClass;
 use D3\Unzer\Application\Model\Constants;
 use D3\Unzer\Application\Model\Factory;
@@ -42,14 +43,18 @@ class ThankYouController extends ThankYouController_parent
             return '';
         }
 
+        $templateExtension = ContainerFactory::getInstance()->getContainer()
+                                             ->getParameter('oxid_esales.templating.engine_template_extension');
+
         /** @var Factory $factory */
         $factory       = oxNew(Factory::class);
         $mappedThemeId = $factory->getModuleConfiguration()->getMappedThemeId();
         if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-            return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/mgw/'.$templateName.'.tpl';
+            return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/mgw/'.$templateName.'.'.$templateExtension;
         }
 
-        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/'.$templateName.'.tpl';
+        // NGW
+        return '@' . Constants::OXID_MODULE_ID . '/'.$mappedThemeId.'/'.$templateName.'.'.$templateExtension;
     }
 
     /**

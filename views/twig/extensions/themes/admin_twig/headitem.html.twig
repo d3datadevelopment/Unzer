@@ -1,0 +1,10 @@
+{% extends "headitem.html.twig" %}
+
+{% block admin_headitem_inccss %}
+    {{ parent() }}
+    {% if (oViewConf.getActiveClassName() == 'd3_unzer_controllers_admin_adminlist') or (oViewConf.getActiveClassName() == 'd3_unzer_controllers_admin_order_unzer')  %}
+        {% set sCssUrl = oViewConf.getModuleUrl('d3unzer', 'out/src/css/d3unzer_admin.css') %}
+        <link rel="stylesheet" href="{{ sCssUrl }}?236">
+        <script type="text/javascript" src="{{ oViewConf.getResourceUrl() }}js/libs/jquery.min.js"></script>
+    {% endif %}
+{% endblock %}

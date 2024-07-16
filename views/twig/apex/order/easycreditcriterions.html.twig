@@ -1,0 +1,10 @@
+{% if easyCreditInformations %}
+    <tr>
+        <th>{{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_ACCRUINGINTEREST" }) }}</th>
+        <td>{{ format_price(easyCreditInformations.criterion_easycredit_accruinginterest, { currency: currency }) }}</td>
+    </tr>
+    <tr>
+        <th>{{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_TOTALAMOUNT" }) }}</th>
+        <td>{{ format_price(easyCreditInformations.criterion_easycredit_totalamount, { currency: currency }) }}</td>
+    </tr>
+{% endif %}

@@ -1,0 +1,54 @@
+{% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/') %}
+{% set sBrandIdent = 'przelewy24' %}
+{% set sFullImageUrl = sImageUrl ~ 'logo_' ~ sBrandIdent ~ '.png' %}
+
+{% block heidelpay_przelewy %}
+    <div class="well well-sm">
+        <dl>
+            <dt>
+                <input type="radio"
+                        {% if blD3HeidelpayAllowPrzelewy24 %}
+                            id="payment_{{ sPaymentID }}"
+                            name="paymentid"
+                            value="{{ sPaymentID }}"
+                            {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}checked{% endif %}
+                        {% else %}
+                            disabled
+                        {% endif %}
+                >
+                <label for="payment_{{ sPaymentID }}">
+                    <b>{{ paymentmethod.oxpayments__oxdesc.value }}</b>
+                    {% include "@d3unzer/generic/payment_img.html.twig" with {sImageUrl: sFullImageUrl, sBrandIdent: sBrandIdent} %}
+                </label>
+                {% if false == blD3HeidelpayAllowPrzelewy24 %}
+                    <dfn class="alert alert-danger">{{ translate({ ident: "D3UNZER_PAYMENT_PRZELEWY24_NOTICE" }) }}</dfn>
+                {% endif %}
+            </dt>
+            <dd class="payment-option {% if oView.getCheckedPaymentId() == paymentmethod.oxpayments__oxid.value %}activePayment{% endif %}">
+                {% set oPaymentPrice = paymentmethod.getPrice() %}
+                {% if oPaymentPrice.getPrice() %}
+                    {% if oViewConf.isFunctionalityEnabled('blShowVATForPayCharge') %}
+                        ({{ format_price(oPaymentPrice.getNettoPrice(), { currency: currency }) }}
+                        {% if oPaymentPrice.getVatValue() > 0 %}
+                            {{ translate({ ident: "PLUS_VAT" }) }} {{ format_price(oPaymentPrice.getVatValue(), { currency: currency }) }}
+                        {% endif %})
+                    {% else %}
+                        ({{ format_price(oPaymentPrice.getBruttoPrice(), { currency: currency }) }})
+                    {% endif %}
+                {% endif %}
+
+                {% block checkout_payment_longdesc %}
+                    {% if paymentmethod.oxpayments__oxlongdesc.value %}
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-9 offset-lg-3">
+                                <div class="alert alert-info desc">
+                                    {{ paymentmethod.oxpayments__oxlongdesc.getRawValue() }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </dd>
+        </dl>
+    </div>
+{% endblock %}

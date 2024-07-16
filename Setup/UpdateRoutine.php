@@ -132,10 +132,6 @@ class UpdateRoutine extends d3install_updatebase
                     $modProfile = $factory->getModProfile();
 
                     foreach ($valueList as $oxPaymentId => $heidelpayClassName) {
-                        if (stristr($heidelpayClassName, 'billsafe')) {
-                            continue;
-                        }
-
                         $mapHeidelpayClassnameToChannel = $this->_mapHeidelpayClassnameToChannel(
                             $heidelpayClassName,
                             $d3CfgMod

@@ -1,0 +1,78 @@
+{% extends "email/html/order_cust.html.twig" %}
+
+{% block email_html_order_cust_paymentinfo %}
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer  %}
+        {% set oPrePaymentData = order.getHeidelpayBankTransferData() %}
+        {% set easyCreditInformations = order.getHeidelpayEasyCreditInformations() %}
+
+        {% if is_object(oPrePaymentData) %}
+            <div>
+                <p>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_INFOTEXT1" }) }}
+                    <br/>
+                    <span style="color: red;">{{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_INFOTEXT2" }) }}</span>
+                </p>
+                <p>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_ACCOUNTHOLDER" }) }} {{ oPrePaymentData.Holder }}<br/>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_IBAN" }) }} {{ oPrePaymentData.Iban }}<br/>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_BIC" }) }} {{ oPrePaymentData.Bic }}<br/>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_AMOUNT" }) }} {{ oPrePaymentData.Amount }} {{ oPrePaymentData.Currency }}
+                    <br/>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_REASON" }) }} {{ oPrePaymentData.Reference }}
+                </p>
+            </div>
+            <br>
+            <br>
+        {% endif %}
+        {% if oPrePaymentData is iterable %}
+            <div>
+                <p>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_INFOTEXT1" }) }}
+                    <br/>
+                    <span style="color: red;">{{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_INFOTEXT2" }) }}</span>
+                </p>
+                <p>
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_REASON" }) }} {{ oPrePaymentData.Reference }}
+                    {% if oPrePaymentData.holder %}
+                        {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_ACCOUNTHOLDER" }) }} {{ oPrePaymentData.holder }}<br/>
+                    {% endif %}
+                    {% if oPrePaymentData.iban %}
+                        {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_IBAN" }) }} {{ oPrePaymentData.iban }}<br/>
+                    {% endif %}
+                    {% if oPrePaymentData.bic %}
+                        {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_BIC" }) }} {{ oPrePaymentData.bic }}<br/>
+                    {% endif %}
+
+                    {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_AMOUNT" }) }} {{ oPrePaymentData.formattedAmount }} {{ oPrePaymentData.currency }}
+                    <br/>
+                    {% if oPrePaymentData.descriptor %}
+                        {{ translate({ ident: "D3UNZER_EMAIL_PREPAYMENT_REASON" }) }} {{ oPrePaymentData.descriptor }}
+                    {% endif %}
+                    {% if oPrePaymentData.paymentReference %}
+                        {{ oPrePaymentData.paymentReference }}
+                    {% endif %}
+                    <br/>
+                </p>
+            </div>
+            <br>
+            <br>
+        {% endif %}
+
+        {% if easyCreditInformations %}
+            <div>
+                <p>
+                    {{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_ACCRUINGINTEREST" }) }} {{ format_price(easyCreditInformations.criterion_easycredit_accruinginterest, { currency: currency }) }}
+                    <br/>
+                    {{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_TOTALAMOUNT" }) }} {{ format_price(easyCreditInformations.criterion_easycredit_totalamount, { currency: currency }) }}
+                    <br/>
+                    <a href="{{ easyCreditInformations.criterion_easycredit_precontractinformationurl }}" target="easyCredit"
+                    >{{ translate({ ident: "D3UNZER_ORDER_EASYCREDIT_LINK" }) }}</a>
+                </p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

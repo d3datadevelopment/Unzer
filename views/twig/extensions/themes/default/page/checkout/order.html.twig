@@ -1,0 +1,10 @@
+{% extends "page/checkout/order.html.twig" %}
+
+{% block shippingAndPayment %}
+    {{ parent() }}
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer %}
+        {% include oView.d3GetTemplateName('shippingandpayment') %}
+    {% endif %}
+{% endblock %}

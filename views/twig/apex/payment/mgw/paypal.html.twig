@@ -1,0 +1,47 @@
+{% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/mgw/') %}
+{% block heidelpay_paypal %}
+    <div class="payment-option">
+        <div class="payment-option-form">
+            <input id="payment_{{ sPaymentID }}"
+                   type="radio"
+                   class="form-check-input"
+                   name="paymentid"
+                   value="{{ sPaymentID }}"
+                   {% if oView.getCheckedPaymentId() == paymentmethod.getId() %}checked{% endif %}>
+            <label class="form-check-label unzerimg"
+                   for="payment_{{ sPaymentID }}" style="background-image: url('{{ sImageUrl }}paypal.png')">
+                {{ paymentmethod.oxpayments__oxdesc.value }}
+            </label>
+            <div class="payment-option-info">
+                {% include "@d3unzer/apex/mgw/missingfields.html.twig" with {oxidPaymentId: sPaymentID} %}
+                {% include "@d3unzer/generic/mgw/paypal.html.twig" with {paymentId: sPaymentID, selectorId: "payment_" ~ sPaymentID } %}
+                {% block checkout_payment_longdesc %}
+                    {% if paymentmethod.oxpayments__oxlongdesc.value %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="alert alert-info desc">
+                                    {{ paymentmethod.oxpayments__oxlongdesc.getRawValue() }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </div>
+            {% set oPaymentPrice = paymentmethod.getPrice() %}
+            {% if oPaymentPrice.getPrice() %}
+                <div class="payment-option-price">
+                    {% if oViewConf.isFunctionalityEnabled('blShowVATForPayCharge') %}
+                        {% apply spaceless %}
+                            {{ format_price(oPaymentPrice.getNettoPrice(), { currency: currency }) }}
+                            {% if oPaymentPrice.getVatValue() > 0 %}
+                                {{ translate({ ident: "PLUS_VAT" }) }} {{ format_price(oPaymentPrice.getVatValue(), { currency: currency }) }}
+                            {% endif %}
+                        {% endapply %}
+                    {% else %}
+                        {{ format_price(oPaymentPrice.getBruttoPrice(), { currency: currency }) }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

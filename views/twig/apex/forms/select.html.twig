@@ -1,0 +1,44 @@
+{% set parameterName = d3hpPaymentFormular.parameter %}
+
+{% if isset(attribute(d3HeidelpayB2BParameters, parameterName)) %}
+    {% set d3hpPaymentFormularValue = attribute(d3HeidelpayB2BParameters, parameterName) %}
+{% elseif isset(d3hpPaymentFormular.value) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.value %}
+{% elseif "NOT" empty(d3hpPaymentFormular.valueFromUser) %}
+    {% set d3hpPaymentFormularValue = oxcmp_user.getFieldData(d3hpPaymentFormular.valueFromUser) %}
+{% elseif "NOT" empty(d3hpPaymentFormular.standard) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.standard %}
+{% endif %}
+
+<div class="row form-group{% if d3hpPaymentFormular.registrationType %} {{ d3hpPaymentFormular.registrationType }}{% endif %}">
+    <label class="control-label col-xs-12 col-lg-3 {% if in_array('required', d3hpPaymentFormular.attributes) %} req{% endif %}"
+           for="d3heidelpay_apex_select_{{ paymentmethod.oxpayments__oxid.value }}"
+           >
+        {{ translate({ ident: d3hpPaymentFormular.name }) }}
+    </label>
+    <div class="col-lg-9">
+        <select id="d3heidelpay_apex_select_{{ paymentmethod.oxpayments__oxid.value }}" class="form-control" name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}]"
+        {% for attributeName, attributeValue in d3hpPaymentFormular.attributes %}
+            {{ attributeName }}="{{ attributeValue }}"
+        {% endfor %}
+        {% for attributeName, attributeValue in d3hpPaymentFormular.translationAttributes %}
+            {{ attributeName }}="{{ translate({ ident: attributeValue, noerror: 1 }) }}"
+        {% endfor %}
+        class="form-control" >
+        {% if d3hpPaymentFormular.standard %}
+            <option value="{{ d3hpPaymentFormular.standard }}">
+                {{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_" ~ d3hpPaymentFormular.standard }) }}
+            </option>
+        {% endif %}
+        {% for key, item in d3hpPaymentFormular.values %}
+            {% if d3hpPaymentFormular.standard != item %}
+                <option value="{{ item }}"
+                    {% if d3hpPaymentFormularValue == item %} selected="selected" {% endif %}
+                >
+                    {{ translate({ ident: "D3UNZER_PAYMENT_COMPANY_" ~ item }) }}
+                </option>
+            {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+</div>

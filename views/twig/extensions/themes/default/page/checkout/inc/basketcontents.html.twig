@@ -1,0 +1,13 @@
+{% extends "page/checkout/inc/basketcontents.html.twig" %}
+
+{% block checkout_basketcontents_grandtotal %}
+    {{ parent() }}
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer and oViewConf.getActiveClassname() is same as('order') %}
+        {% set easyCreditInformations = oView.getHeidelpayEasyCreditInformations() %}
+        {% if isset(easyCreditInformations) %}
+            {% include oView.d3GetTemplateName('order_easycreditcriterions') with {easyCreditInformations: easyCreditInformations} %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

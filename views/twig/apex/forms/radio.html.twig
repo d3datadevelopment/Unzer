@@ -1,0 +1,25 @@
+{% set parameterName = d3hpPaymentFormular.parameter %}
+
+{% if isset(d3hpPaymentFormular.value) %}
+    {% set d3hpPaymentFormularValue = d3hpPaymentFormular.value %}
+{% elseif "NOT" empty(d3hpPaymentFormular.valueFromUser) %}
+    {% set d3hpPaymentFormularValue = oxcmp_user.getFieldData(d3hpPaymentFormular.valueFromUser) %}
+{% endif %}
+<div class="row form-group{% if d3hpPaymentFormular.registrationType %} {{ d3hpPaymentFormular.registrationType }}{% endif %}">
+    <div class="radio col-lg-12 offset-lg-3{% if in_array('required', d3hpPaymentFormular.attributes) %} req{% endif %}">
+        <label class="radio-inline">
+            <input type="radio"
+                {% if isset(attribute(d3HeidelpayB2BParameters, parameterName)) and attribute(d3HeidelpayB2BParameters, parameterName) == d3hpPaymentFormularValue %}checked{% endif %}
+                   name="d3heidelpay[{{ sPaymentID }}][{{ d3hpPaymentFormular.parameter }}]"
+                   value="{% if d3hpPaymentFormularValue %}{{ d3hpPaymentFormularValue }}{% endif %}"
+            {% for attributeName, attributeValue in d3hpPaymentFormular.attributes %}
+                {{ attributeName }}="{{ attributeValue }}"
+            {% endfor %}
+            {% for attributeName, attributeValue in d3hpPaymentFormular.translationAttributes %}
+                {{ attributeName }}="{{ translate({ ident: attributeValue, noerror: 1 }) }}"
+            {% endfor %}
+            >
+            {{ translate({ ident: d3hpPaymentFormular.name }) }}
+        </label>
+    </div>
+</div>

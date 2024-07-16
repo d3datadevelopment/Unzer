@@ -1,0 +1,21 @@
+{% extends "page/checkout/thankyou.html.twig" %}
+
+{% block checkout_thankyou_info %}
+    {{ parent() }}
+
+    {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
+
+    {% if mod_d3unzer  %}
+        {% set oPrePaymentData = order.getHeidelpayBankTransferData() %}
+        {% set easyCreditInformations = order.getHeidelpayEasyCreditInformations() %}
+
+        {% if oPrePaymentData %}
+            {% include oView.d3GetTemplateName('banktransferdata') %}
+        {% endif %}
+
+        {% if isset(easyCreditInformations) %}
+            {% set currency = oView.getActCurrency() %}
+            {% include oView.d3GetTemplateName('thankyou_easycreditcriterions') with {easyCreditInformations: easyCreditInformations} %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

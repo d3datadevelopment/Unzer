@@ -40,11 +40,12 @@
     "ext-simplexml": "*",
     "ext-bcmath": "*",
     "ext-json": "*",
-    "oxid-esales/oxideshop-ce": "7.0 - 7.0",
-    "d3/modcfg": "^7",
-    "unzerdev/php-sdk": "~1.2.3.0",
+    "oxid-esales/oxideshop-ce": "7.0 - 7.1",
+    "d3/modcfg": "^7.1",
+    "unzerdev/php-sdk": "^3.6",
     "beberlei/assert": "^3.3",
-    "oxid-esales/smarty-component": "*"
+    "d3/oxid-twig-extensions": "^1.3.0.0",
+    "guzzlehttp/guzzle": "^7.8.1"
   },
   "require-dev": {
     "mikey179/vfsstream": "~1.6.5",
@@ -70,7 +71,7 @@
     "phpstan": "./vendor/bin/phpstan --configuration=vendor/d3/unzer/phpstan.neon analyse",
     "phpstan-report": "./vendor/bin/phpstan --configuration=vendor/d3/unzer/phpstan.neon analyse --error-format=json > vendor/d3/unzer/tests/phpstan.report.json",
 
-    "phpunit": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --bootstrap=source/bootstrap.php --config=vendor/d3/unzer/Tests/",
+    "phpunit": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=vendor/d3/unzer/Tests/",
 
     "rector": "./vendor/bin/rector process --dry-run --config ./vendor/d3/unzer/rector.php",
 

@@ -1,0 +1,9 @@
+{% set shop = oEmailView.getShop() %}
+{% set oViewConf = oEmailView.getViewConfig() %}
+{% set currency = oEmailView.getCurrency() %}
+{% set user = oEmailView.getUser() %}
+
+{% set title %}{% include_content 'd3_hp_chargeback_owner_subj_twig' %}{% endset %}
+{% include "email/html/header.html.twig" with {title: title} %}
+{% include_content 'd3_hp_chargeback_owner_text_twig' %}
+{% include "email/html/footer.html.twig" %}

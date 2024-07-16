@@ -110,6 +110,8 @@ class Order extends Order_parent
                 return false;
             }
 
+            $result = null;
+
             try {
                 $result = $factory->getMgwResourceHandler()->obtainPaymentAuthorizationByPayID($paymentId);
                 if (empty($result)) {
@@ -142,6 +144,7 @@ class Order extends Order_parent
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      * @throws StandardException
+     * @deprecated there is no easycredit support anymore
      */
     public function getHeidelpayEasyCreditInformations()
     {

@@ -1,0 +1,59 @@
+{% set payment = oView.getPayment() %}
+{% set oHeidelPaySettings = oHeidelpayViewConfig.getSettings() %}
+{% set oHeidelPayment = oHeidelPaySettings.getPayment(payment) %}
+{% set sImageUrl = oViewConf.getModuleUrl('d3unzer', 'out/img/') %}
+{% set storeDatas = oView.getUserHPStoreData(payment.getId()) %}
+{% set d3HeidelpayPostparameter = oView.d3GetHeidelpayPostparameter() %}
+<form action="{{ oViewConf.getSslSelfLink()|add_url_parameters("&heidelpaytemplate=@d3unzer/apex/cc_input.html.twig") }}"
+      method="post">
+    {% for inputName, inputValue in d3HeidelpayPostparameter %}
+        <input type="hidden" name="{{ inputName }}" value="{{ inputValue }}">
+    {% endfor %}
+    {{ oViewConf.getHiddenSid()|raw }}
+    {{ oViewConf.getNavFormParams() }}
+    <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+    <input type="hidden" name="fnc" value="d3PayWithStoreData">
+    <input type="hidden" name="challenge" value="{{ challenge }}">
+    <input type="hidden" name="sDeliveryAddressMD5" value="{{ oView.getDeliveryAddressMD5() }}">
+    <div class="list-group">
+        {% for storeDataId, storeData in storeDatas %}
+            <div class="radio list-group-item">
+                <label style="width:100%">
+                    <input type="radio" name="usehpstore"
+                           value="{{ storeDataId }}"{% if loop.first %} checked{% endif %}>
+                    {% set sBrandIdent = storeData.aDynValue.kktype %}
+                    {% include "@d3unzer/generic/payment_img.html.twig" with {sImageUrl: sImageUrl ~ "logo_" ~ sBrandIdent|lower ~ ".jpg", sBrandIdent: sBrandIdent} %}
+                    {{ storeData.aDynValue.kknumber }}
+                    {{ translate({ ident: "D3UNZER_CC_INPUT_EXPIRES" }) }} {{ storeData.aDynValue.kkmonth }}
+                    /{{ storeData.aDynValue.kkyear }}
+                    {{ translate({ ident: "D3UNZER_CC_INPUT_OWNER" }) }} {{ storeData.aDynValue.kkname }}
+                </label>
+            </div>
+        {% endfor %}
+
+        <div class="radio list-group-item">
+            <label style="width:100%">
+                <input type="radio" name="usehpstore" value="0">
+                {{ translate({ ident: "D3PAYMENT_EXT_STOREDUID_NEW_CARD" }) }}
+            </label>
+        </div>
+    </div>
+    <div class="alert alert-info">
+        {{ translate({ ident: "D3PAYMENT_EXT_STOREDUID_CC_SECURITYINFO" }) }}
+    </div>
+
+    <div class="card bg-light cart-buttons">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <a href="{{ seo_url({ ident: oViewConf.getSelfLink() ~ "cl=order" }) }}" class="btn btn-outline-dark float-left prevStep submitButton largeButton" id="userBackStepBottom"><i class="fa fa-caret-left"></i> {{ translate({ ident: "D3UNZER_ORDER_PAGE_BACKSTEPT" }) }}</a>
+                </div>
+                <div class="col-12 col-md-6 text-right">
+                    <button id="paymentNextStepBottom" class="btn btn-primary pull-right submitButton largeButton nextStep" name="userform" type="submit">{{ translate({ ident: "D3UNZER_ORDER_PAGE_NEXTSTEP" }) }} <i class="fa fa-caret-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
