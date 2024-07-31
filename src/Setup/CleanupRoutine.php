@@ -65,7 +65,9 @@ MySQL;
      */
     public function hasStoredDataWithWrongShopid()
     {
-        if (false === Registry::get(Facts::class)->isEnterprise()) {
+        if (!method_exists(Registry::get(Facts::class), 'isEnterprise') || // O3-shop case
+            !Registry::get(Facts::class)->isEnterprise()
+        ) {
             return false;
         }
 
