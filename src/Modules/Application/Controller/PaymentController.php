@@ -426,12 +426,14 @@ class PaymentController extends PaymentController_parent
                     }
                 }
 
-                if ($heidelPayment instanceof Secured
+                $this->d3GetMissingUserParameters($factory);
+                if (count($this->d3UnzerMissingUserParameter[$paymentId]) &&
+                    ($heidelPayment instanceof Secured
                     || $heidelPayment instanceof Unsecured
-                    || $heidelPayment instanceof DirectdebitSecured
+                    || $heidelPayment instanceof DirectdebitSecured)
                 ) {
-
                     $missingUserData = Registry::getRequest()->getRequestEscapedParameter('d3UnzerMissingUserData');
+
                     $birthdate[$paymentId] = $missingUserData[$paymentId]['oxbirthdate'] ?? null;
 
                     if ($this->d3HasInvalidBirthdateInput($birthdate, $paymentId)) {
@@ -851,26 +853,30 @@ class PaymentController extends PaymentController_parent
             $translateString = str_replace('{NAME_OF_MERCHANT}', $shop->getFieldData('oxcompany'), $translateString);
             $this->addTplParam('d3UnzerSepaMandatText', $translateString);
             $this->addTplParam('isD3UnzerSepaMandatNotConfirmed', $this->isSepaMandatNotConfirmed());
-
-            if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
-                $paymentList = $this->getPaymentList();
-                $user        = $this->getUser();
-                if ($user && is_array($paymentList) && 1 <= count($paymentList)) {
-                    $heidelPaymentList  = $factory->getHeidelPaymentList($paymentList);
-                    $userInputValidator = $factory->getUserInputValidator($user, $heidelPaymentList);
-                    $missingParameter   = $userInputValidator->getMissingParameter();
-
-                    if (false === empty($missingParameter)) {
-                        $this->d3UnzerMissingUserParameter = $missingParameter;
-                    }
-                }
-            }
+            $this->d3GetMissingUserParameters($factory);
             $this->addTplParam('d3UnzerMissingUserParameter', $this->d3UnzerMissingUserParameter);
         }
 
         //</editor-fold>
 
         return $mReturn;
+    }
+
+    public function d3GetMissingUserParameters(Factory $factory)
+    {
+        if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()) {
+            $paymentList = $this->getPaymentList();
+            $user        = $this->getUser();
+            if ($user && is_array($paymentList) && 1 <= count($paymentList)) {
+                $heidelPaymentList  = $factory->getHeidelPaymentList($paymentList);
+                $userInputValidator = $factory->getUserInputValidator($user, $heidelPaymentList);
+                $missingParameter   = $userInputValidator->getMissingParameter();
+
+                if (false === empty($missingParameter)) {
+                    $this->d3UnzerMissingUserParameter = $missingParameter;
+                }
+            }
+        }
     }
 
     /**
