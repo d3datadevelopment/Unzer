@@ -335,7 +335,10 @@ class PaymentController extends PaymentController_parent
 
         $session = $factory->getOxidProvider()->getSession();
         $session->deleteVariable($factory::HeidelpaySurpressEmailStateSessionName);
-        if (false == $factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($payment->getId())) {
+        
+        if ( !$factory->getModuleConfiguration()->isActive() ||
+             ! $factory->getChannelProvider()->isOxPaymentIdAssignedToChannel( $payment->getId() )
+        ) {
             return $return;
         }
 

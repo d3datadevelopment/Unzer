@@ -538,11 +538,11 @@ class UpdateRoutine extends d3install_updatebase
 
             foreach ($values as $id => $configuration) {
                 $item = json_decode($configuration, true);
-                if (stristr($item['heidelpayPaymentClassname'], 'Unzer')) {
+                if (stristr($item['heidelpayPaymentClassname'], 'Heidelpay')) {
                     $item['heidelpayPaymentClassname'] = $paymentIdClassMapper->getIdentByOldClassName($item['heidelpayPaymentClassname']);
                 }
 
-                if (stristr($item['paymentType'], 'Unzer')) {
+                if (stristr($item['paymentType'], 'Heidelpay')) {
                     $item['paymentType'] = $channelIdClassMapper->getIdentByOldClassName($item['paymentType']);
                 }
 

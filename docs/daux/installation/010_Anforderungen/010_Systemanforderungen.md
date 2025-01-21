@@ -3,8 +3,7 @@ title: Systemanforderungen
 ---
 
 * PHP Version
-    * 8.0.x
-    * 8.1.x
+    * 8.x
 * PHP Decoder
     * installierter SourceGuardian Loader (PHP ab 8.0)
 * Shopeditionen
@@ -15,12 +14,16 @@ title: Systemanforderungen
 * Shopversionen
     * OXID eShop in Compilation Version 
         * 7.0.x
+        * 7.1.x
+        * 7.2.x
 * Templaterenderer und Themes
     * Smarty-Templates
-      * flow
       * wave
       * admin
-* D3 Modul-Connector ([kostenfrei bei D3 erhältlich](https://www.oxidmodule.com/connector/)) ab Version 5.3.0.0 
+    * Twig-Templates
+      * Apex
+      * admin
+* D3 Modul-Connector ([kostenfrei bei D3 erhältlich](https://www.oxidmodule.com/connector/)) ab Version 7.1.0.0 
 * Installation via [Composer](https://getcomposer.org)
 
 Beachten Sie, dass die Ihnen vorliegende Modulversion entsprechend für Ihre genutzte PHP-Version sowie dem auf Ihrem Server vorhandenen Decoder kompatibel ist. Im Zweifelsfall kontaktieren Sie uns und nennen den für Ihren Shop genutzten Decoder und die PHP-Version.

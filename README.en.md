@@ -1,3 +1,7 @@
+![stability mature](https://img.shields.io/badge/stability-mature-008000.svg)
+[![latest tag](https://img.shields.io/packagist/v/d3/unzer?label=release)](https://packagist.org/packages/d3/unzer)
+![License](https://img.shields.io/packagist/l/d3/unzer)
+
 [![deutsche Version](https://logos.oxidmodule.com/de2_xs.svg)](README.md)
 [![english version](https://logos.oxidmodule.com/en2_xs.svg)](README.en.md)
 
