@@ -19,6 +19,7 @@ use D3\Heidelpay\Models\Factory;
 use D3\Heidelpay\Models\Payment\Btobbillpurchase;
 use D3\Heidelpay\Models\Payment\Creditcard;
 use D3\Heidelpay\Models\Payment\Debitcard;
+use D3\Heidelpay\Models\Payment\DirectBankTransfer;
 use D3\Heidelpay\Models\Payment\Directdebit;
 use D3\Heidelpay\Models\Payment\Easycredit;
 use D3\Heidelpay\Models\Payment\Eps;
@@ -325,6 +326,7 @@ class UpdateRoutine extends d3install_updatebase
                 "d3_d3heidelpay_models_payment_invoice_unsecured"   => Unsecured::class,
                 "d3_d3heidelpay_models_payment_invoice_secured"     => Secured::class,
                 "d3_d3heidelpay_models_payment_sofortueberweisung"  => Sofortueberweisung::class,
+                "d3_d3heidelpay_models_payment_directbanktransfer"  => DirectBankTransfer::class,
                 "d3_d3heidelpay_models_payment_prepayment"          => Prepayment::class,
                 "d3_d3heidelpay_models_payment_paypal"              => Paypal::class,
                 "d3_d3heidelpay_models_payment_ideal"               => Ideal::class,
@@ -359,6 +361,10 @@ class UpdateRoutine extends d3install_updatebase
             $generatedSettingsClassname = 'd3\\heidelpay\\models\\settings\\channels\\sofort';
         }
 
+        if ('d3\\heidelpay\\models\\settings\\channels\\directbanktransfer' === $generatedSettingsClassname) {
+            $generatedSettingsClassname = 'd3\\heidelpay\\models\\settings\\channels\\directbanktransfer';
+        }
+
         foreach ($paymentConfigurations as $paymentConfiguration) {
             if ($generatedSettingsClassname === strtolower($paymentConfiguration)) {
                 $settingsClassName = $paymentConfiguration;
@@ -380,6 +386,7 @@ class UpdateRoutine extends d3install_updatebase
             'd3_d3heidelpay_models_payment_invoice_unsecured'   => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_prepayment'          => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_sofortueberweisung'  => $oldChannelList['sofortChannel'],
+            'd3_d3heidelpay_models_payment_directbanktransfer'  => $oldChannelList['directBankTransferChannel'],
             'd3_d3heidelpay_models_payment_paypal'              => $oldChannelList['paypalChannel'],
             'd3_d3heidelpay_models_payment_giropay'             => $oldChannelList['giropayChannel'],
             'd3_d3heidelpay_models_payment_ideal'               => $oldChannelList['idealChannel'],
@@ -398,6 +405,7 @@ class UpdateRoutine extends d3install_updatebase
             Unsecured::class            => $oldChannelList['mainChannel'],
             Prepayment::class           => $oldChannelList['mainChannel'],
             Sofortueberweisung::class   => $oldChannelList['sofortChannel'],
+            DirectBankTransfer::class   => $oldChannelList['directBankTransferChannel'],
             Paypal::class               => $oldChannelList['paypalChannel'],
             Giropay::class              => $oldChannelList['giropayChannel'],
             Ideal::class                => $oldChannelList['idealChannel'],
@@ -451,6 +459,7 @@ class UpdateRoutine extends d3install_updatebase
     {
         $mainChannel        = 'd3heidelpay_sChannel';
         $sofortChannel      = 'd3heidelpay_sChannel__sofort';
+        $directbanktransferChannel = 'd3heidelpay_sChannel__directbanktransfer';
         $paypalChannel      = 'd3heidelpay_sChannel__paypal';
         $giropayChannel     = 'd3heidelpay_sChannel__giro';
         $idealChannel       = 'd3heidelpay_sChannel__ideal';
@@ -466,6 +475,7 @@ class UpdateRoutine extends d3install_updatebase
         return [
             'mainChannel'        => $mainChannel,
             'sofortChannel'      => $sofortChannel,
+            'directbanktransferChannel' => $directbanktransferChannel,
             'paypalChannel'      => $paypalChannel,
             'giropayChannel'     => $giropayChannel,
             'idealChannel'       => $idealChannel,

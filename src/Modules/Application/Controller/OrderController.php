@@ -360,7 +360,12 @@ class OrderController extends OrderController_parent
 
         /** @var Factory $factory */
         $factory  = oxNew(Factory::class);
-        if (false == $factory->getModuleConfiguration()->isActive()) {
+        $heidelPaySettings = $factory->getSettings();
+        $payment = $this->getPayment();
+
+        if (false == $factory->getModuleConfiguration()->isActive() ||
+            (is_object($payment) && $factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive() && !$heidelPaySettings->isAssignedToHeidelPayment($payment))
+        ) {
             $factory->getModuleConfiguration()->d3getLog()->info(
                 __CLASS__,
                 __FUNCTION__,
