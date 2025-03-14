@@ -44,7 +44,7 @@
     "ext-json": "*",
     "oxid-esales/oxideshop-ce": "7.0 - 7.2",
     "d3/modcfg": "^7.1",
-    "unzerdev/php-sdk": "^3.6",
+    "unzerdev/php-sdk": "^3.11.0",
     "beberlei/assert": "^3.3",
     "d3/oxid-twig-extensions": "^1.3.0.0",
     "guzzlehttp/guzzle": "^7.8.1"

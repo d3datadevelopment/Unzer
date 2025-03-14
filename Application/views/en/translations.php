@@ -8,6 +8,7 @@ use D3\Unzer\Application\Model\Payment\Directdebit\Secured;
 use D3\Unzer\Application\Model\Payment\Prepayment;
 use D3\Unzer\Application\Model\Payment\Postfinance;
 use D3\Unzer\Application\Model\Payment\Sofortueberweisung;
+use D3\Unzer\Application\Model\Payment\DirectBankTransfer;
 use D3\Unzer\Application\Model\Payment\Ideal;
 use D3\Unzer\Application\Model\Payment\Giropay;
 use D3\Unzer\Application\Model\Payment\Eps;
@@ -132,6 +133,7 @@ return array(
     Prepayment::class                                               => 'Unzer Prepayment (autom. prepayment)',
     Postfinance::class                                              => 'PostFinance E-Finance',
     Sofortueberweisung::class                                       => 'Sofort',
+    DirectBankTransfer::class                                       => 'DirectBankTransfer',
     Ideal::class                                                    => 'iDeal',
     Giropay::class                                                  => 'Giropay',
     Eps::class                                                      => 'eps bank transfer',
@@ -151,6 +153,7 @@ return array(
     'D3_UNZER_CHANNEL_EASYCREDIT'                              => 'Easy Credit instalment purchase',
     'D3_UNZER_CHANNEL_EPS'                                     => 'eps bank transfer',
     'D3_UNZER_CHANNEL_SOFORT'                                              => 'Sofort',
+    'D3_UNZER_CHANNEL_DIRECTBANKTRANSFER'                                  => 'DirectBankTransfer',
     'D3_UNZER_CHANNEL_GIROPAY'                                             => 'Giropay',
     'D3_UNZER_CHANNEL_PREPAYMENT'                                          => 'Unzer Prepayment (autom. prepayment)',
     'D3_UNZER_CHANNEL_IDEAL'                                               => 'iDeal',
