@@ -32,7 +32,7 @@
   ],
   "require": {
     "php": "^8.0",
-    "ext-sourceguardian": ">=14",
+    "ext-sourceguardian": ">=15",
     "lib-curl": ">=7.34.0",
     "lib-openssl": ">=1.0.1",
     "ext-curl": "*",
