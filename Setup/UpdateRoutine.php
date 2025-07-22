@@ -509,19 +509,22 @@ class UpdateRoutine extends d3install_updatebase
     public function profileHasOldClassNames(): bool
     {
         $factory = oxNew(Factory::class);
-        $currentShopId = $factory->getModuleConfiguration()->getShopId();
-
+        $currentShopId = Registry::getConfig()->getShopId();
         /** @var Shop $oShop */
         foreach ($this->getShopListByActiveModule(Constants::OXID_MODULE_ID) as $oShop) {
             $this->_changeToShop($oShop->getId());
-            $modProfile = $factory->getModProfile();
-            $values     = $modProfile->getAllValues();
-            foreach ($values as $configuration) {
-                $item = json_decode($configuration, true);
-                if (stristr($item['heidelpayPaymentClassname'] . '-' . $item['paymentType'], 'Heidelpay')) {
-                    $this->_changeToShop($currentShopId);
-                    return true;
+            try {
+                $modProfile = $factory->getModProfile();
+                $values     = $modProfile->getAllValues();
+                foreach ($values as $configuration) {
+                    $item = json_decode($configuration, true);
+                    if (stristr($item['heidelpayPaymentClassname'] . '-' . $item['paymentType'], 'Heidelpay')) {
+                        $this->_changeToShop($currentShopId);
+                        return true;
+                    }
                 }
+            } catch (InputException $e) {
+                unset($e);
             }
         }
 

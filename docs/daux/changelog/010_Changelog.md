@@ -7,7 +7,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/7.2.0.0...rel_7.x)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/7.2.1.0...rel_7.x)
+
+## [7.2.1.0](https://git.d3data.de/D3Private/Unzer/compare/7.2.0.0...7.2.1.0) - 2025-07-22
+### Added
+- installierbar in OXID 7.3
+
+### Fixed
+- Fehler bei der Mandantenzuordnung im Unzer Response
+- Fehler beim Mandantenwechsel während der Installationsprüfung
 
 ## [7.2.0.0](https://git.d3data.de/D3Private/Unzer/compare/7.1.1.0...7.2.0.0) - 2025-03-14
 ### Added
@@ -21,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.1.1.0](https://git.d3data.de/D3Private/Unzer/compare/7.1.0.1...7.1.1.0) - 2025-01-21
 ### Added
-- installable in OXID 7.2
+- installierbar in OXID 7.2
 ### Fixed
 - prefixing Unzer keys using a module demo license
 - updating profiles from v6 to v7

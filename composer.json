@@ -42,7 +42,7 @@
     "ext-simplexml": "*",
     "ext-bcmath": "*",
     "ext-json": "*",
-    "oxid-esales/oxideshop-ce": "7.0 - 7.2",
+    "oxid-esales/oxideshop-ce": "7.0 - 7.3",
     "d3/modcfg": "^7.1",
     "unzerdev/php-sdk": "^3.11.0",
     "beberlei/assert": "^3.3",

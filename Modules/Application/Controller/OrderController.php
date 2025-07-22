@@ -726,7 +726,7 @@ class OrderController extends OrderController_parent
                 $controllerFacade = oxNew(MgwOrder::class, $factory);
                 $heidelPayment    = $factory->getSettings()->getPayment($payment);
                 $session          = $factory->getOxidProvider()->getSession();
-                $getParameter     = '?stoken='.$session->getSessionChallengeToken();
+                $getParameter     = '?stoken='.$session->getSessionChallengeToken().'&shp='.Registry::getConfig()->getShopId();
                 try {
                     $d3Log->info(
                         self::class,

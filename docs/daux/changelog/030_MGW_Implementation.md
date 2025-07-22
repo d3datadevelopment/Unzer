@@ -22,6 +22,7 @@ Den Zahlungsmitteln entsprechende Formulare werden im Bestellschritt "3. Versand
 - Paypal
 - Vorkasse
 - Sofort
+- Unzer Direct Bank Transfer
 - EPS
 - Przelewy24
 - Giropay

@@ -13,6 +13,7 @@ Die lizenzabhängig verfügbaren Zahltypen entnehmen Sie bitte der [Editionsübe
     Es werden durch den Installationsassistenten weitere Shop-Zahlungsarten hinzugefügt:
     - Debitkarte
     - Sofortüberweisung
+    - Unzer Direktüberweisung
     - iDeal Niederlande
     - Giropay Deutschland
     - EPS Österreich

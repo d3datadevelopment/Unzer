@@ -24,7 +24,8 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 
 | <div style="width: 350px;">Direktüberweisung</div>                                                     | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
 | ------------------------------------------------------------------------------------------------------ |:--------------------------------------:|:----------------------------------------:|
-| [Sofort Überweisung](https://www.unzer.com/de/sofortueberweisung/)                                     | **X**                                  | **X**                                    |
+| [Sofort Überweisung](https://www.unzer.com/de/sofortueberweisung/) - abgekündigt                       | **X**                                  | **X**                                    |
+| [Unzer Direktüberweisung](https://www.unzer.com/de/unzer_direkt_ueberweisung/)                         | **X**                                  | **X**                                    |
 | [Giropay](https://www.unzer.com/de/giropay/)                                                           |                                        | **X**                                    |
 | [iDeal (Niederlande)](https://www.unzer.com/de/ideal/)                                                 |                                        | **X**                                    |
 | [eps Überweisung (Österreich)](https://www.unzer.com/de/electronic-payment-standard/)                  |                                        | **X**                                    |

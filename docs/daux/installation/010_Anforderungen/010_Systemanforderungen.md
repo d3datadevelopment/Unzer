@@ -16,6 +16,7 @@ title: Systemanforderungen
         * 7.0.x
         * 7.1.x
         * 7.2.x
+        * 7.3.x
 * Templaterenderer und Themes
     * Smarty-Templates
       * wave
