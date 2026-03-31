@@ -27,6 +27,7 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
     Es werden durch den Installationsassistenten weitere Shop-Zahlungsarten hinzugefügt:
     - Debitkarte
     - Sofortüberweisung
+    - Unzer Direktüberweisung
     - iDeal Niederlande
     - Giropay Deutschland
     - EPS Österreich

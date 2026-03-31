@@ -28,7 +28,7 @@ $aModule = [
         'en' => '',
     ],
     'thumbnail'      => 'picture.png',
-    'version'        => '6.5.0.0',
+    'version'        => '6.5.1.0',
     'author'         => 'D&sup3; Data Development, Inh. Thomas Dartsch',
     'email'          => 'support@shopmodule.com',
     'url'            => 'https://docs.oxidmodule.com/Unzer/',

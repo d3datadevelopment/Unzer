@@ -35,7 +35,8 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 
 | PIN / TAN Verfahren | Basic | Premium
 | --- |: --- :|: ---: 
-|Sofortüberweisung|**X**|**X**
+|Sofortüberweisung (abgekündigt)|**X**|**X**
+|Unzer Direct Bank Transfer|**X**|**X**
 |Giropay| |**X**
 |IDEAL (Niederlande)| |**X**
 |EPS (Österreich)| |**X**
