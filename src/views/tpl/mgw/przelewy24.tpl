@@ -17,30 +17,46 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-        var unzerInstance;
-        if( "undefined" === typeof unzerInstance  ) {
-            unzerInstance = new unzer('[{$d3UnzerPublicKey}]', {locale: '[{$d3UnzerLanguageLocale}]'});
-        }
-        var Przelewy24_[{$paymentId|escape:'url'}] = unzerInstance.Przelewy24();
+            function initUnzerPrzelewy24_[{$paymentId|escape:'url'}]() {
 
-        var form = document.getElementById('payment');
-        form.addEventListener('submit',
-            function (event) {
-                if ($('#[{$selectorId}]').is(':checked')) {
-                    event.preventDefault();
-                    $('#error-[{$paymentId}]').remove();
-                    Przelewy24_[{$paymentId|escape:'url'}].createResource()
-                        .then(function (result) {
-                            // Success
-                            var hiddenField = document.createElement("input");
-                            hiddenField.value = JSON.stringify(result);
-                            hiddenField.type = 'hidden';
-                            hiddenField.name = "unzer-result";
-                            form.appendChild(hiddenField);
-                            form.submit();
-                        })
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerPrzelewy24_[{$paymentId|escape:'url'}], 50);
+                    return;
                 }
+
+                const przelewy24 = unzerInstance.Przelewy24();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['[{$paymentId|escape:'url'}]'] = przelewy24;
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerPrzelewy24_[{$paymentId|escape:'url'}]();
             });
+
+            var form = document.getElementById('payment');
+            form.addEventListener('submit',
+                function (event) {
+                    if ($('#[{$selectorId}]').is(':checked')) {
+                        event.preventDefault();
+                        $('#error-[{$paymentId}]').remove();
+                        window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource()
+                            .then(function (result) {
+                                // Success
+                                var hiddenField = document.createElement("input");
+                                hiddenField.value = JSON.stringify(result);
+                                hiddenField.type = 'hidden';
+                                hiddenField.name = "unzer-result";
+                                form.appendChild(hiddenField);
+                                form.submit();
+                            })
+                    }
+                }
+            );
         [{/capture}]
     </script>
 [{/capture}]

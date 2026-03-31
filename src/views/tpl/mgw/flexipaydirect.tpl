@@ -17,48 +17,64 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-        var unzerInstance;
-        if( "undefined" === typeof unzerInstance  ) {
-            unzerInstance = new unzer('[{$d3UnzerPublicKey}]', {locale: '[{$d3UnzerLanguageLocale}]'});
-        }
-        var FlexiPayDirect_[{$paymentId|escape:'url'}] = unzerInstance.FlexiPayDirect();
-        var form = document.getElementById('payment');
-        form.addEventListener('submit',
-            function (event) {
-                let isFormValid = $().d3UnzerValidateMissingUserParameter();
+            function initUnzerFlexiPayDirect_[{$paymentId|escape:'url'}]() {
 
-                if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
-                    event.preventDefault();
-                    $('#error-[{$paymentId}]').remove();
-                    var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                    FlexiPayDirect_[{$paymentId|escape:'url'}].createResource()
-                        .then(function (result) {
-                            // Success
-                            var hiddenField = document.createElement("input");
-                            hiddenField.value = JSON.stringify(result);
-                            hiddenField.type = 'hidden';
-                            hiddenField.name = "unzer-result";
-                            form.appendChild(hiddenField);
-                            form.submit();
-                        })
-                        .catch(function (error) {
-                            var errorMessage = document.createElement("p");
-                            $(errorMessage).prop('id', 'error-[{$paymentId}]');
-                            $(errorMessage).addClass('alert');
-                            $(errorMessage).addClass('alert-danger');
-                            $(errorMessage).text(error.message);
-                            form.parentNode.insertBefore(errorMessage,
-                                form);
-                            $([document.documentElement, document.body]).animate({
-                                    scrollTop: $('#error-[{$paymentId}]').offset().top
-                                },
-                                1000);
-                        })
-                        .finally(function () {
-                            modalDialog.modal("hide");
-                        });
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerFlexiPayDirect_[{$paymentId|escape:'url'}], 50);
+                    return;
                 }
+
+                const flexiPayDirect = unzerInstance.FlexiPayDirect();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['[{$paymentId|escape:'url'}]'] = flexiPayDirect;
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerFlexiPayDirect_[{$paymentId|escape:'url'}]();
             });
+
+            var form = document.getElementById('payment');
+            form.addEventListener('submit',
+                function (event) {
+                    let isFormValid = $().d3UnzerValidateMissingUserParameter();
+
+                    if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
+                        event.preventDefault();
+                        $('#error-[{$paymentId}]').remove();
+                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
+                        window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource()
+                            .then(function (result) {
+                                // Success
+                                var hiddenField = document.createElement("input");
+                                hiddenField.value = JSON.stringify(result);
+                                hiddenField.type = 'hidden';
+                                hiddenField.name = "unzer-result";
+                                form.appendChild(hiddenField);
+                                form.submit();
+                            })
+                            .catch(function (error) {
+                                var errorMessage = document.createElement("p");
+                                $(errorMessage).prop('id', 'error-[{$paymentId}]');
+                                $(errorMessage).addClass('alert');
+                                $(errorMessage).addClass('alert-danger');
+                                $(errorMessage).text(error.message);
+                                form.parentNode.insertBefore(errorMessage, form);
+                                $([document.documentElement, document.body]).animate({
+                                        scrollTop: $('#error-[{$paymentId}]').offset().top
+                                    },
+                                    1000);
+                            })
+                            .finally(function () {
+                                modalDialog.modal("hide");
+                            });
+                    }
+                }
+            );
         [{/capture}]
     </script>
 [{/capture}]

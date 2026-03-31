@@ -20,6 +20,7 @@ Details zu PCI finden Sie unter https://www.pcisecuritystandards.org/ .
 - Unzer Invoice (Rechnungskauf B2C oder B2B, mit oder ohne Zahlungssicherung)
 - PayPal
 - Sofort Überweisung
+- Unzer Direktüberweisung
 - Giropay *
 - SEPA Lastschrift
 - automatische Vorkasse

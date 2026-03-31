@@ -7,7 +7,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.5.0.0...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.5.1.0...rel_6.x_mgw)
+
+## [6.5.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.5.0.0...6.5.1.0) - 2026-03-31
+### Changed
+- Unzer-Keys werden im Demo-Modus als Sandbox-Version gekennzeichnet
+- Integration der Zahlungsartenscripte erfolgt im onContentLoaded Event, um Ladefehler durch ConsentManager zu vermeiden
 
 ## [6.5.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.4.4.0...6.5.0.0) - 2025-03-14
 ### Added
