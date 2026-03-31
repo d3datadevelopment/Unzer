@@ -37,46 +37,73 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
-            var unzerInstance;
-            if ("undefined" === typeof unzerInstance) {
-                unzerInstance = new unzer('[{$d3UnzerPublicKey}]',
-                    {locale: '[{$d3UnzerLanguageLocale}]'});
-            }
-            var SepaDirectDebitSecured_[{$paymentId|escape:'url'}] = unzerInstance.SepaDirectDebitSecured();
-            SepaDirectDebitSecured_[{$paymentId|escape:'url'}].create('sepa-direct-debit-guaranteed',{
+            function initUnzerSepaDirectDebitSecured_[{$paymentId|escape:'url'}]() {
+
+                const container = document.getElementById(
+                    "sepa-guaranteed-iban-[{$paymentId}]"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerSepaDirectDebitSecured_[{$paymentId|escape:'url'}], 50);
+                    return;
+                }
+
+                const sepaDirectDebitSecured = unzerInstance.SepaDirectDebitSecured();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['[{$paymentId|escape:'url'}]'] = sepaDirectDebitSecured;
+
+                sepaDirectDebitSecured.create('sepa-direct-debit-guaranteed',{
                     containerId: 'sepa-guaranteed-iban-[{$paymentId}]'
-            });
-            [{if $d3UnzerShowSepaGuranteedCustomerFormular}]
-                // Creating a customer instance
-                var Customer = unzerInstance.Customer();
-                
-                [{block name="d3initForm"}]
-                    [{assign var="user" value=$oView->getUser()}]
-                    [{if $user->getFieldData('oxbirthdate') && $user->getFieldData('oxbirthdate') != "0000-00-00"}]
-                        [{assign var="iBirthdayMonth" value=$user->getFieldData('oxbirthdate')|regex_replace:"/^([0-9]{4})[-]/":""|regex_replace:'/[-]([0-9]{1,2})$/':""}]
-                        [{assign var="iBirthdayDay" value=$user->getFieldData('oxbirthdate')|regex_replace:"/^([0-9]{4})[-]([0-9]{1,2})[-]/":""}]
-                        [{assign var="iBirthdayYear" value=$user->getFieldData('oxbirthdate')|regex_replace:'/[-]([0-9]{1,2})[-]([0-9]{1,2})$/':""}]
-                    [{/if}]
-                    // Rendering the customer form
-                    Customer.initFormFields({
-                      "lastname": "[{$user->getFieldData("oxlname")}]",
-                      "firstname": "[{$user->getFieldData("oxfname")}]",
-                      "salutation": "[{$user->getFieldData("oxsal")}]",
-                      "birthDate": "[{$iBirthdayYear}]-[{$iBirthdayMonth}]-[{$iBirthdayDay}]",
-                      "address": {
-                        "street": "[{$user->getFieldData("oxstreet")}] [{$user->getFieldData("oxstreetnr")}]",
-                        "zip": "[{$user->getFieldData("oxzip")}]",
-                        "city": "[{$user->getFieldData("oxcity")}]",
-                        "country": "[{$oView->d3getCountryCode()}]"
-                      }
-                    });
-                [{/block}]
-                
-                // Rendering the customer form
-                Customer.create({
-                    containerId: 'customer-[{$paymentId}]'
                 });
-            [{/if}]
+
+                [{if $d3UnzerShowSepaGuranteedCustomerFormular}]
+                    // Creating a customer instance
+                    var Customer = unzerInstance.Customer();
+
+                    [{block name="d3initForm"}]
+                        [{assign var="user" value=$oView->getUser()}]
+                        [{if $user->getFieldData('oxbirthdate') && $user->getFieldData('oxbirthdate') != "0000-00-00"}]
+                            [{assign var="iBirthdayMonth" value=$user->getFieldData('oxbirthdate')|regex_replace:"/^([0-9]{4})[-]/":""|regex_replace:'/[-]([0-9]{1,2})$/':""}]
+                            [{assign var="iBirthdayDay" value=$user->getFieldData('oxbirthdate')|regex_replace:"/^([0-9]{4})[-]([0-9]{1,2})[-]/":""}]
+                            [{assign var="iBirthdayYear" value=$user->getFieldData('oxbirthdate')|regex_replace:'/[-]([0-9]{1,2})[-]([0-9]{1,2})$/':""}]
+                        [{/if}]
+                        // Rendering the customer form
+                        Customer.initFormFields({
+                            "lastname": "[{$user->getFieldData("oxlname")}]",
+                            "firstname": "[{$user->getFieldData("oxfname")}]",
+                            "salutation": "[{$user->getFieldData("oxsal")}]",
+                            "birthDate": "[{$iBirthdayYear}]-[{$iBirthdayMonth}]-[{$iBirthdayDay}]",
+                            "address": {
+                                "street": "[{$user->getFieldData("oxstreet")}] [{$user->getFieldData("oxstreetnr")}]",
+                                "zip": "[{$user->getFieldData("oxzip")}]",
+                                "city": "[{$user->getFieldData("oxcity")}]",
+                                "country": "[{$oView->d3getCountryCode()}]"
+                            }
+                        });
+                    [{/block}]
+
+                    // Rendering the customer form
+                    Customer.create({
+                        containerId: 'customer-[{$paymentId}]'
+                    });
+                [{/if}]
+
+                container.dataset.unzerInitialized = "true";
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerSepaDirectDebitSecured_[{$paymentId|escape:'url'}]();
+            });
+
             var form = document.getElementById('payment');
             form.addEventListener('submit',
                 function (event) {
@@ -86,13 +113,13 @@
                         event.preventDefault();
                         $('#error-[{$paymentId}]').remove();
                         var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                        var SepaGuaranteedPromise_[{$paymentId|escape:'url'}] = SepaDirectDebitSecured_[{$paymentId|escape:'url'}].createResource();
+                        var SepaGuaranteedPromise_[{$paymentId|escape:'url'}] = window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource();
                         [{if $d3UnzerShowSepaGuranteedCustomerFormular}]
                             var customerPromise_[{$paymentId|escape:'url'}] = Customer.createCustomer();
                         [{/if}]
                         Promise.all([
                             SepaGuaranteedPromise_[{$paymentId|escape:'url'}]
-                            [{if $d3UnzerShowSepaGuranteedCustomerFormular}], customerPromise_[{$paymentId|escape:'url'}][{/if}]
+                                [{if $d3UnzerShowSepaGuranteedCustomerFormular}], customerPromise_[{$paymentId|escape:'url'}][{/if}]
                         ])
                             .then(function (result) {
                                 var hiddenField = document.createElement("input");
@@ -122,7 +149,7 @@
                     }
                 }
             );
-            
+
             [{block name="d3javaScript"}]
                 [{*** Address label ***}]
                 $("#customer-[{$paymentId}] .unzerUI > .checkboxLabel").hide();
