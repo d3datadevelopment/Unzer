@@ -5,6 +5,7 @@ namespace D3\Unzer\Modules\Application\Model;
 use D3\Unzer\Application\Model\Constants;
 use D3\Unzer\Application\Model\Containers\Criterions;
 use D3\Unzer\Application\Model\Containers\PrepaymentData;
+use D3\Unzer\Application\Model\Exceptions\NoOrderLoadableException;
 use D3\Unzer\Application\Model\Factory;
 use D3\Unzer\Application\Model\Mail;
 use D3\Unzer\Application\Model\Payment\Btobbillpurchase;
@@ -774,7 +775,7 @@ class Order extends Order_parent
         $oxid = DatabaseProvider::getDb()->getOne($query, [$payId, $orderId]);
 
         if (false == $oxid || false == $this->load($oxid)) {
-            throw oxNew(StandardException::class, 'no order loadable by transid = '.$payId.' and ordernr = '.$orderId);
+            throw oxNew(NoOrderLoadableException::class, $payId, $orderId);
         }
     }
 }

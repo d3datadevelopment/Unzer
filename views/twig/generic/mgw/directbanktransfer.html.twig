@@ -17,11 +17,26 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance  ) {
-                unzerInstance = new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
+            function initUnzerOpenBanking_{{ paymentId|escape('url') }}() {
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerOpenBanking_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const directBankTransfer = unzerInstance.OpenBanking();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = directBankTransfer;
             }
-            var DirectBankTransfer_{{ paymentId|escape('url') }} = unzerInstance.OpenBanking();
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerOpenBanking_{{ paymentId|escape('url') }}();
+            });
             var form = document.getElementById('payment');
             form.addEventListener('submit',
                 function (event) {
@@ -31,7 +46,7 @@
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
                         var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        DirectBankTransfer_{{ paymentId|escape('url') }}.createResource()
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
                             .then(function (result) {
                                 // Success
                                 var hiddenField = document.createElement("input");
@@ -63,4 +78,3 @@
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-

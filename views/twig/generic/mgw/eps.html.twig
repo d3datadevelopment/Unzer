@@ -17,13 +17,39 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance  ) {
-                unzerInstance = new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
+            function initUnzerEps_{{ paymentId|escape('url') }}() {
+
+                const container = document.getElementById(
+                    "eps-{{ paymentId }}"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerEps_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const eps = unzerInstance.EPS();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = eps;
+
+                eps.create('eps', {
+                    containerId: 'eps-{{ paymentId }}'
+                });
+
+                container.dataset.unzerInitialized = "true";
             }
-            var Eps_{{ paymentId|escape('url') }} = unzerInstance.EPS();
-            Eps_{{ paymentId|escape('url') }}.create('eps', {
-                containerId: 'eps-{{ paymentId }}'
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerEps_{{ paymentId|escape('url') }}();
             });
             var form = document.getElementById('payment');
             form.addEventListener('submit',
@@ -34,10 +60,10 @@
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
                         var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        Eps_{{ paymentId|escape('url') }}.create('eps', {
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].create('eps', {
                             containerId: 'eps-element'
                         });
-                        Eps_{{ paymentId|escape('url') }}.createResource()
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
                             .then(function (result) {
                                 // Success
                                 var hiddenField = document.createElement("input");
@@ -69,4 +95,3 @@
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-

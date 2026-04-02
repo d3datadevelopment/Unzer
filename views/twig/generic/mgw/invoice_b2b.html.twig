@@ -17,40 +17,65 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance  ) {
-                unzerInstance= new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
-            }
-            var InvoiceSecured_{{ paymentId|escape('url') }} = unzerInstance.InvoiceSecured();
-            var B2BCustomer_{{ paymentId|escape('url') }} = unzerInstance.B2BCustomer();
+            function initUnzerInvoiceSecured_{{ paymentId|escape('url') }}() {
 
-            {% block d3initForm %}
-                {% set user = oView.getUser() %}
-                {% if user.getFieldData('oxbirthdate') and user.getFieldData('oxbirthdate') != "0000-00 - 00" %}
-                    {% set iBirthdayMonth = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]/", "")|preg_replace("/[-]([0-9]{1,2})$/", "") %}
-                    {% set iBirthdayDay = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]([0-9]{1,2})[-]/", "") %}
-                    {% set iBirthdayYear = user.getFieldData('oxbirthdate')|preg_replace("/[-]([0-9]{1,2})[-]([0-9]{1,2})$/", "") %}
-                {% endif %}
-                // Rendering the customer form
-                B2BCustomer_{{ paymentId|escape('url') }}.initFormFields({
-                  "lastname": "{{ user.getFieldData("oxlname") }}",
-                  "firstname": "{{ user.getFieldData("oxfname") }}",
-                  "salutation": "{{ user.getFieldData("oxsal") }}",
-                  "company": "{{ user.getFieldData("oxcompany") }}",
-                  "birthDate": "{{ iBirthdayYear }}-{{ iBirthdayMonth }}-{{ iBirthdayDay }}",
-                  "email": "{{ user.getFieldData("oxusername") }}",
-                  "address": {
-                    "street": "{{ user.getFieldData("oxstreet") }} {{ user.getFieldData("oxstreetnr") }}",
-                    "zip": "{{ user.getFieldData("oxzip") }}",
-                    "city": "{{ user.getFieldData("oxcity") }}",
-                    "country": "{{ oView.d3getCountryCode() }}"
-                  }
+                const container = document.getElementById(
+                    "b2b-customer-{{ paymentId }}"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerInvoiceSecured_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const invoiceSecured = unzerInstance.InvoiceSecured();
+                var B2BCustomer_{{ paymentId|escape('url') }} = unzerInstance.B2BCustomer();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = invoiceSecured;
+
+                {% block d3initForm %}
+                    {% set user = oView.getUser() %}
+                    {% if user.getFieldData('oxbirthdate') and user.getFieldData('oxbirthdate') != "0000-00-00" %}
+                        {% set iBirthdayMonth = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]/", "")|preg_replace("/[-]([0-9]{1,2})$/", "") %}
+                        {% set iBirthdayDay = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]([0-9]{1,2})[-]/", "") %}
+                        {% set iBirthdayYear = user.getFieldData('oxbirthdate')|preg_replace("/[-]([0-9]{1,2})[-]([0-9]{1,2})$/", "") %}
+                    {% endif %}
+                    // Rendering the customer form
+                    B2BCustomer_{{ paymentId|escape('url') }}.initFormFields({
+                      "lastname": "{{ user.getFieldData("oxlname") }}",
+                      "firstname": "{{ user.getFieldData("oxfname") }}",
+                      "salutation": "{{ user.getFieldData("oxsal") }}",
+                      "company": "{{ user.getFieldData("oxcompany") }}",
+                      "birthDate": "{{ iBirthdayYear }}-{{ iBirthdayMonth }}-{{ iBirthdayDay }}",
+                      "email": "{{ user.getFieldData("oxusername") }}",
+                      "address": {
+                        "street": "{{ user.getFieldData("oxstreet") }} {{ user.getFieldData("oxstreetnr") }}",
+                        "zip": "{{ user.getFieldData("oxzip") }}",
+                        "city": "{{ user.getFieldData("oxcity") }}",
+                        "country": "{{ oView.d3getCountryCode() }}"
+                      }
+                    });
+                {% endblock %}
+
+                B2BCustomer_{{ paymentId|escape('url') }}.create({
+                  containerId: 'b2b-customer-{{ paymentId }}'
                 });
-            {% endblock %}
 
-            B2BCustomer_{{ paymentId|escape('url') }}.create({
-              containerId: 'b2b-customer-{{ paymentId }}'
-            })
+                container.dataset.unzerInitialized = "true";
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerInvoiceSecured_{{ paymentId|escape('url') }}();
+            });
 
             var form = document.getElementById('payment');
             form.addEventListener('submit',
@@ -61,7 +86,7 @@
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
                         var modalDialog        = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        var paymentPromise     = InvoiceSecured_{{ paymentId|escape('url') }}.createResource();
+                        var paymentPromise     = window.unzerPayments['{{ paymentId|escape('url') }}'].createResource();
                         var b2bCustomerPromise = B2BCustomer_{{ paymentId|escape('url') }}.createCustomer();
                         Promise.all([paymentPromise, b2bCustomerPromise])
                             .then(function (result) {

@@ -1260,9 +1260,33 @@ class PaymentController extends PaymentController_parent
 
         $styleRegistrator->addFile($fileUrl, null, false);
 
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+        $mgwPublicKey = $factory->getModuleProvider()->getMgwPublicKey();
+        $languageLocale = $factory->getLanguageLocale();
+
         /** @var JavaScriptRegistrator $javaScriptRegistrator */
         $javaScriptRegistrator = oxNew(JavaScriptRegistrator::class);
         $javaScriptRegistrator->addFile('https://static.unzer.com/v1/unzer.js', 3, false);
+        $javaScriptRegistrator->addSnippet(<<<SNIPPET
+function getUnzerInstance() {
+
+    if (typeof window.unzerInstance !== "undefined") {
+        return window.unzerInstance;
+    }
+
+    if (typeof window.unzer === "undefined") {
+        return null;
+    }
+
+    window.unzerInstance = new unzer('$mgwPublicKey', {
+        locale: '$languageLocale'
+    });
+
+    return window.unzerInstance;
+}
+SNIPPET
+);
 
         $fileTime = filemtime($this->getViewConfig()->getModulePath('d3unzer', 'out/src/js/d3unzer.js'));
         $fileUrl  = $this->getViewConfig()->getModuleUrl('d3unzer', 'out/src/js/d3unzer.js');

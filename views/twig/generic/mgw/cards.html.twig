@@ -31,28 +31,56 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance ) {
-                unzerInstance= new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
+            function initUnzerCard_{{ paymentId|escape('url') }}() {
+
+                const container = document.getElementById(
+                    "card-element-id-number-{{ paymentId }}"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerCard_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const card = unzerInstance.Card();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['d3debitcard'] = card;
+
+                card.create('holder', {
+                    containerId: 'card-element-id-card-holder-{{ paymentId }}',
+                    onlyIframe: false
+                });
+
+                card.create('number', {
+                    containerId: 'card-element-id-number-{{ paymentId }}',
+                    onlyIframe: false
+                });
+
+                card.create('expiry', {
+                    containerId: 'card-element-id-expiry-{{ paymentId }}',
+                    onlyIframe: false
+                });
+
+                card.create('cvc', {
+                    containerId: 'card-element-id-cvc-{{ paymentId }}',
+                    onlyIframe: false
+                });
+
+                container.dataset.unzerInitialized = "true";
             }
 
-            var Card_{{ paymentId|escape('url') }} = unzerInstance.Card();
-            Card_{{ paymentId|escape('url') }}.create('holder',
-                {
-                    containerId: 'card-element-id-card-holder-{{ paymentId }}', onlyIframe: false
-                });
-            Card_{{ paymentId|escape('url') }}.create('number',
-                {
-                    containerId: 'card-element-id-number-{{ paymentId }}', onlyIframe: false
-                });
-            Card_{{ paymentId|escape('url') }}.create('expiry',
-                {
-                    containerId: 'card-element-id-expiry-{{ paymentId }}', onlyIframe: false
-                });
-            Card_{{ paymentId|escape('url') }}.create('cvc',
-                {
-                    containerId: 'card-element-id-cvc-{{ paymentId }}', onlyIframe: false
-                });
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerCard_{{ paymentId|escape('url') }}();
+            });
             var form = document.getElementById('payment');
             form.addEventListener('submit',
                 function (event) {
@@ -62,7 +90,7 @@
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
                         var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        Card_{{ paymentId|escape('url') }}.createResource()
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
                             .then(function (result) {
                                 var hiddenField = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -94,4 +122,3 @@
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-

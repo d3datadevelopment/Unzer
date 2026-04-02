@@ -38,46 +38,71 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if ("undefined" === typeof unzerInstance) {
-                unzerInstance = new unzer('{{ d3UnzerPublicKey }}',
-                    {locale: '{{ d3UnzerLanguageLocale }}'});
-            }
-            var SepaDirectDebitSecured_{{ paymentId|escape('url') }} = unzerInstance.SepaDirectDebitSecured();
-            SepaDirectDebitSecured_{{ paymentId|escape('url') }}.create('sepa-direct-debit-guaranteed',{
+            function initUnzerSepaDirectDebitSecured_{{ paymentId|escape('url') }}() {
+
+                const container = document.getElementById(
+                    "sepa-guaranteed-iban-{{ paymentId }}"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerSepaDirectDebitSecured_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const sepaDirectDebitSecured = unzerInstance.SepaDirectDebitSecured();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = sepaDirectDebitSecured;
+
+                sepaDirectDebitSecured.create('sepa-direct-debit-guaranteed',{
                     containerId: 'sepa-guaranteed-iban-{{ paymentId }}'
-            });
-            {% if d3UnzerShowSepaGuranteedCustomerFormular %}
-                // Creating a customer instance
-                var Customer = unzerInstance.Customer();
-                
-                {% block d3initForm %}
-                    {% set user = oView.getUser() %}
-                    {% if user.getFieldData('oxbirthdate') and user.getFieldData('oxbirthdate') != "0000-00 - 00" %}
-                        {% set iBirthdayMonth = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]/", "")|preg_replace("/[-]([0-9]{1,2})$/", "") %}
-                        {% set iBirthdayDay = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]([0-9]{1,2})[-]/", "") %}
-                        {% set iBirthdayYear = user.getFieldData('oxbirthdate')|preg_replace("/[-]([0-9]{1,2})[-]([0-9]{1,2})$/", "") %}
-                    {% endif %}
-                    // Rendering the customer form
-                    Customer.initFormFields({
-                      "lastname": "{{ user.getFieldData("oxlname") }}",
-                      "firstname": "{{ user.getFieldData("oxfname") }}",
-                      "salutation": "{{ user.getFieldData("oxsal") }}",
-                      "birthDate": "{{ iBirthdayYear }}-{{ iBirthdayMonth }}-{{ iBirthdayDay }}",
-                      "address": {
-                        "street": "{{ user.getFieldData("oxstreet") }} {{ user.getFieldData("oxstreetnr") }}",
-                        "zip": "{{ user.getFieldData("oxzip") }}",
-                        "city": "{{ user.getFieldData("oxcity") }}",
-                        "country": "{{ oView.d3getCountryCode() }}"
-                      }
-                    });
-                {% endblock %}
-                
-                // Rendering the customer form
-                Customer.create({
-                    containerId: 'customer-{{ paymentId }}'
                 });
-            {% endif %}
+                {% if d3UnzerShowSepaGuranteedCustomerFormular %}
+                    // Creating a customer instance
+                    var Customer = unzerInstance.Customer();
+
+                    {% block d3initForm %}
+                        {% set user = oView.getUser() %}
+                        {% if user.getFieldData('oxbirthdate') and user.getFieldData('oxbirthdate') != "0000-00-00" %}
+                            {% set iBirthdayMonth = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]/", "")|preg_replace("/[-]([0-9]{1,2})$/", "") %}
+                            {% set iBirthdayDay = user.getFieldData('oxbirthdate')|preg_replace("/^([0-9]{4})[-]([0-9]{1,2})[-]/", "") %}
+                            {% set iBirthdayYear = user.getFieldData('oxbirthdate')|preg_replace("/[-]([0-9]{1,2})[-]([0-9]{1,2})$/", "") %}
+                        {% endif %}
+                        // Rendering the customer form
+                        Customer.initFormFields({
+                          "lastname": "{{ user.getFieldData("oxlname") }}",
+                          "firstname": "{{ user.getFieldData("oxfname") }}",
+                          "salutation": "{{ user.getFieldData("oxsal") }}",
+                          "birthDate": "{{ iBirthdayYear }}-{{ iBirthdayMonth }}-{{ iBirthdayDay }}",
+                          "address": {
+                            "street": "{{ user.getFieldData("oxstreet") }} {{ user.getFieldData("oxstreetnr") }}",
+                            "zip": "{{ user.getFieldData("oxzip") }}",
+                            "city": "{{ user.getFieldData("oxcity") }}",
+                            "country": "{{ oView.d3getCountryCode() }}"
+                          }
+                        });
+                    {% endblock %}
+
+                    // Rendering the customer form
+                    Customer.create({
+                        containerId: 'customer-{{ paymentId }}'
+                    });
+                {% endif %}
+
+                container.dataset.unzerInitialized = "true";
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerSepaDirectDebitSecured_{{ paymentId|escape('url') }}();
+            });
             var form = document.getElementById('payment');
             form.addEventListener('submit',
                 function (event) {
@@ -87,7 +112,7 @@
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
                         var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        var SepaGuaranteedPromise_{{ paymentId|escape('url') }} = SepaDirectDebitSecured_{{ paymentId|escape('url') }}.createResource();
+                        var SepaGuaranteedPromise_{{ paymentId|escape('url') }} = window.unzerPayments['{{ paymentId|escape('url') }}'].createResource();
                         {% if d3UnzerShowSepaGuranteedCustomerFormular %}
                             var customerPromise_{{ paymentId|escape('url') }} = Customer.createCustomer();
                         {% endif %}
@@ -144,4 +169,3 @@
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-

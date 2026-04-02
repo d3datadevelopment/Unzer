@@ -17,11 +17,26 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance  ) {
-                unzerInstance = new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
+            function initUnzerGiropay_{{ paymentId|escape('url') }}() {
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerGiropay_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const giropay = unzerInstance.Giropay();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = giropay;
             }
-            var Giropay_{{ paymentId|escape('url') }} = unzerInstance.Giropay();
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerGiropay_{{ paymentId|escape('url') }}();
+            });
 
             var form = document.getElementById('payment');
             form.addEventListener('submit',
@@ -29,7 +44,7 @@
                     if ($('#{{ selectorId }}').is(':checked')) {
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
-                        Giropay_{{ paymentId|escape('url') }}.createResource()
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
                             .then(function (result) {
                                 // Success
                                 var hiddenField = document.createElement("input");
@@ -45,4 +60,3 @@
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-

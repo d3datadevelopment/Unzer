@@ -32,13 +32,39 @@
 {% set doNotShow %}
     <script type="text/javascript">
         {% set javaScript %}
-            var unzerInstance;
-            if( "undefined" === typeof unzerInstance ) {
-                unzerInstance = new unzer('{{ d3UnzerPublicKey }}', {locale: '{{ d3UnzerLanguageLocale }}'});
+            function initUnzerSepaDirectDebit_{{ paymentId|escape('url') }}() {
+
+                const container = document.getElementById(
+                    "sepa-iban-{{ paymentId }}"
+                );
+
+                if (!container || container.dataset.unzerInitialized) {
+                    return;
+                }
+
+                const unzerInstance = getUnzerInstance();
+                if (!unzerInstance) {
+                    setTimeout(initUnzerSepaDirectDebit_{{ paymentId|escape('url') }}, 50);
+                    return;
+                }
+
+                const sepaDirectDebit = unzerInstance.SepaDirectDebit();
+
+                if (!window.unzerPayments) {
+                    window.unzerPayments = {};
+                }
+
+                window.unzerPayments['{{ paymentId|escape('url') }}'] = sepaDirectDebit;
+
+                sepaDirectDebit.create('sepa-direct-debit', {
+                    containerId: 'sepa-iban-{{ paymentId }}'
+                });
+
+                container.dataset.unzerInitialized = "true";
             }
-            var SepaDirectDebit_{{ paymentId|escape('url') }} = unzerInstance.SepaDirectDebit();
-            SepaDirectDebit_{{ paymentId|escape('url') }}.create('sepa-direct-debit', {
-                containerId: 'sepa-iban-{{ paymentId }}'
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initUnzerSepaDirectDebit_{{ paymentId|escape('url') }}();
             });
             var form = document.getElementById('payment');
             form.addEventListener('submit',
@@ -48,8 +74,8 @@
                     if (isFormValid && $('#{{ selectorId }}').is(':checked')) {
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
-                        var modalDialog = $( "#unzerWaitingDialog-{{ paymentId }}" ).modal('show');
-                        SepaDirectDebit_{{ paymentId|escape('url') }}.createResource()
+                        var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
+                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
                             .then(function (result) {
                                 var hiddenField   = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -60,12 +86,12 @@
                                 form.submit();
                             })
                             .catch(function (error) {
-                                var errorMessage   = document.createElement("p");
+                                var errorMessage = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-{{ paymentId }}');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text( error.message);
+                                $(errorMessage).text(error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({
@@ -73,12 +99,12 @@
                                 }, 1000);
                             })
                             .finally(function () {
-                                modalDialog.modal( "hide" );
+                                modalDialog.modal("hide");
                             });
                     }
-                });
+                }
+            );
         {% endset %}
     </script>
 {% endset %}
 {{ script({ add: javaScript.__toString(), dynamic: __oxid_include_dynamic }) }}
-
