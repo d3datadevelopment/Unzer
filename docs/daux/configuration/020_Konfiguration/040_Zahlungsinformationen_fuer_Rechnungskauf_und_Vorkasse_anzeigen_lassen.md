@@ -1,31 +1,34 @@
 ---
 title: Zahlungsinformationen für Rechnungskauf und Vorkasse anzeigen lassen
 ---
-Im folgenden Abschnitt sehen Sie ein PHP Script, womit ein Entwickler an jeder beliebigen Stelle im Shop,  
-die Zahlungsinformationen implementieren kann (bspw. Oxid eigenen Invoice PDF Modul oder für die Anbindung einer Warenwirtschaft):
+Die Überweisungsdaten können über das Bestellobjekt abgerufen werden, beispielsweise für eine PDF-Rechnung oder die Anbindung einer Warenwirtschaft. Der Getter unterstützt Vorkasse, gesicherten und ungesicherten Rechnungskauf, B2B-Rechnungskauf sowie PayLater-Rechnungskauf. PayLater-Lastschrift wird ausgeschlossen, da der Betrag eingezogen wird.
+
 ```php
 /** @var \D3\Unzer\Modules\Application\Model\Order $order */
 $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
 $order->load('OxidDerBestellung');
 
-var_dump($order->getHeidelpayBankTransferData());
-/* returns false or :
-stdClass::__set_state(array(
-    'Type' => 'd3_d3heidelpay_models_payment_invoice_unsecured',
-    'Currency' => 'EUR',
-    'Amount' => '33.80',
-    'ShortID' => '3457.1523.6672',
-    'UniqueID' => '31HA07BC81287D6A78968151B24C6A22',
-    'TransactionID' => '4387__@@2016-12-15 09:00:36',
-    'Bank' => '37040044',
-    'Number' => '5320130',
-    'Holder' => 'Unzer (GmbH)',
-    'Iban' => 'DE89370400440532013000',
-    'Bic' => 'COBADEFFXXX',
-    'Country' => 'DE',
-    'Reference' => '3457.1523.6672',
-))*/
-```  
+$bankTransferData = $order->getUnzerBankTransferData();
+var_dump($bankTransferData);
+/* Beispiel eines MGW-Ergebnisses:
+array (
+    'holder' => 'Unzer (GmbH)',
+    'iban' => 'DE89370400440532013000',
+    'bic' => 'COBADEFFXXX',
+    'formattedAmount' => '33,80',
+    'currency' => 'EUR',
+    'descriptor' => 'REFERENCE-123',
+    'paymentReference' => '',
+    // Weitere Transaktionsinformationen können enthalten sein.
+)
+*/
+```
 
-Ein Anwendungsbeispiel wird dem Kunden bereits auf der "Thank You" Seite angezeigt:  
+Bei der MGW-Schnittstelle werden zuerst die Daten der Autorisierung geprüft. Fehlen IBAN, Kontoinhaber oder eine Zahlungsreferenz, wird die erste Charge mit vollständigen Überweisungsdaten verwendet. Eine BIC ist nicht zwingend erforderlich. Als Verwendungszweck wird `descriptor` verwendet; alternativ kann `paymentReference` vorliegen.
+
+Bei unvollständigen oder noch nicht verfügbaren MGW-Daten sowie bei einem abgefangenen Unzer-API-Fehler wird ein leeres Array zurückgegeben. Bei inaktivem Modul, nicht unterstützter Zahlungsart oder ungültiger Payment-ID liefert die Methode `false`. Die bisherige NGW-Verarbeitung liefert weiterhin ein Objekt oder `null`.
+
+Der bisherige Methodenname `getHeidelpayBankTransferData()` bleibt als veraltete Weiterleitung auf `getUnzerBankTransferData()` verfügbar. Verwenden Sie für neue Anpassungen den Unzer-Namen.
+
+Ein Anwendungsbeispiel wird dem Kunden bereits auf der "Thank You" Seite angezeigt:
 <img style="float: left" src="../../img/unzer_thank_you_bank_informationen.png" alt="Zahlungsinformationen für Rechnungskauf und Vorkasse anzeigen lassen">

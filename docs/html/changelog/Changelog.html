@@ -91,20 +91,53 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        02.04.2026        </span>
+                        15.10.2026        </span>
                     </div>
 
     <div class="s-content">
         <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="Link--external">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="Link--external">Semantic Versioning</a>.</p>
-<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/7.2.2.0...rel_7.x" class="Link--external">Unreleased</a></h2>
-<h2 id="page_7-2-2-0-2026-04-02"><a href="https://git.d3data.de/D3Private/Unzer/compare/7.2.1.0...7.2.2.0" class="Link--external">7.2.2.0</a> - 2026-04-02</h2>
+<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/7.3.0.0...rel_7.x" class="Link--external">Unreleased</a></h2>
+<h2 id="page_7-3-0-0-2026-10-15"><a href="https://git.d3data.de/D3Private/Unzer/compare/7.2.2.0...7.3.0.0" class="Link--external">7.3.0.0</a> - 2026-10-15</h2>
 <h3 id="page_Added">Added</h3>
+<ul>
+<li>Apple Pay als MGW-Zahlart hinzugefügt</li>
+<li>Google Pay als MGW-Zahlart hinzugefügt</li>
+<li>PayLater-Rechnungskauf als MGW-Zahlart hinzugefügt</li>
+<li>PayLater-Lastschrift als MGW-Zahlart mit Zahlungsgarantie für Privatkunden in Deutschland und Österreich (EUR) hinzugefügt; andere Länder, Währungen und Firmenkunden werden im Checkout ausgeschlossen</li>
+<li>Apple-Pay-Sandbox-Debugging im Testmodus ergänzt</li>
+<li>Konfiguration der Google-Pay-Merchant-ID und des Ländercodes im Admin; Gateway-Merchant-ID und unterstützte Kartennetzwerke werden automatisch aus der Unzer-Keypair-Konfiguration ermittelt</li>
+<li>Konfiguration des Apple-Pay-Ländercodes im Admin und automatische Ermittlung der unterstützten Kartennetzwerke</li>
+<li>Einzelne registrierte Webhooks können im Shopadmin gelöscht werden</li>
+</ul>
+<h3 id="page_Changed">Changed</h3>
+<ul>
+<li>Unzer-PHP-SDK auf Version 3.15 aktualisiert; MGW-API-Endpunkt auf <code>/v2/</code> umgestellt</li>
+<li>Bezeichnungen der Zahlarten im Admin überarbeitet; bisherige Zahltypen als veraltet gekennzeichnet und weiterhin auswählbar</li>
+<li>Zahlartenlogos aktualisiert</li>
+<li>MGW-Warenkorbübertragung um Produktbild-URLs und optionale Leerfelder bereinigt; PayLater-Lastschrift verwendet Basket V2 mit Bruttobeträgen und Unterstützung für Zahlungsartenrabatte</li>
+<li>Getter für Überweisungsdaten und zugehörige Aufrufstellen auf Unzer umbenannt; bisherige öffentliche Methoden bleiben als veraltete Weiterleitungen verfügbar</li>
+</ul>
+<h3 id="page_Fixed">Fixed</h3>
+<ul>
+<li>Erfolgreiche MGW-Zahlungen setzen den Bestellstatus zuverlässig auf <code>OK</code> und speichern die Transaktionskennungen, statt Bestellungen auf <code>NOT_FINISHED</code> zu belassen</li>
+<li>Rückkehr von Open-Banking-Zahlungen mit ausstehendem Ergebnis führt zurück in den Shop und hält die Bestellung für den Webhook-Abschluss offen; erneute Weiterleitungen zum Zahlungsanbieter werden vermieden</li>
+<li>Wartedialoge bei Karten-, Lastschrift- und Rechnungskauf werden erst nach erfolgreicher Erstellung der Zahlungsressource angezeigt und bei Fehlern geschlossen</li>
+<li>Kartenressourcen im Twig-Checkout werden der tatsächlich gewählten Shop-Zahlungsart zugeordnet</li>
+<li>Bereits gespeicherte Geburtsdaten werden bei der Zahlungsprüfung berücksichtigt; alte Zahlungsfehler werden vor dem Wechsel zum Bestellschritt entfernt</li>
+<li>Doppelte SEPA-Mandatstexte vermieden und erforderliche Mandatsbestätigung deutlicher hervorgehoben</li>
+<li>Informationslinks im PayLater-Rechnungsformular öffnen in einem separaten Tab, ohne den Checkout zu verlassen</li>
+<li>Überweisungsdaten für PayLater-Rechnungskauf ergänzt; PayLater-Lastschrift zeigt keine Überweisungsanweisungen an</li>
+<li>Verwendungszweck aus MGW-Autorisierungen wird in die Überweisungsdaten übernommen</li>
+<li>Bei unvollständigen Überweisungsdaten der Autorisierung werden die Charges geprüft; leere Charge-Listen und fehlende Überweisungsdaten werden sicher behandelt</li>
+</ul>
+<h2 id="page_7-2-2-0-2026-04-02"><a href="https://git.d3data.de/D3Private/Unzer/compare/7.2.1.0...7.2.2.0" class="Link--external">7.2.2.0</a> - 2026-04-02</h2>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>installierbar in OXID 7.4</li>
 </ul>
-<h3 id="page_Changed">Changed</h3>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Integration der Zahlungsartenscripte erfolgt im onContentLoaded Event, um Ladefehler durch ConsentManager zu vermeiden</li>
 </ul>
@@ -113,7 +146,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class=
 <ul>
 <li>installierbar in OXID 7.3</li>
 </ul>
-<h3 id="page_Fixed">Fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Fehler bei der Mandantenzuordnung im Unzer Response</li>
 <li>Fehler beim Mandantenwechsel während der Installationsprüfung</li>

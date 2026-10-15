@@ -6,7 +6,7 @@
     {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
 
     {% if mod_d3unzer  %}
-        {% set oPrePaymentData = order.getHeidelpayBankTransferData() %}
+        {% set oPrePaymentData = order.getUnzerBankTransferData() %}
         {% set easyCreditInformations = order.getHeidelpayEasyCreditInformations() %}
 
         {% if oPrePaymentData %}

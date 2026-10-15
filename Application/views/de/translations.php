@@ -5,6 +5,7 @@ use D3\Unzer\Application\Model\Payment\Debitcard;
 use D3\Unzer\Application\Model\Payment\Cards;
 use D3\Unzer\Application\Model\Payment\Directdebit;
 use D3\Unzer\Application\Model\Payment\Directdebit\Secured;
+use D3\Unzer\Application\Model\Payment\Directdebit\Paylater as DirectdebitPaylater;
 use D3\Unzer\Application\Model\Payment\Prepayment;
 use D3\Unzer\Application\Model\Payment\Postfinance;
 use D3\Unzer\Application\Model\Payment\Sofortueberweisung;
@@ -12,7 +13,10 @@ use D3\Unzer\Application\Model\Payment\DirectBankTransfer;
 use D3\Unzer\Application\Model\Payment\Ideal;
 use D3\Unzer\Application\Model\Payment\Giropay;
 use D3\Unzer\Application\Model\Payment\Eps;
+use D3\Unzer\Application\Model\Payment\ApplePay;
+use D3\Unzer\Application\Model\Payment\GooglePay;
 use D3\Unzer\Application\Model\Payment\invoice\Unsecured;
+use D3\Unzer\Application\Model\Payment\invoice\Paylater;
 use D3\Unzer\Application\Model\Payment\Paypal;
 use D3\Unzer\Application\Model\Payment\Przelewy24;
 use D3\Unzer\Application\Model\Payment\Masterpass;
@@ -42,6 +46,12 @@ return [
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL'                          => 'Buchungstyp (PayPal)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_DIRECTDEBIT'                     => 'Buchungstyp (Unzer Direct Debit - Lastschrift mit Zahlungsgarantie)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_MASTERPASS'                      => 'Buchungstyp (MasterPass)',
+    'D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID'                       => 'Google Pay Merchant ID',
+    'HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID'                  => 'Die Google Pay Merchant ID aus dem Google Pay Business Console Konto. Im Testmodus kann eine Test-Merchant-ID verwendet werden.',
+    'D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE'                      => 'Google Pay Country Code',
+    'D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE'                       => 'Apple Pay Country Code',
+    'HELP_D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE'                  => 'ISO-3166-1 Alpha-2 Ländercode für die Apple Pay Transaktion, z.B. DE.',
+    'HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE'                 => 'ISO-3166-1 Alpha-2 Ländercode für die Google Pay Transaktion, z.B. DE.',
     'D3DYN_HEIDELPAY_PARAM_STOREDDATA'                                  => 'Gespeicherte Daten dem Kunden anbieten?',
     'D3DYN_HEIDELPAY_PARAM_CURLTIMEOUT'                                 => 'max. cUrl-Verbindungszeit zum Server',
     'D3DYN_HEIDELPAY_PARAM_CURLTIMEOUTSEK'                              => 'Sekunden',
@@ -129,16 +139,20 @@ return [
     Debitcard::class                                         => 'Debitkarte',
     Cards::class                                             => 'kartenbasierte Zahlungsmethoden (Kreditkarten / Debitkarten)',
     Directdebit::class                                       => 'SEPA Lastschrift (ohne Zahlungsgarantie)',
-    Secured::class                                           => 'Unzer Direct Debit (Lastschrift mit Zahlungsgarantie - DE/AT)',
+    Secured::class                                           => 'SEPA Direct Debit (Lastschrift mit Zahlungsgarantie - DE/AT)',
     Prepayment::class                                        => 'Unzer Prepayment (autom. Vorkasse)',
     Postfinance::class                                       => 'PostFinance E-Finance',
     Sofortueberweisung::class                                => 'Sofort',
-    DirectBankTransfer::class                                => 'DirectBankTransfer',
+    DirectBankTransfer::class                                => 'Unzer Direct Bank Transfer (Direktüberweisung)',
     Ideal::class                                             => 'iDeal',
     Giropay::class                                           => 'Giropay',
     Eps::class                                               => 'eps Überweisung',
+    ApplePay::class                                          => 'Apple Pay',
+    GooglePay::class                                         => 'Google Pay',
     \D3\Unzer\Application\Model\payment\invoice\Secured::class => 'Unzer Invoice (abgesicherter Rechnungskauf B2C - DE/AT)',
     Unsecured::class                                           => 'ungesicherter Rechnungskauf (B2B / B2C)',
+    Paylater::class                                            => 'PayLater Invoice (gesicherter Rechnungskauf)',
+    DirectdebitPaylater::class                                 => 'Unzer Direct Debit (Lastschrift mit Zahlungsgarantie - B2C DE/AT)',
     Paypal::class                                              => 'PayPal',
     Przelewy24::class                                          => 'Przelewy24',
     Masterpass::class                                          => 'MasterPass',
@@ -148,26 +162,42 @@ return [
     'D3_UNZER_CHANNEL_CREDITCARD'                              => 'Kreditkarte',
     'D3_UNZER_CHANNEL_DEBITCARD'                               => 'Debitkarte',
     'D3_UNZER_CHANNEL_CARDS'                                   => 'kartenbasierte Zahlungsmethoden (Kreditkarten / Debitkarten)',
-    'D3_UNZER_CHANNEL_DIRECTDEBITSECURED'                      => 'Unzer Direct Debit (Lastschrift mit Zahlungsgarantie - DE/AT)',
-    'D3_UNZER_CHANNEL_DIRECTDEBITUNSECURED'                    => 'SEPA Lastschrift (ohne Zahlungsgarantie)',
-    'D3_UNZER_CHANNEL_EASYCREDIT'                              => 'Easy Credit Ratenkauf',
-    'D3_UNZER_CHANNEL_EPS'                                     => 'eps Überweisung',
-    'D3_UNZER_CHANNEL_SOFORT'                                              => 'Sofort',
-    'D3_UNZER_CHANNEL_DIRECTBANKTRANSFER'                                  => 'DirectBankTransfer',
-    'D3_UNZER_CHANNEL_GIROPAY'                                             => 'Giropay',
-    'D3_UNZER_CHANNEL_PREPAYMENT'                                          => 'Unzer Prepayment (autom. Vorkasse)',
-    'D3_UNZER_CHANNEL_IDEAL'                                               => 'iDeal',
-    'D3_UNZER_CHANNEL_INVOICESECURED'                                      => 'Unzer Invoice (abgesicherter Rechnungskauf B2C - DE/AT)',
-    'D3_UNZER_CHANNEL_INVOICEUNSECURED'                                    => 'ungesicherter Rechnungskauf (B2B / B2C)',
-    'D3_UNZER_CHANNEL_MASTERPASS'                                          => 'MasterPass',
-    'D3_UNZER_CHANNEL_PAYPAL'                                              => 'PayPal',
-    'D3_UNZER_CHANNEL_PRZELEWY24'                                          => 'Przelewy24',
-    'D3_UNZER_CHANNEL_POSTFINANCE'                                         => 'PostFinance E-Finance',
-    'D3_UNZER_CHANNEL_B2BBILLPURCHASE'                                     => 'Unzer Invoice (abgesicherter Rechnungskauf B2B - DE/AT)',
-    'D3_UNZER_CHANNEL_FLEXIPAYDIRECT'                                      => 'Unzer Bank Transfer',
-    'D3_UNZER_CHANNEL_NOTSELECTABLE'                                       => 'nicht auswählbarer Zahltyp',
-    'D3_UNZER_RESTRICTIONINFO_ORDER'                                => 'Sie verwenden Unzer \'Basic\', daher werden Ihnen die Zahloptionen (\'Refund\' etc.) zwar gezeigt, führen jedoch keine Transaktion aus.<br>Wenn Sie alle Möglichkeiten des Moduls nutzen möchten, erwerben Sie bitte Unzer \'Premium\'.',
-    'D3_UNZER_UPDATE_CHANGE_HAENDLERKONTO'                          => 'Wichtige Hinweise zu Ihrem Unzer-Händlervertrag (betrifft Updates von kleiner 4.0.5.0 auf aktuelle Modulversion)'
+    'D3_UNZER_CHANNEL_DIRECTDEBITSECURED'                      => 'SEPA Direct Debit (Lastschrift mit Zahlungsgarantie - DE/AT, veraltet)',
+    'D3_UNZER_CHANNEL_DIRECTDEBITUNSECURED'                    => 'SEPA Lastschrift - ungesichert - DE/AT (sepa-direct-debit)',
+    'D3_UNZER_CHANNEL_EASYCREDIT'                              => 'Easy Credit Ratenkauf (veraltet)',
+    'D3_UNZER_CHANNEL_EPS'                                     => 'eps Überweisung - AT',
+    'D3_UNZER_CHANNEL_SOFORT'                                  => 'Sofort (veraltet)',
+    'D3_UNZER_CHANNEL_DIRECTBANKTRANSFER'                      => 'Unzer Direktüberweisung (Direct Bank Transfer)',
+    'D3_UNZER_CHANNEL_GIROPAY'                                 => 'Giropay (veraltet)',
+    'D3_UNZER_CHANNEL_APPLEPAY'                                => 'Apple Pay',
+    'D3_UNZER_CHANNEL_GOOGLEPAY'                               => 'Google Pay',
+    'D3_UNZER_CHANNEL_PREPAYMENT'                              => 'Unzer Prepayment - autom. Vorkasse (prepayment)',
+    'D3_UNZER_CHANNEL_IDEAL'                                   => 'iDEAL Überweisung - NL',
+    'D3_UNZER_CHANNEL_INVOICESECURED'                          => 'Unzer Invoice (abgesicherter Rechnungskauf B2C - DE/AT, veraltet)',
+    'D3_UNZER_CHANNEL_INVOICEUNSECURED'                        => 'ungesicherter Rechnungskauf (B2B / B2C, veraltet)',
+    'D3_UNZER_CHANNEL_INVOICEPAYLATER'                         => 'Unzer Invoice / Rechnungskauf / "Buy Now, Pay Later" (paylater-invoice)',
+    'D3_UNZER_CHANNEL_DIRECTDEBITPAYLATER'                     => 'Unzer Direct Debit (paylater-direct-debit)',
+    'D3_UNZER_CHANNEL_MASTERPASS'                              => 'MasterPass (veraltet)',
+    'D3_UNZER_CHANNEL_PAYPAL'                                  => 'PayPal',
+    'D3_UNZER_CHANNEL_PRZELEWY24'                              => 'Przelewy24 Überweisung - PL',
+    'D3_UNZER_CHANNEL_POSTFINANCE'                             => 'PostFinance E-Finance',
+    'D3_UNZER_CHANNEL_B2BBILLPURCHASE'                         => 'Unzer Invoice (abgesicherter Rechnungskauf B2B - DE/AT, veraltet)',
+    'D3_UNZER_CHANNEL_FLEXIPAYDIRECT'                          => 'FlexiPayDirect (veraltet)',
+    'D3_UNZER_CHANNEL_GROUP_CARDS'                             => 'Karten',
+    'D3_UNZER_CHANNEL_GROUP_BANKTRANSFER'                      => 'Bank / Überweisung',
+    'D3_UNZER_CHANNEL_GROUP_WALLETS'                           => 'Wallets',
+    'D3_UNZER_CHANNEL_GROUP_PAYLATER'                          => 'Rechnungskauf',
+    'D3_UNZER_CHANNEL_GROUP_LEGACY'                            => 'Veraltete / abgekündigte Zahlungsarten',
+    'D3_UNZER_CHANNEL_GROUP_OTHER'                             => 'Weitere',
+    'D3_UNZER_CHANNEL_NOTSELECTABLE'                           => 'nicht auswählbarer Zahltyp',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_GATEWAY_MERCHANT_ID'    => 'Google Pay ist nicht vollständig konfiguriert: Gateway Merchant ID fehlt.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_MERCHANT_ID'            => 'Google Pay ist nicht vollständig konfiguriert: Google Pay Merchant ID fehlt.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_USE_BUTTON'                     => 'Bitte verwenden Sie den Google Pay Button, um die Zahlung freizugeben.',
+    'D3UNZER_PAYMENT_APPLEPAY_USE_BUTTON'                      => 'Bitte verwenden Sie den Apple Pay Button, um die Zahlung freizugeben.',
+    'D3UNZER_PAYMENT_APPLEPAY_UNAVAILABLE'                     => 'Apple Pay ist auf diesem Gerät oder mit dieser Konfiguration nicht verfügbar.',
+    'D3UNZER_PAYMENT_PAYLATER_DIRECTDEBIT_UNAVAILABLE'         => 'Unzer Direct Debit ist nur für Privatkunden in Deutschland und Österreich mit der Währung EUR verfügbar.',
+    'D3_UNZER_RESTRICTIONINFO_ORDER'                           => 'Sie verwenden Unzer \'Basic\', daher werden Ihnen die Zahloptionen (\'Refund\' etc.) zwar gezeigt, führen jedoch keine Transaktion aus.<br>Wenn Sie alle Möglichkeiten des Moduls nutzen möchten, erwerben Sie bitte Unzer \'Premium\'.',
+    'D3_UNZER_UPDATE_CHANGE_HAENDLERKONTO'                     => 'Wichtige Hinweise zu Ihrem Unzer-Händlervertrag (betrifft Updates von kleiner 4.0.5.0 auf aktuelle Modulversion)'
         . PHP_EOL . PHP_EOL
         . 'Nur relevant bei Zahltyp "Sofort". '
         . PHP_EOL
@@ -324,6 +354,10 @@ return [
     'D3UNZER_WEBHOOKS_HEADLINE_URL'                                  => 'URL',
     'D3UNZER_WEBHOOKS_HEADLINE_EVENTS'                               => 'Events',
     'D3UNZER_WEBHOOKS_HEADLINE_ID'                                   => 'ID',
+    'D3UNZER_WEBHOOKS_HEADLINE_ACTION'                               => 'Aktion',
+    'D3UNZER_WEBHOOKS_DELETE'                                        => 'Löschen',
+    'D3UNZER_WEBHOOKS_DELETE_CONFIRM'                                => 'Diesen Webhook wirklich löschen?',
+    'D3UNZER_WEBHOOKS_ERR_DELETE'                                    => 'Webhook löschen: %1$s',
     'D3UNZER_WEBHOOKS_NOWEBHOOKREGISTERED'                           => 'Kein Webhook registriert!',
     'D3UNZER_WEBHOOKS_ERR_CLEARING'                                  => 'Webhook(s) bereinigen: %1$s',
     'D3UNZER_WEBHOOKS_ERR_CREATE'                                    => 'Webhook anlegen: %1$s',

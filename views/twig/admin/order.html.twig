@@ -7,7 +7,7 @@
 {% endif %}
 
 {% set oCurr = edit.getOrderCurrency() %}
-{% set banktransferData = edit.getHeidelpayBankTransferData() %}
+{% set banktransferData = edit.getUnzerBankTransferData() %}
 
 <form name="transfer" id="transfer" action="{{ oViewConf.getSelfLink() }}" method="post">
     {{ oViewConf.getHiddenSid()|raw }}

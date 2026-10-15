@@ -146,12 +146,21 @@
                         <th>[{oxmultilang ident="D3UNZER_WEBHOOKS_HEADLINE_URL"}]</th>
                         <th>[{oxmultilang ident="D3UNZER_WEBHOOKS_HEADLINE_EVENTS"}]</th>
                         <th>[{oxmultilang ident="D3UNZER_WEBHOOKS_HEADLINE_ID"}]</th>
+                        <th>[{oxmultilang ident="D3UNZER_WEBHOOKS_HEADLINE_ACTION"}]</th>
                     </tr>
                     [{foreach from=$registeredWebhooks item="webhook"}]
                         <tr>
                             <td class="edittext">[{$webhook->getUrl()}]</td>
                             <td class="edittext">[{$webhook->getEvent()}]</td>
                             <td class="edittext">[{$webhook->getId()}]</td>
+                            <td class="edittext">
+                                <button type="submit" form="deleteWebhook" name="webhookId" value="[{$webhook->getId()|escape:'html'}]"
+                                        data-confirm="[{oxmultilang ident="D3UNZER_WEBHOOKS_DELETE_CONFIRM"}]"
+                                        data-url="[{$webhook->getUrl()|escape:'html'}]"
+                                        onclick="return window.confirm(this.getAttribute('data-confirm') + '\n' + this.getAttribute('data-url'));" [{$readonly}]>
+                                    [{oxmultilang ident="D3UNZER_WEBHOOKS_DELETE"}]
+                                </button>
+                            </td>
                         </tr>
                     [{/foreach}]
                 </table>

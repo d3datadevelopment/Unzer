@@ -17,6 +17,8 @@
 [{capture name="doNotShow"}]
     <script type="text/javascript">
         [{capture name="javaScript"}]
+            var B2BCustomer_[{$paymentId|escape:'url'}];
+
             function initUnzerInvoiceSecured_[{$paymentId|escape:'url'}]() {
 
                 const container = document.getElementById(
@@ -34,7 +36,7 @@
                 }
 
                 const invoiceSecured = unzerInstance.InvoiceSecured();
-                var B2BCustomer_[{$paymentId|escape:'url'}] = unzerInstance.B2BCustomer();
+                B2BCustomer_[{$paymentId|escape:'url'}] = unzerInstance.B2BCustomer();
 
                 if (!window.unzerPayments) {
                     window.unzerPayments = {};
@@ -85,9 +87,20 @@
                     if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                         event.preventDefault();
                         $('#error-[{$paymentId}]').remove();
-                        var modalDialog        = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                        var paymentPromise     = window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource();
-                        var b2bCustomerPromise = B2BCustomer_[{$paymentId|escape:'url'}].createCustomer();
+                        var modalDialog        = $("#unzerWaitingDialog-[{$paymentId}]");
+                        var paymentPromise     = Promise.resolve().then(function () {
+                            var invoiceSecured = window.unzerPayments && window.unzerPayments['[{$paymentId|escape:'url'}]'];
+                            if (!invoiceSecured) {
+                                throw new Error('Unzer invoice secured payment was not initialized.');
+                            }
+                            return invoiceSecured.createResource();
+                        });
+                        var b2bCustomerPromise = Promise.resolve().then(function () {
+                            if (!B2BCustomer_[{$paymentId|escape:'url'}]) {
+                                throw new Error('Unzer B2B customer was not initialized.');
+                            }
+                            return B2BCustomer_[{$paymentId|escape:'url'}].createCustomer();
+                        });
                         Promise.all([paymentPromise, b2bCustomerPromise])
                             .then(function (result) {
                                 var hiddenField   = document.createElement("input");
@@ -96,15 +109,21 @@
                                 hiddenField.name  = "unzer-result";
 
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal("hide");
+                                setTimeout(function () {
+                                    modalDialog.modal("hide");
+                                }, 300);
+
                                 var errorMessage   = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-[{$paymentId}]');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text(error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({

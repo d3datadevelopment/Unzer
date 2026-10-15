@@ -53,7 +53,7 @@
                     window.unzerPayments = {};
                 }
 
-                window.unzerPayments['d3debitcard'] = card;
+                window.unzerPayments['{{ paymentId|escape('js') }}'] = card;
 
                 card.create('holder', {
                     containerId: 'card-element-id-card-holder-{{ paymentId }}',
@@ -89,8 +89,13 @@
                     if (isFormValid && $('#{{ selectorId }}').is(':checked')) {
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
-                        var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}").modal('show');
-                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
+                        var modalDialog = $("#unzerWaitingDialog-{{ paymentId }}");
+                        var unzerCard = window.unzerPayments && window.unzerPayments['{{ paymentId|escape('js') }}'];
+                        var cardResourcePromise = unzerCard ?
+                            unzerCard.createResource() :
+                            Promise.reject(new Error('Unzer card payment was not initialized.'));
+
+                        cardResourcePromise
                             .then(function (result) {
                                 var hiddenField = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -98,23 +103,22 @@
                                 hiddenField.name  = "unzer-result";
 
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal('hide');
                                 var errorMessage = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-{{ paymentId }}');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text(error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({
                                     scrollTop: $('#error-{{ paymentId }}').offset().top
                                 }, 1000);
-                            })
-                            .finally(function () {
-                                modalDialog.modal("hide");
                             });
                     }
                 });

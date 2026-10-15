@@ -146,14 +146,18 @@
                                 title="[{oxmultilang ident="D3DYN_HEIDELPAY_PAYTYPE"}]"
                         >
                             [{assign var="paymentTypeSelected" value="0"}]
-                            [{foreach from=$paymentTypeList key="paymentId" item="heidelPayment"}]
-                                <option value="[{$paymentId}]"[{if $currentChannel->getPaymentTypeIdent() == $paymentId}] selected[{assign var="paymentTypeSelected" value="1"}][{/if}]>
-                                    [{oxmultilang ident="D3_UNZER_CHANNEL_"|cat:$paymentId|upper}]
-                                </option>
+                            [{foreach from=$paymentTypeGroupList item="paymentTypeGroup"}]
+                                <optgroup label="[{oxmultilang ident=$paymentTypeGroup.labelIdent}]">
+                                    [{foreach from=$paymentTypeGroup.paymentTypes key="paymentId" item="heidelPayment"}]
+                                        <option value="[{$paymentId}]"[{if $currentChannel->getPaymentTypeIdent() == $paymentId}] selected[{assign var="paymentTypeSelected" value="1"}][{/if}]>
+                                            [{oxmultilang ident="D3_UNZER_CHANNEL_"|cat:$paymentId|upper}]
+                                        </option>
+                                    [{/foreach}]
+                                </optgroup>
                             [{/foreach}]
                             [{if !$paymentTypeSelected}]
-                                <option selected>
-                                    [{oxmultilang ident="D3_UNZER_CHANNEL_NOTSELECTABLE"}]
+                                <option value="[{$currentChannel->getPaymentTypeIdent()}]" selected>
+                                    [{oxmultilang ident="D3_UNZER_CHANNEL_NOTSELECTABLE"}]: [{$currentChannel->getPaymentTypeIdent()}]
                                 </option>
                             [{/if}]
                         </select>
@@ -176,6 +180,63 @@
                                maxlength="64"
                                name="editval[channel]"
                                value="[{$currentChannel->getChannel()}]" [{$readonly}]>
+                    </div>
+                </div>
+                [{/if}]
+
+                [{if $currentChannel->getPaymentTypeIdent() == 'googlepay'}]
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerGooglePayMerchantId">
+                        [{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID"}]
+                    </label>
+                    <div class="col-md-1">
+                        [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID"}]
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerGooglePayMerchantId"
+                               name="editval[sGooglePayMerchantId]"
+                               value="[{$currentChannel->getGooglePayMerchantId()}]"
+                               title="[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID"}]" [{$readonly}]>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerGooglePayCountryCode">
+                        [{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE"}]
+                    </label>
+                    <div class="col-md-1">
+                        [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE"}]
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerGooglePayCountryCode"
+                               name="editval[sGooglePayCountryCode]"
+                               value="[{$currentChannel->getGooglePayCountryCode()}]"
+                               title="[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE"}]"
+                               maxlength="2" [{$readonly}]>
+                    </div>
+                </div>
+                [{/if}]
+
+                [{if $currentChannel->getPaymentTypeIdent() == 'applepay'}]
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerApplePayCountryCode">
+                        [{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE"}]
+                    </label>
+                    <div class="col-md-1">
+                        [{oxinputhelp ident="HELP_D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE"}]
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerApplePayCountryCode"
+                               name="editval[sApplePayCountryCode]"
+                               value="[{$currentChannel->getApplePayCountryCode()}]"
+                               title="[{oxmultilang ident="D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE"}]"
+                               maxlength="2" [{$readonly}]>
                     </div>
                 </div>
                 [{/if}]

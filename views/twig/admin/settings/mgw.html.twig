@@ -140,18 +140,27 @@
     <td colspan="2">
         <fieldset>
             <legend><strong>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE" }) }}</strong>{% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_UNZER_WEBHOOK"), sHelpText: help_text("HELP_D3DYN_UNZER_WEBHOOK")} %}</legend>
-            {% if not empty(registeredWebhooks) %}
+            {% if registeredWebhooks is defined and registeredWebhooks is not empty %}
                 <table style="padding: 0; width: 100%; border-spacing: unset; border: 0">
                     <tr>
                         <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_URL" }) }}</th>
                         <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_EVENTS" }) }}</th>
                         <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_ID" }) }}</th>
+                        <th>{{ translate({ ident: "D3UNZER_WEBHOOKS_HEADLINE_ACTION" }) }}</th>
                     </tr>
                     {% for webhook in registeredWebhooks %}
                         <tr>
                             <td class="edittext">{{ webhook.getUrl() }}</td>
                             <td class="edittext">{{ webhook.getEvent() }}</td>
                             <td class="edittext">{{ webhook.getId() }}</td>
+                            <td class="edittext">
+                                <button type="submit" form="deleteWebhook" name="webhookId" value="{{ webhook.getId()|escape('html_attr') }}"
+                                        data-confirm="{{ translate({ ident: "D3UNZER_WEBHOOKS_DELETE_CONFIRM" }) }}"
+                                        data-url="{{ webhook.getUrl()|escape('html_attr') }}"
+                                        onclick="return window.confirm(this.getAttribute('data-confirm') + '\n' + this.getAttribute('data-url'));" {{ readonly }}>
+                                    {{ translate({ ident: "D3UNZER_WEBHOOKS_DELETE" }) }}
+                                </button>
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>

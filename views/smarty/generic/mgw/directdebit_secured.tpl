@@ -14,12 +14,10 @@
     [{if false === $d3UnzerDontShowDirectDebitMandateCheckbox && $isD3UnzerSepaMandatNotConfirmed}]
         <div class="d3UnzerErrorNotice">[{oxmultilang ident="D3UNZER_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_INVALID"}]</div>
     [{/if}]
-    [{$d3UnzerSepaMandatText}]
-
     [{if false === $d3UnzerDontShowDirectDebitMandateCheckbox}]
         <br>
         <input type="hidden" name="unzerSepaValidation[[{$paymentId}]]" value="0">
-        <label>
+        <label class="d3UnzerSepaMandateConfirmation">
             <input type="checkbox" name="unzerSepaValidation[[{$paymentId}]]" value="1">
             [{oxmultilang ident="D3UNZER_PAYMENT_MGW_SEPA_MANDAT_CHECKBOX_LABEL"}]
         </label>
@@ -68,6 +66,10 @@
                 [{if $d3UnzerShowSepaGuranteedCustomerFormular}]
                     // Creating a customer instance
                     var Customer = unzerInstance.Customer();
+                    if (!window.unzerCustomers) {
+                        window.unzerCustomers = {};
+                    }
+                    window.unzerCustomers['[{$paymentId|escape:'url'}]'] = Customer;
 
                     [{block name="d3initForm"}]
                         [{assign var="user" value=$oView->getUser()}]
@@ -112,30 +114,45 @@
                     if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                         event.preventDefault();
                         $('#error-[{$paymentId}]').remove();
-                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                        var SepaGuaranteedPromise_[{$paymentId|escape:'url'}] = window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource();
+                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]");
+                        var sepaDirectDebit = window.unzerPayments && window.unzerPayments['[{$paymentId|escape:'url'}]'];
+                        var resourcePromises = [Promise.resolve().then(function () {
+                            if (!sepaDirectDebit) {
+                                throw new Error('Unzer SEPA payment was not initialized.');
+                            }
+                            return sepaDirectDebit.createResource();
+                        })];
                         [{if $d3UnzerShowSepaGuranteedCustomerFormular}]
-                            var customerPromise_[{$paymentId|escape:'url'}] = Customer.createCustomer();
+                            resourcePromises.push(Promise.resolve().then(function () {
+                                var customer = window.unzerCustomers && window.unzerCustomers['[{$paymentId|escape:'url'}]'];
+                                if (!customer) {
+                                    throw new Error('Unzer SEPA customer was not initialized.');
+                                }
+                                return customer.createCustomer();
+                            }));
                         [{/if}]
-                        Promise.all([
-                            SepaGuaranteedPromise_[{$paymentId|escape:'url'}]
-                                [{if $d3UnzerShowSepaGuranteedCustomerFormular}], customerPromise_[{$paymentId|escape:'url'}][{/if}]
-                        ])
+                        Promise.all(resourcePromises)
                             .then(function (result) {
                                 var hiddenField = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
                                 hiddenField.type = 'hidden';
                                 hiddenField.name = "unzer-result";
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal('hide');
+                                setTimeout(function () {
+                                    modalDialog.modal('hide');
+                                }, 300);
+
                                 var errorMessage = document.createElement("p");
                                 $(errorMessage).prop('id',
                                     'error-[{$paymentId}]');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text(error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage,
                                     form);
                                 $([document.documentElement, document.body]).animate({

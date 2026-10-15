@@ -139,10 +139,14 @@
                                 name="editval[paymentType]"
                                 title="{{ translate({ ident: "D3DYN_HEIDELPAY_PAYTYPE" }) }}"
                         >
-                            {% for paymentId, heidelPayment in paymentTypeList %}
-                                <option value="{{ paymentId }}">
-                                    {{ translate({ ident: "D3_UNZER_CHANNEL_" ~ paymentId|upper }) }}
-                                </option>
+                            {% for paymentTypeGroup in paymentTypeGroupList %}
+                                <optgroup label="{{ translate({ ident: paymentTypeGroup.labelIdent }) }}">
+                                    {% for paymentId, heidelPayment in paymentTypeGroup.paymentTypes %}
+                                        <option value="{{ paymentId }}">
+                                            {{ translate({ ident: "D3_UNZER_CHANNEL_" ~ paymentId|upper }) }}
+                                        </option>
+                                    {% endfor %}
+                                </optgroup>
                             {% endfor %}
                         </select>
                     </div>

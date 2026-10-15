@@ -91,35 +91,34 @@
     <div class="Page__header">
         <h1><a href="../../configuration/Konfiguration/Konfiguration_der_Zahlungsarten.html">Konfiguration</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../../configuration/Konfiguration/Zahlungsinformationen_fuer_Rechnungskauf_und_Vorkasse_anzeigen_lassen.html">Zahlungsinformationen für Rechnungskauf und Vorkasse anzeigen lassen</a></h1>
                 <span class="ModifiedDate">
-                        02.04.2026        </span>
+                        15.10.2026        </span>
                     </div>
 
     <div class="s-content">
-        <p>Im folgenden Abschnitt sehen Sie ein PHP Script, womit ein Entwickler an jeder beliebigen Stelle im Shop,<br />
-die Zahlungsinformationen implementieren kann (bspw. Oxid eigenen Invoice PDF Modul oder für die Anbindung einer Warenwirtschaft):</p>
+        <p>Die Überweisungsdaten können über das Bestellobjekt abgerufen werden, beispielsweise für eine PDF-Rechnung oder die Anbindung einer Warenwirtschaft. Der Getter unterstützt Vorkasse, gesicherten und ungesicherten Rechnungskauf, B2B-Rechnungskauf sowie PayLater-Rechnungskauf. PayLater-Lastschrift wird ausgeschlossen, da der Betrag eingezogen wird.</p>
 <pre><code class="language-php">/** @var \D3\Unzer\Modules\Application\Model\Order $order */
 $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
 $order-&gt;load('OxidDerBestellung');
 
-var_dump($order-&gt;getHeidelpayBankTransferData());
-/* returns false or :
-stdClass::__set_state(array(
-    'Type' =&gt; 'd3_d3heidelpay_models_payment_invoice_unsecured',
-    'Currency' =&gt; 'EUR',
-    'Amount' =&gt; '33.80',
-    'ShortID' =&gt; '3457.1523.6672',
-    'UniqueID' =&gt; '31HA07BC81287D6A78968151B24C6A22',
-    'TransactionID' =&gt; '4387__@@2016-12-15 09:00:36',
-    'Bank' =&gt; '37040044',
-    'Number' =&gt; '5320130',
-    'Holder' =&gt; 'Unzer (GmbH)',
-    'Iban' =&gt; 'DE89370400440532013000',
-    'Bic' =&gt; 'COBADEFFXXX',
-    'Country' =&gt; 'DE',
-    'Reference' =&gt; '3457.1523.6672',
-))*/
+$bankTransferData = $order-&gt;getUnzerBankTransferData();
+var_dump($bankTransferData);
+/* Beispiel eines MGW-Ergebnisses:
+array (
+    'holder' =&gt; 'Unzer (GmbH)',
+    'iban' =&gt; 'DE89370400440532013000',
+    'bic' =&gt; 'COBADEFFXXX',
+    'formattedAmount' =&gt; '33,80',
+    'currency' =&gt; 'EUR',
+    'descriptor' =&gt; 'REFERENCE-123',
+    'paymentReference' =&gt; '',
+    // Weitere Transaktionsinformationen können enthalten sein.
+)
+*/
 </code></pre>
-<p>Ein Anwendungsbeispiel wird dem Kunden bereits auf der &quot;Thank You&quot; Seite angezeigt:<br />
+<p>Bei der MGW-Schnittstelle werden zuerst die Daten der Autorisierung geprüft. Fehlen IBAN, Kontoinhaber oder eine Zahlungsreferenz, wird die erste Charge mit vollständigen Überweisungsdaten verwendet. Eine BIC ist nicht zwingend erforderlich. Als Verwendungszweck wird <code>descriptor</code> verwendet; alternativ kann <code>paymentReference</code> vorliegen.</p>
+<p>Bei unvollständigen oder noch nicht verfügbaren MGW-Daten sowie bei einem abgefangenen Unzer-API-Fehler wird ein leeres Array zurückgegeben. Bei inaktivem Modul, nicht unterstützter Zahlungsart oder ungültiger Payment-ID liefert die Methode <code>false</code>. Die bisherige NGW-Verarbeitung liefert weiterhin ein Objekt oder <code>null</code>.</p>
+<p>Der bisherige Methodenname <code>getHeidelpayBankTransferData()</code> bleibt als veraltete Weiterleitung auf <code>getUnzerBankTransferData()</code> verfügbar. Verwenden Sie für neue Anpassungen den Unzer-Namen.</p>
+<p>Ein Anwendungsbeispiel wird dem Kunden bereits auf der &quot;Thank You&quot; Seite angezeigt:
 <img style="float: left" src="../../img/unzer_thank_you_bank_informationen.png" alt="Zahlungsinformationen für Rechnungskauf und Vorkasse anzeigen lassen"></p>
     </div>
 

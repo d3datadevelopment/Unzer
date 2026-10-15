@@ -8,7 +8,8 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 | <div style="width: 350px;">Bankeinzug / Lastschrift</div>                                              | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
 | ------------------------------------------------------------------------------------------------------ |:--------------------------------------:|:----------------------------------------:|
 | SEPA Deutschland, Österreich, Schweiz                                                                  | **X**                                  | **X**                                    |
-| Unzer Direct Debit (mit Zahlungssicherung europaweit)                                                  |                                        | **X**                                    |
+| Unzer Direct Debit (mit Zahlungssicherung europaweit, bisherige Zahlart)                                                  |                                        | **X**                                    |
+| PayLater-Lastschrift (Unzer Direct Debit, mit Zahlungsgarantie, B2C DE/AT, EUR)                            | **X**                                  | **X**                                    |
 
 | <div style="width: 350px;">Kredit-/Debitkarten</div>                                                   | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
 | ------------------------------------------------------------------------------------------------------ |:--------------------------------------:|:----------------------------------------:|
@@ -34,6 +35,8 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 
 | <div style="width: 350px;">Wallets</div>                                                               | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
 | ------------------------------------------------------------------------------------------------------ |:--------------------------------------:|:----------------------------------------:|
+| Apple Pay                                                                                              | **X**                                  | **X**                                    |
+| Google Pay                                                                                             | **X**                                  | **X**                                    |
 | PayPal                                                                                                 | **X**                                  | **X**                                    |
 
 | <div style="width: 350px;">Weitere Zahlungsarten</div>                                                 | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
@@ -42,6 +45,7 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 | [Unzer Invoice (Rechnungskauf ohne Zahlungssicherung)](https://www.unzer.com/de/unzer-invoice/)        | **X**                                  | **X**                                    |
 | [Unzer Invoice Secured (Rechnungskauf mit Zahlungssicherung)](https://www.unzer.com/de/unzer-invoice/) |                                        | **X**                                    |
 | B2B Rechnungskauf mit Zahlungssicherung                                                                |                                        | **X**                                    |
+| PayLater-Rechnungskauf (Buy Now, Pay Later)                                                                          |                                        | **X**                                    |
 
 | <div style="width: 350px;">Admin-Bereich an den Bestellungen</div>                                     | <div style="width: 100px;">Basic</div> | <div style="width: 100px;">Premium</div> |
 | ------------------------------------------------------------------ ----------------------------------- |:--------------------------------------:|:----------------------------------------:|

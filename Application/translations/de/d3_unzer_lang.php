@@ -260,4 +260,9 @@ Für den Fall der Nichteinlösung der Lastschriften oder des Widerspruchs gegen 
     'D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT'                                              => 'Bei der Bearbeitung der Zahlung ist ein Fehler aufgetreten, bitte kontaktieren Sie den Shopbetreiber. Vielen Dank.',
 
     'D3UNZER_PAYMENT_MGW_EMPTY_PAYMENT_ID'                                                      => 'Aus der vorherigen Session ist keine Payment-ID verfügbar.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_GATEWAY_MERCHANT_ID'                                     => 'Google Pay ist nicht vollständig konfiguriert: Gateway Merchant ID fehlt.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_MERCHANT_ID'                                             => 'Google Pay ist nicht vollständig konfiguriert: Google Pay Merchant ID fehlt.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_USE_BUTTON'                                                      => 'Bitte verwenden Sie den Google Pay Button, um die Zahlung freizugeben.',
+    'D3UNZER_PAYMENT_APPLEPAY_USE_BUTTON'                                                       => 'Bitte verwenden Sie den Apple Pay Button, um die Zahlung freizugeben.',
+    'D3UNZER_PAYMENT_APPLEPAY_UNAVAILABLE'                                                      => 'Apple Pay ist auf diesem Gerät oder mit dieser Konfiguration nicht verfügbar.',
 ];

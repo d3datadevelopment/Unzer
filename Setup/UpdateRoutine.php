@@ -30,6 +30,7 @@ use D3\Unzer\Application\Model\Payment\Giropay;
 use D3\Unzer\Application\Model\Payment\Ideal;
 use D3\Unzer\Application\Model\Payment\Invoice\Secured;
 use D3\Unzer\Application\Model\Payment\Invoice\Unsecured;
+use D3\Unzer\Application\Model\Payment\Invoice\Paylater;
 use D3\Unzer\Application\Model\Payment\Masterpass;
 use D3\Unzer\Application\Model\Payment\Paypal;
 use D3\Unzer\Application\Model\Payment\Postfinance;
@@ -334,6 +335,7 @@ class UpdateRoutine extends d3install_updatebase
         $classAlias = [
                 "d3_d3heidelpay_models_payment_invoice_unsecured"   => Unsecured::class,
                 "d3_d3heidelpay_models_payment_invoice_secured"     => Secured::class,
+                "d3_d3heidelpay_models_payment_invoice_paylater"    => Paylater::class,
                 "d3_d3heidelpay_models_payment_sofortueberweisung"  => Sofortueberweisung::class,
                 "d3_d3heidelpay_models_payment_directbanktransfer"  => DirectBankTransfer::class,
                 "d3_d3heidelpay_models_payment_prepayment"          => Prepayment::class,
@@ -394,6 +396,7 @@ class UpdateRoutine extends d3install_updatebase
             'd3_d3heidelpay_models_payment_debitcard'           => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_directdebit'         => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_invoice_unsecured'   => $oldChannelList['mainChannel'],
+            'd3_d3heidelpay_models_payment_invoice_paylater'    => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_prepayment'          => $oldChannelList['mainChannel'],
             'd3_d3heidelpay_models_payment_sofortueberweisung'  => $oldChannelList['sofortChannel'],
             'd3_d3heidelpay_models_payment_directbanktransfer'  => $oldChannelList['directBankTransferChannel'],
@@ -413,6 +416,7 @@ class UpdateRoutine extends d3install_updatebase
             Debitcard::class            => $oldChannelList['mainChannel'],
             Directdebit::class          => $oldChannelList['mainChannel'],
             Unsecured::class            => $oldChannelList['mainChannel'],
+            Paylater::class             => $oldChannelList['mainChannel'],
             Prepayment::class           => $oldChannelList['mainChannel'],
             Sofortueberweisung::class   => $oldChannelList['sofortChannel'],
             DirectBankTransfer::class   => $oldChannelList['directBankTransferChannel'],

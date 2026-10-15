@@ -139,10 +139,14 @@
                                 name="editval[paymentType]"
                                 title="[{oxmultilang ident="D3DYN_HEIDELPAY_PAYTYPE"}]"
                         >
-                            [{foreach from=$paymentTypeList key="paymentId" item="heidelPayment"}]
-                                <option value="[{$paymentId}]">
-                                    [{oxmultilang ident="D3_UNZER_CHANNEL_"|cat:$paymentId|upper}]
-                                </option>
+                            [{foreach from=$paymentTypeGroupList item="paymentTypeGroup"}]
+                                <optgroup label="[{oxmultilang ident=$paymentTypeGroup.labelIdent}]">
+                                    [{foreach from=$paymentTypeGroup.paymentTypes key="paymentId" item="heidelPayment"}]
+                                        <option value="[{$paymentId}]">
+                                            [{oxmultilang ident="D3_UNZER_CHANNEL_"|cat:$paymentId|upper}]
+                                        </option>
+                                    [{/foreach}]
+                                </optgroup>
                             [{/foreach}]
                         </select>
                     </div>

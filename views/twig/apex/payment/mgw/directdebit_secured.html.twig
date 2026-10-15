@@ -9,7 +9,7 @@
                    value="{{ sPaymentID }}"
                    {% if oView.getCheckedPaymentId() == paymentmethod.getId() %}checked{% endif %}>
             <label class="form-check-label unzerimg"
-                   for="payment_{{ sPaymentID }}" style="background-image: url('{{ sImageUrl }}unzer_direct_debit.png')">
+                   for="payment_{{ sPaymentID }}" style="background-image: url('{{ sImageUrl }}sepa_direct_debit.png')">
                 {{ paymentmethod.oxpayments__oxdesc.value }}
             </label>
             <div class="payment-option-info">

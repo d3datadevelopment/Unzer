@@ -7,7 +7,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/7.2.2.0...rel_7.x)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/7.3.0.0...rel_7.x)
+
+## [7.3.0.0](https://git.d3data.de/D3Private/Unzer/compare/7.2.2.0...7.3.0.0) - 2026-10-15
+### Added
+- Apple Pay als MGW-Zahlart hinzugefügt
+- Google Pay als MGW-Zahlart hinzugefügt
+- PayLater-Rechnungskauf als MGW-Zahlart hinzugefügt
+- PayLater-Lastschrift als MGW-Zahlart mit Zahlungsgarantie für Privatkunden in Deutschland und Österreich (EUR) hinzugefügt; andere Länder, Währungen und Firmenkunden werden im Checkout ausgeschlossen
+- Apple-Pay-Sandbox-Debugging im Testmodus ergänzt
+- Konfiguration der Google-Pay-Merchant-ID und des Ländercodes im Admin; Gateway-Merchant-ID und unterstützte Kartennetzwerke werden automatisch aus der Unzer-Keypair-Konfiguration ermittelt
+- Konfiguration des Apple-Pay-Ländercodes im Admin und automatische Ermittlung der unterstützten Kartennetzwerke
+- Einzelne registrierte Webhooks können im Shopadmin gelöscht werden
+
+### Changed
+- Unzer-PHP-SDK auf Version 3.15 aktualisiert; MGW-API-Endpunkt auf `/v2/` umgestellt
+- Bezeichnungen der Zahlarten im Admin überarbeitet; bisherige Zahltypen als veraltet gekennzeichnet und weiterhin auswählbar
+- Zahlartenlogos aktualisiert
+- MGW-Warenkorbübertragung um Produktbild-URLs und optionale Leerfelder bereinigt; PayLater-Lastschrift verwendet Basket V2 mit Bruttobeträgen und Unterstützung für Zahlungsartenrabatte
+- Getter für Überweisungsdaten und zugehörige Aufrufstellen auf Unzer umbenannt; bisherige öffentliche Methoden bleiben als veraltete Weiterleitungen verfügbar
+
+### Fixed
+- Erfolgreiche MGW-Zahlungen setzen den Bestellstatus zuverlässig auf `OK` und speichern die Transaktionskennungen, statt Bestellungen auf `NOT_FINISHED` zu belassen
+- Rückkehr von Open-Banking-Zahlungen mit ausstehendem Ergebnis führt zurück in den Shop und hält die Bestellung für den Webhook-Abschluss offen; erneute Weiterleitungen zum Zahlungsanbieter werden vermieden
+- Wartedialoge bei Karten-, Lastschrift- und Rechnungskauf werden erst nach erfolgreicher Erstellung der Zahlungsressource angezeigt und bei Fehlern geschlossen
+- Kartenressourcen im Twig-Checkout werden der tatsächlich gewählten Shop-Zahlungsart zugeordnet
+- Bereits gespeicherte Geburtsdaten werden bei der Zahlungsprüfung berücksichtigt; alte Zahlungsfehler werden vor dem Wechsel zum Bestellschritt entfernt
+- Doppelte SEPA-Mandatstexte vermieden und erforderliche Mandatsbestätigung deutlicher hervorgehoben
+- Informationslinks im PayLater-Rechnungsformular öffnen in einem separaten Tab, ohne den Checkout zu verlassen
+- Überweisungsdaten für PayLater-Rechnungskauf ergänzt; PayLater-Lastschrift zeigt keine Überweisungsanweisungen an
+- Verwendungszweck aus MGW-Autorisierungen wird in die Überweisungsdaten übernommen
+- Bei unvollständigen Überweisungsdaten der Autorisierung werden die Charges geprüft; leere Charge-Listen und fehlende Überweisungsdaten werden sicher behandelt
 
 ## [7.2.2.0](https://git.d3data.de/D3Private/Unzer/compare/7.2.1.0...7.2.2.0) - 2026-04-02
 ### Added

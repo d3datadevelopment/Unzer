@@ -37,8 +37,15 @@
                     if (isFormValid && $('#{{ selectorId }}').is(':checked')) {
                         event.preventDefault();
                         $('#error-{{ paymentId }}').remove();
-                        var modalDialog = $( "#unzerWaitingDialog-{{ paymentId }}" ).modal('show');
-                        window.unzerPayments['{{ paymentId|escape('url') }}'].createResource()
+                        var modalDialog = $( "#unzerWaitingDialog-{{ paymentId }}" );
+                        var invoiceSecured = window.unzerPayments && window.unzerPayments['{{ paymentId|escape('url') }}'];
+
+                        Promise.resolve().then(function () {
+                            if (!invoiceSecured) {
+                                throw new Error('Unzer invoice secured payment was not initialized.');
+                            }
+                            return invoiceSecured.createResource();
+                        })
                             .then(function (result) {
                                 var hiddenField   = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -46,15 +53,21 @@
                                 hiddenField.name  = "unzer-result";
 
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal( "hide" );
+                                setTimeout(function () {
+                                    modalDialog.modal( "hide" );
+                                }, 300);
+
                                 var errorMessage   = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-{{ paymentId }}');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text( error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({

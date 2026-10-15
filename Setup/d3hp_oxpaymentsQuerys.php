@@ -42,6 +42,14 @@ $aQueries = [
         'do'    => "INSERT IGNORE INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`) VALUES('d3paypal', 0, 'Unzer Paypal', 0, 'abs', 0, 0, 999999999, '', 0, '', '', '', '', '', '', '', '', '', '', 0);",
     ],
     [
+        'check' => "SELECT if(count(OXID), 0, 1) FROM oxpayments WHERE oxid = 'd3googlepay';",
+        'do'    => "INSERT IGNORE INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`) VALUES('d3googlepay', 0, 'Unzer Google Pay', 0, 'abs', 0, 0, 999999999, '', 0, '', '', '', '', '', '', '', '', '', '', 0);",
+    ],
+    [
+        'check' => "SELECT if(count(OXID), 0, 1) FROM oxpayments WHERE oxid = 'd3applepay';",
+        'do'    => "INSERT IGNORE INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`) VALUES('d3applepay', 0, 'Unzer Apple Pay', 0, 'abs', 0, 0, 999999999, '', 0, '', '', '', '', '', '', '', '', '', '', 0);",
+    ],
+    [
         'check' => "SELECT if(count(OXID), 0, 1) FROM oxpayments WHERE oxid = 'd3postfinance';",
         'do'    => "INSERT IGNORE INTO `oxpayments` (`OXID`, `OXACTIVE`, `OXDESC`, `OXADDSUM`, `OXADDSUMTYPE`, `OXFROMBONI`, `OXFROMAMOUNT`, `OXTOAMOUNT`, `OXVALDESC`, `OXCHECKED`, `OXDESC_1`, `OXVALDESC_1`, `OXDESC_2`, `OXVALDESC_2`, `OXDESC_3`, `OXVALDESC_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXSORT`) VALUES('d3postfinance', 0, 'Unzer PostFinance', 0, 'abs', 0, 0, 999999999, '', 0, '', '', '', '', '', '', '', '', '', '', 0);",
     ],

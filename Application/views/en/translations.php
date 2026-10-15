@@ -1,10 +1,11 @@
-<?php
+ï»¿<?php
 
 use D3\Unzer\Application\Model\Payment\Creditcard;
 use D3\Unzer\Application\Model\Payment\Debitcard;
 use D3\Unzer\Application\Model\Payment\Cards;
 use D3\Unzer\Application\Model\Payment\Directdebit;
 use D3\Unzer\Application\Model\Payment\Directdebit\Secured;
+use D3\Unzer\Application\Model\Payment\Directdebit\Paylater as DirectdebitPaylater;
 use D3\Unzer\Application\Model\Payment\Prepayment;
 use D3\Unzer\Application\Model\Payment\Postfinance;
 use D3\Unzer\Application\Model\Payment\Sofortueberweisung;
@@ -12,7 +13,10 @@ use D3\Unzer\Application\Model\Payment\DirectBankTransfer;
 use D3\Unzer\Application\Model\Payment\Ideal;
 use D3\Unzer\Application\Model\Payment\Giropay;
 use D3\Unzer\Application\Model\Payment\Eps;
+use D3\Unzer\Application\Model\Payment\ApplePay;
+use D3\Unzer\Application\Model\Payment\GooglePay;
 use D3\Unzer\Application\Model\Payment\invoice\Unsecured;
+use D3\Unzer\Application\Model\Payment\invoice\Paylater;
 use D3\Unzer\Application\Model\Payment\Paypal;
 use D3\Unzer\Application\Model\Payment\Przelewy24;
 use D3\Unzer\Application\Model\Payment\Masterpass;
@@ -21,6 +25,8 @@ use D3\Unzer\Application\Model\Payment\Btobbillpurchase;
 use D3\Unzer\Application\Model\Payment\FlexiPayDirect;
 
 return array(
+    DirectdebitPaylater::class => 'Unzer Direct Debit (secured direct debit - B2C DE/AT)',
+    'D3UNZER_PAYMENT_PAYLATER_DIRECTDEBIT_UNAVAILABLE' => 'Unzer Direct Debit is only available to private customers in Germany and Austria paying in EUR.',
     'charset'                                                           => 'UTF-8',
     'd3mxheidelpay'                                                     => "<i class='fab fa-fw fa-d3unzer d3fa-color-unzer'></i> Unzer",
     'd3mxheidelpay_settings'                                            => 'Settings',
@@ -42,6 +48,12 @@ return array(
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_PAYPAL'                          => 'booking type (PayPal)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_DIRECTDEBIT'                     => 'booking type (Unzer Direct Debit - direct debit with payment guarantee)',
     'D3DYN_HEIDELPAY_PARAM_BOOKINGTYPE_MASTERPASS'                      => 'booking type (MasterPass)',
+    'D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID'                       => 'Google Pay Merchant ID',
+    'HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID'                  => 'The Google Pay Merchant ID from the Google Pay Business Console account. A test merchant ID can be used in test mode.',
+    'D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE'                      => 'Google Pay Country Code',
+    'D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE'                       => 'Apple Pay Country Code',
+    'HELP_D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE'                  => 'ISO 3166-1 alpha-2 country code for the Apple Pay transaction, e.g. DE.',
+    'HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE'                 => 'ISO 3166-1 alpha-2 country code for the Google Pay transaction, e.g. DE.',
     'D3DYN_HEIDELPAY_PARAM_STOREDDATA'                                  => 'Offer stored data to the customer?',
     'D3DYN_HEIDELPAY_PARAM_CURLTIMEOUT'                                 => 'max. cUrl connection time to the server',
     'D3DYN_HEIDELPAY_PARAM_CURLTIMEOUTSEK'                              => 'seconds',
@@ -115,7 +127,7 @@ return array(
         . 'a TXT file for comparison, named after the ident of the corresponding CMS page.',
     'D3_UNZER_UPDATE_CHANNELCONFIGURATIONS'                    => 'The configuration of the channel data has changed.'
                                                    .PHP_EOL.'The existing configuration is migrated to a new admin area.'
-                                                   .PHP_EOL.'The new admin area can be found under D³ Modules -> Unzer -> Channel Configurations.'
+                                                   .PHP_EOL.'The new admin area can be found under Dï¿½ Modules -> Unzer -> Channel Configurations.'
                                                    .PHP_EOL.'On our help page you will get an overview of which settings have changed: https://docs.oxidmodule.com/Unzer/6.1.0.0/changelog/Channel_Rekonfiguration.html'
                                                    .'<br>',
     'D3_UNZER_models_update_legacy_assigments_updatemessage'        =>
@@ -129,16 +141,19 @@ return array(
     Debitcard::class                                                => 'Debit card',
     Cards::class                                                    => 'card-based payment methods (credit cards / debit cards)',
     Directdebit::class                                              => 'SEPA Direct Debit (without payment guarantee)',
-    Secured::class                                                  => 'Unzer Direct Debit (Direct debit with payment guarantee - DE/AT)',
+    Secured::class                                                  => 'SEPA Direct Debit (Direct debit with payment guarantee - DE/AT)',
     Prepayment::class                                               => 'Unzer Prepayment (autom. prepayment)',
     Postfinance::class                                              => 'PostFinance E-Finance',
     Sofortueberweisung::class                                       => 'Sofort',
-    DirectBankTransfer::class                                       => 'DirectBankTransfer',
+    DirectBankTransfer::class                                       => 'Unzer Direct Bank Transfer',
     Ideal::class                                                    => 'iDeal',
     Giropay::class                                                  => 'Giropay',
-    Eps::class                                                      => 'eps bank transfer',
+    Eps::class                                                      => 'EPS Bank Transfer',
+    ApplePay::class                                                 => 'Apple Pay',
+    GooglePay::class                                                => 'Google Pay',
     \D3\Unzer\Application\Model\payment\invoice\Secured::class      => 'Unzer Invoice (secured invoice B2C - DE/AT)',
-    Unsecured::class                                                => 'unsecured invoice (B2B / B2C)',
+    Unsecured::class                                                => 'Unsecured Invoice (B2B / B2C)',
+    Paylater::class                                                 => 'PayLater Invoice "Buy now, pay later"',
     Paypal::class                                                   => 'PayPal',
     Przelewy24::class                                               => 'Przelewy24',
     Masterpass::class                                               => 'MasterPass',
@@ -148,24 +163,38 @@ return array(
     'D3_UNZER_CHANNEL_CREDITCARD'                              => 'Credit card',
     'D3_UNZER_CHANNEL_DEBITCARD'                               => 'Debit card',
     'D3_UNZER_CHANNEL_CARDS'                                   => 'Card-based payment methods (credit cards / debit cards)',
-    'D3_UNZER_CHANNEL_DIRECTDEBITSECURED'                      => 'Unzer Direct Debit (direct debit with payment guarantee - DE/AT)',
+    'D3_UNZER_CHANNEL_DIRECTDEBITSECURED'                      => 'SEPA Direct Debit (direct debit with payment guarantee - DE/AT, legacy)',
     'D3_UNZER_CHANNEL_DIRECTDEBITUNSECURED'                    => 'SEPA Direct Debit (without payment guarantee)',
-    'D3_UNZER_CHANNEL_EASYCREDIT'                              => 'Easy Credit instalment purchase',
+    'D3_UNZER_CHANNEL_EASYCREDIT'                              => 'Easy Credit instalment purchase (legacy)',
     'D3_UNZER_CHANNEL_EPS'                                     => 'eps bank transfer',
-    'D3_UNZER_CHANNEL_SOFORT'                                              => 'Sofort',
-    'D3_UNZER_CHANNEL_DIRECTBANKTRANSFER'                                  => 'DirectBankTransfer',
+    'D3_UNZER_CHANNEL_SOFORT'                                              => 'Sofort (legacy)',
+    'D3_UNZER_CHANNEL_DIRECTBANKTRANSFER'                                  => 'Unzer Direct Bank Transfer',
     'D3_UNZER_CHANNEL_GIROPAY'                                             => 'Giropay',
+    'D3_UNZER_CHANNEL_APPLEPAY'                                            => 'Apple Pay',
+    'D3_UNZER_CHANNEL_GOOGLEPAY'                                           => 'Google Pay',
     'D3_UNZER_CHANNEL_PREPAYMENT'                                          => 'Unzer Prepayment (autom. prepayment)',
     'D3_UNZER_CHANNEL_IDEAL'                                               => 'iDeal',
-    'D3_UNZER_CHANNEL_INVOICESECURED'                                      => 'Unzer Invoice (secured invoice B2C - DE/AT)',
-    'D3_UNZER_CHANNEL_INVOICEUNSECURED'                                    => 'unsecured invoice (B2B / B2C)',
-    'D3_UNZER_CHANNEL_MASTERPASS'                                          => 'MasterPass',
+    'D3_UNZER_CHANNEL_INVOICESECURED'                                      => 'Unzer Invoice (secured invoice B2C - DE/AT, legacy)',
+    'D3_UNZER_CHANNEL_INVOICEUNSECURED'                                    => 'Unsecured Invoice (B2B / B2C, legacy)',
+    'D3_UNZER_CHANNEL_INVOICEPAYLATER'                                     => 'PayLater Invoice "Buy now, pay later"',
+    'D3_UNZER_CHANNEL_MASTERPASS'                                          => 'MasterPass (legacy)',
     'D3_UNZER_CHANNEL_PAYPAL'                                              => 'PayPal',
     'D3_UNZER_CHANNEL_PRZELEWY24'                                          => 'Przelewy24',
     'D3_UNZER_CHANNEL_POSTFINANCE'                                         => 'PostFinance E-Finance',
-    'D3_UNZER_CHANNEL_B2BBILLPURCHASE'                                     => 'Unzer Invoice (secured invoice B2B - DE/AT)',
-    'D3_UNZER_CHANNEL_FLEXIPAYDIRECT'                                      => 'Unzer Bank Transfer',
+    'D3_UNZER_CHANNEL_B2BBILLPURCHASE'                                     => 'Unzer Invoice (secured invoice B2B - DE/AT, legacy)',
+    'D3_UNZER_CHANNEL_FLEXIPAYDIRECT'                                      => 'FlexiPayDirect (legacy)',
+    'D3_UNZER_CHANNEL_GROUP_CARDS'                                         => 'Cards',
+    'D3_UNZER_CHANNEL_GROUP_BANKTRANSFER'                                  => 'Bank / Bank transfer',
+    'D3_UNZER_CHANNEL_GROUP_WALLETS'                                       => 'Wallets',
+    'D3_UNZER_CHANNEL_GROUP_PAYLATER'                                      => 'Invoices',
+    'D3_UNZER_CHANNEL_GROUP_LEGACY'                                        => 'Legacy / deprecated payment methods',
+    'D3_UNZER_CHANNEL_GROUP_OTHER'                                         => 'Other',
     'D3_UNZER_CHANNEL_NOTSELECTABLE'                                       => 'not selectable payment type',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_GATEWAY_MERCHANT_ID'                => 'Google Pay is not fully configured: Gateway Merchant ID is missing.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_MERCHANT_ID'                        => 'Google Pay is not fully configured: Google Pay Merchant ID is missing.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_USE_BUTTON'                                 => 'Please use the Google Pay button to authorize the payment.',
+    'D3UNZER_PAYMENT_APPLEPAY_USE_BUTTON'                                  => 'Please use the Apple Pay button to authorize the payment.',
+    'D3UNZER_PAYMENT_APPLEPAY_UNAVAILABLE'                                 => 'Apple Pay is not available on this device or with this configuration.',
     'D3_UNZER_RESTRICTIONINFO_ORDER'                                           => 'You are using Unzer "Basic", therefore the payment options ("Refund" etc.) will be shown to you, but will not execute a transaction.<br>If you want to use all the possibilities of the module, please purchase Unzer "Premium".',
     'D3_UNZER_UPDATE_CHANGE_HAENDLERKONTO'                                     => 'Important notes on your Unzer dealer contract (concerns updates from smaller 4.0.5.0 to current module version)'
                                                                            . PHP_EOL . PHP_EOL
@@ -323,6 +352,10 @@ return array(
     'D3UNZER_WEBHOOKS_HEADLINE_URL'                                  => 'URL',
     'D3UNZER_WEBHOOKS_HEADLINE_EVENTS'                               => 'Events',
     'D3UNZER_WEBHOOKS_HEADLINE_ID'                                   => 'Id',
+    'D3UNZER_WEBHOOKS_HEADLINE_ACTION'                               => 'Action',
+    'D3UNZER_WEBHOOKS_DELETE'                                        => 'Delete',
+    'D3UNZER_WEBHOOKS_DELETE_CONFIRM'                                => 'Really delete this webhook?',
+    'D3UNZER_WEBHOOKS_ERR_DELETE'                                    => 'delete webhook: %1$s',
     'D3UNZER_WEBHOOKS_NOWEBHOOKREGISTERED'                           => 'No webhook registered!',
     'D3UNZER_WEBHOOKS_ERR_CLEARING'                                  => 'clear webhook(s): %1$s',
     'D3UNZER_WEBHOOKS_ERR_CREATE'                                    => 'create webhook: %1$s',

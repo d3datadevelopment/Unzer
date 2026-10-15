@@ -102,6 +102,13 @@
     <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
     <input type="hidden" name="editlanguage" value="{{ editlanguage }}">
 </form>
+<form id="deleteWebhook" action="{{ oViewConf.getSelfLink() }}" method="post">
+    {{ oViewConf.getHiddenSid()|raw }}
+    <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">
+    <input type="hidden" name="fnc" value="deleteWebhook">
+    <input type="hidden" name="oxid" value="{{ oxid }}">
+    <input type="hidden" name="editlanguage" value="{{ editlanguage }}">
+</form>
 <form name="myedit" id="myedit" action="{{ oViewConf.getSelfLink() }}" method="post">
     {{ oViewConf.getHiddenSid()|raw }}
     <input type="hidden" name="cl" value="{{ oViewConf.getActiveClassName() }}">

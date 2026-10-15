@@ -7,7 +7,7 @@
 [{/if}]
 
 [{assign var="oCurr" value=$edit->getOrderCurrency()}]
-[{assign var="banktransferData" value=$edit->getHeidelpayBankTransferData()}]
+[{assign var="banktransferData" value=$edit->getUnzerBankTransferData()}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]

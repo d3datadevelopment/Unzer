@@ -5,7 +5,7 @@
 {% set oHeidelPayment = oHeidelPaySettings.getPayment(paymentmethod) %}
 {% set aBrands = oHeidelpayViewConfig.getHeidelpayNgwBrands(paymentmethod, oHeidelPayment, oxcmp_user) %}
 {% set sBrandIdentELV = 'ELV' %}
-{% set sFullImageUrl = sImageUrl ~ 'unzer_direct_debit.png' %}
+{% set sFullImageUrl = sImageUrl ~ 'sepa_direct_debit.png' %}
 {% set blShowPaymentMethod = true %}
 {% if get_class(oHeidelPayment) === "D3\Unzer\Application\Model\Payment\Directdebit\Secured" %}
     {% set blShowPaymentMethod = blD3HeidelpayHasSameAdresses %}

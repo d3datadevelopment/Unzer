@@ -146,14 +146,18 @@
                                 title="{{ translate({ ident: "D3DYN_HEIDELPAY_PAYTYPE" }) }}"
                         >
                             {% set paymentTypeSelected = "0" %}
-                            {% for paymentId, heidelPayment in paymentTypeList %}
-                                <option value="{{ paymentId }}"{% if currentChannel.getPaymentTypeIdent() == paymentId %} selected{% set paymentTypeSelected = "1" %}{% endif %}>
-                                    {{ translate({ ident: "D3_UNZER_CHANNEL_" ~ paymentId|upper }) }}
-                                </option>
+                            {% for paymentTypeGroup in paymentTypeGroupList %}
+                                <optgroup label="{{ translate({ ident: paymentTypeGroup.labelIdent }) }}">
+                                    {% for paymentId, heidelPayment in paymentTypeGroup.paymentTypes %}
+                                        <option value="{{ paymentId }}"{% if currentChannel.getPaymentTypeIdent() == paymentId %} selected{% set paymentTypeSelected = "1" %}{% endif %}>
+                                            {{ translate({ ident: "D3_UNZER_CHANNEL_" ~ paymentId|upper }) }}
+                                        </option>
+                                    {% endfor %}
+                                </optgroup>
                             {% endfor %}
                             {% if not paymentTypeSelected %}
-                                <option selected>
-                                    {{ translate({ ident: "D3_UNZER_CHANNEL_NOTSELECTABLE" }) }}
+                                <option value="{{ currentChannel.getPaymentTypeIdent() }}" selected>
+                                    {{ translate({ ident: "D3_UNZER_CHANNEL_NOTSELECTABLE" }) }}: {{ currentChannel.getPaymentTypeIdent() }}
                                 </option>
                             {% endif %}
                         </select>
@@ -176,6 +180,63 @@
                                maxlength="64"
                                name="editval[channel]"
                                value="{{ currentChannel.getChannel() }}" {{ readonly }}>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if currentChannel.getPaymentTypeIdent() == 'googlepay' %}
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerGooglePayMerchantId">
+                        {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID" }) }}
+                    </label>
+                    <div class="col-md-1">
+                        {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID")} %}
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerGooglePayMerchantId"
+                               name="editval[sGooglePayMerchantId]"
+                               value="{{ currentChannel.getGooglePayMerchantId() }}"
+                               title="{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_MERCHANT_ID" }) }}" {{ readonly }}>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerGooglePayCountryCode">
+                        {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE" }) }}
+                    </label>
+                    <div class="col-md-1">
+                        {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE")} %}
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerGooglePayCountryCode"
+                               name="editval[sGooglePayCountryCode]"
+                               value="{{ currentChannel.getGooglePayCountryCode() }}"
+                               title="{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_GOOGLEPAY_COUNTRY_CODE" }) }}"
+                               maxlength="2" {{ readonly }}>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if currentChannel.getPaymentTypeIdent() == 'applepay' %}
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="d3UnzerApplePayCountryCode">
+                        {{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE" }) }}
+                    </label>
+                    <div class="col-md-1">
+                        {% include "inputhelp.html.twig" with {sHelpId: help_id("HELP_D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE"), sHelpText: help_text("HELP_D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE")} %}
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="d3UnzerApplePayCountryCode"
+                               name="editval[sApplePayCountryCode]"
+                               value="{{ currentChannel.getApplePayCountryCode() }}"
+                               title="{{ translate({ ident: "D3DYN_HEIDELPAY_PARAM_APPLEPAY_COUNTRY_CODE" }) }}"
+                               maxlength="2" {{ readonly }}>
                     </div>
                 </div>
                 {% endif %}

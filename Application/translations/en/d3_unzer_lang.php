@@ -250,4 +250,9 @@ In case of refusal or rejection of direct debit payment I instruct my bank irrev
     'D3UNZER_PAYMENT_MGW_ORDERERR_HANDLEDPAYMENT'                                              => 'An error occurred while processing the payment, please contact the shop operator. Thank you very much.',
 
     'D3UNZER_PAYMENT_MGW_EMPTY_PAYMENT_ID'                                                      => 'No payment ID is available from the previous session.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_GATEWAY_MERCHANT_ID'                                     => 'Google Pay is not fully configured: Gateway Merchant ID is missing.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_MISSING_MERCHANT_ID'                                             => 'Google Pay is not fully configured: Google Pay Merchant ID is missing.',
+    'D3UNZER_PAYMENT_GOOGLEPAY_USE_BUTTON'                                                      => 'Please use the Google Pay button to authorize the payment.',
+    'D3UNZER_PAYMENT_APPLEPAY_USE_BUTTON'                                                       => 'Please use the Apple Pay button to authorize the payment.',
+    'D3UNZER_PAYMENT_APPLEPAY_UNAVAILABLE'                                                      => 'Apple Pay is not available on this device or with this configuration.',
 ];

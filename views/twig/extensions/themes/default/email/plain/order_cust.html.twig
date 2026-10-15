@@ -2,7 +2,7 @@
 
 {% block email_html_order_cust_paymentinfo %}
 {% d3modcfgcheck modid="d3unzer" %}{% endd3modcfgcheck %}
-{% if mod_d3unzer  %}{% set oPrePaymentData = order.getHeidelpayBankTransferData() %}
+{% if mod_d3unzer  %}{% set oPrePaymentData = order.getUnzerBankTransferData() %}
 {% set easyCreditInformations = order.getHeidelpayEasyCreditInformations() %}
 {% if is_object(oPrePaymentData) %}##########################################################
 

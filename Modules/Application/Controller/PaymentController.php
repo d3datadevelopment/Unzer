@@ -8,12 +8,14 @@ use D3\Unzer\Application\Model\Parameter\Group\CompanyData;
 use D3\Unzer\Application\Model\Payment\Btobbillpurchase;
 use D3\Unzer\Application\Model\Payment\Directdebit;
 use D3\Unzer\Application\Model\Payment\Directdebit\Secured as DirectdebitSecured;
+use D3\Unzer\Application\Model\Payment\Directdebit\Paylater as DirectdebitPaylater;
 use D3\Unzer\Application\Model\Payment\Easycredit;
 use D3\Unzer\Application\Model\Payment\Exception\PaymentNotReferencedToUnzerException;
 use D3\Unzer\Application\Model\Payment\Ideal;
 use D3\Unzer\Application\Model\Payment\Eps;
 use D3\Unzer\Application\Model\Payment\Invoice\Secured;
 use D3\Unzer\Application\Model\Payment\Invoice\Unsecured;
+use D3\Unzer\Application\Model\Payment\Invoice\Paylater;
 use D3\Unzer\Application\Model\Payment\Payment as HeidelpayAbstractPayment;
 use D3\Unzer\Application\Model\Payment\Paypal;
 use D3\Unzer\Application\Model\Payment\Przelewy24;
@@ -55,6 +57,16 @@ class PaymentController extends PaymentController_parent
      * @var array
      */
     protected $d3UnzerMissingUserParameter = [];
+
+    /**
+     * @var array|null
+     */
+    protected $d3GooglePayKeypairType;
+
+    /**
+     * @var array|null
+     */
+    protected $d3ApplePayKeypairType;
 
     /**
      * Initiate and register module classes
@@ -342,6 +354,8 @@ class PaymentController extends PaymentController_parent
             return $return;
         }
 
+        $session->deleteVariable('Errors');
+
         $heidelPaySettings = $factory->getSettings();
         //<editor-fold desc="NGW - part">
         $oxUser = $this->getUser();
@@ -349,6 +363,7 @@ class PaymentController extends PaymentController_parent
             $heidelPayment = $heidelPaySettings->getPayment($payment);
             if ($heidelPayment instanceof Secured
                 || $heidelPayment instanceof Unsecured
+                || $heidelPayment instanceof Paylater
                 || $heidelPayment instanceof DirectdebitSecured
             ) {
                 $birthdate = Registry::get(Request::class)->getRequestParameter('d3birthdate');
@@ -418,6 +433,20 @@ class PaymentController extends PaymentController_parent
             );
 
             if ($heidelPayment->isMGWPayment()) {
+                if ($heidelPayment instanceof DirectdebitPaylater && !$this->isHeidelpayDirectdebitPaylaterAllowed($heidelPayment)) {
+                    $this->_sPaymentError = -99;
+                    $this->_sPaymentErrorText = Registry::getLang()->translateString('D3UNZER_PAYMENT_PAYLATER_DIRECTDEBIT_UNAVAILABLE');
+                    $session->setVariable('payerror', $this->_sPaymentError);
+                    $session->setVariable('payerrortext', $this->_sPaymentErrorText);
+                    $d3log->warning(
+                        self::class,
+                        __FUNCTION__,
+                        __LINE__,
+                        'paylater direct debit: country, currency or customer type not allowed'
+                    );
+                    return 'payment';
+                }
+
                 $request         = Registry::getRequest();;
                 if (
                     ($heidelPayment instanceof DirectdebitSecured || $heidelPayment instanceof Directdebit) &&
@@ -431,11 +460,16 @@ class PaymentController extends PaymentController_parent
 
                 if ($heidelPayment instanceof Secured
                     || $heidelPayment instanceof Unsecured
+                    || $heidelPayment instanceof Paylater
                     || $heidelPayment instanceof DirectdebitSecured
                 ) {
 
                     $missingUserData = Registry::getRequest()->getRequestEscapedParameter('d3UnzerMissingUserData');
-                    $birthdate[$paymentId] = $missingUserData[$paymentId]['oxbirthdate'] ?? null;
+                    $birthdateSubmitted = is_array($missingUserData)
+                        && isset($missingUserData[$paymentId]['oxbirthdate']);
+                    $birthdate[$paymentId] = $birthdateSubmitted ?
+                        $missingUserData[$paymentId]['oxbirthdate'] :
+                        $this->d3GetBirthdateInputFromUser($oxUser);
 
                     if ($this->d3HasInvalidBirthdateInput($birthdate, $paymentId)) {
                         // log message
@@ -451,11 +485,13 @@ class PaymentController extends PaymentController_parent
                         return null;
                     }
 
-                    $oxUser->assign(
-                        ['oxbirthdate' => $birthdate[$paymentId]]
-                    );
+                    if ($birthdateSubmitted) {
+                        $oxUser->assign(
+                            ['oxbirthdate' => $birthdate[$paymentId]]
+                        );
 
-                    $oxUser->save();
+                        $oxUser->save();
+                    }
                 }
 
                 $heidelpayResult = $request->getRequestParameter('unzer-result');
@@ -611,6 +647,69 @@ class PaymentController extends PaymentController_parent
             || empty($birthdate[$paymentId]['year']);
     }
 
+    protected function d3GetBirthdateInputFromUser(User $oxUser): array
+    {
+        $birthdate = (string) $oxUser->getFieldData('oxbirthdate');
+        if (!preg_match('/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $birthdate, $matches)) {
+            return [];
+        }
+
+        return [
+            'day'   => $matches[3],
+            'month' => $matches[2],
+            'year'  => $matches[1],
+        ];
+    }
+
+    /**
+     * @return array|null
+     *
+     * @throws SystemComponentException
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function getPaymentList()
+    {
+        $paymentList = parent::getPaymentList();
+        $factory = oxNew(Factory::class);
+        if (!is_array($paymentList) || !$factory->getModuleConfiguration()->isActive()) {
+            return $paymentList;
+        }
+
+        foreach ($paymentList as $paymentId => $oxidPayment) {
+            if (!$factory->getSettings()->isAssignedToHeidelPayment($oxidPayment)) {
+                continue;
+            }
+
+            $payment = $factory->getSettings()->getPayment($oxidPayment);
+            if ($payment instanceof DirectdebitPaylater && !$this->isHeidelpayDirectdebitPaylaterAllowed($payment)) {
+                unset($paymentList[$paymentId]);
+            }
+        }
+
+        return $paymentList;
+    }
+
+    /**
+     * @param DirectdebitPaylater $payment
+     *
+     * @return bool
+     *
+     * @throws SystemComponentException
+     */
+    protected function isHeidelpayDirectdebitPaylaterAllowed(DirectdebitPaylater $payment): bool
+    {
+        $user = $this->getUser();
+        return $user && $payment->isAvailableFor(
+            (string)$this->d3getCountryCode(),
+            (string)Registry::getConfig()->getActShopCurrencyObject()->name,
+            trim((string)$user->getFieldData('oxcompany')) !== ''
+        );
+    }
+
     /**
      * @param $paymentId
      *
@@ -758,6 +857,253 @@ class PaymentController extends PaymentController_parent
         $factory = oxNew(Factory::class);
 
         return $factory->getChannelProvider()->isOxPaymentIdAssignedToChannel($oPayment->getId());
+    }
+
+    public function d3GetGooglePayGatewayMerchantId(string $paymentId): string
+    {
+        return $this->d3FetchGooglePayGatewayMerchantId();
+    }
+
+    public function d3GetGooglePayAllowedCardNetworks(): string
+    {
+        return json_encode($this->d3FetchGooglePayAllowedCardNetworks());
+    }
+
+    public function d3GetApplePayAllowedCardNetworks(): string
+    {
+        return json_encode($this->d3FetchApplePayAllowedCardNetworks());
+    }
+
+    protected function d3FetchGooglePayGatewayMerchantId(): string
+    {
+        $paymentType = $this->d3FetchGooglePayKeypairType();
+        if (empty($paymentType)) {
+            return '';
+        }
+
+        if (false === empty($paymentType['channel'])) {
+            return (string)$paymentType['channel'];
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (is_array($support) && false === empty($support['channel'])) {
+                    return (string)$support['channel'];
+                }
+            }
+        }
+
+        return '';
+    }
+
+    protected function d3FetchGooglePayAllowedCardNetworks(): array
+    {
+        $paymentType = $this->d3FetchGooglePayKeypairType();
+        if (empty($paymentType)) {
+            return [];
+        }
+
+        $brands = [];
+        if (isset($paymentType['brands']) && is_array($paymentType['brands'])) {
+            $brands = array_merge($brands, $paymentType['brands']);
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (isset($support['brands']) && is_array($support['brands'])) {
+                    $brands = array_merge($brands, $support['brands']);
+                }
+            }
+        }
+
+        $allowedCardNetworks = [];
+        foreach (array_unique($brands) as $brand) {
+            $mappedBrand = $this->d3MapGooglePayCardNetwork($brand);
+            if (false === empty($mappedBrand)) {
+                $allowedCardNetworks[] = $mappedBrand;
+            }
+        }
+
+        return array_values(array_unique($allowedCardNetworks));
+    }
+
+    protected function d3MapGooglePayCardNetwork(string $brand): string
+    {
+        $brand = strtoupper($brand);
+        $brandMap = [
+            'MASTER' => 'MASTERCARD',
+        ];
+
+        return $brandMap[$brand] ?? $brand;
+    }
+
+    protected function d3FetchApplePayAllowedCardNetworks(): array
+    {
+        $paymentType = $this->d3FetchApplePayKeypairType();
+        if (empty($paymentType)) {
+            return [];
+        }
+
+        $brands = [];
+        if (isset($paymentType['brands']) && is_array($paymentType['brands'])) {
+            $brands = array_merge($brands, $paymentType['brands']);
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (isset($support['brands']) && is_array($support['brands'])) {
+                    $brands = array_merge($brands, $support['brands']);
+                }
+            }
+        }
+
+        $allowedCardNetworks = [];
+        foreach (array_unique($brands) as $brand) {
+            $mappedBrand = $this->d3MapApplePayCardNetwork($brand);
+            if (false === empty($mappedBrand)) {
+                $allowedCardNetworks[] = $mappedBrand;
+            }
+        }
+
+        return array_values(array_unique($allowedCardNetworks));
+    }
+
+    protected function d3MapApplePayCardNetwork(string $brand): string
+    {
+        $brand = strtoupper($brand);
+        $brandMap = [
+            'MASTER' => 'mastercard',
+            'MASTERCARD' => 'mastercard',
+            'VISA' => 'visa',
+            'AMEX' => 'amex',
+            'AMERICANEXPRESS' => 'amex',
+            'MAESTRO' => 'maestro',
+        ];
+
+        return $brandMap[$brand] ?? strtolower($brand);
+    }
+
+    protected function d3FetchGooglePayKeypairType(): array
+    {
+        if (is_array($this->d3GooglePayKeypairType)) {
+            return $this->d3GooglePayKeypairType;
+        }
+
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+        $publicKey = $factory->getModuleProvider()->getMgwPublicKey();
+
+        if (empty($publicKey)) {
+            return [];
+        }
+
+        $response = $this->d3FetchUnzerKeypairTypes($publicKey);
+        if (empty($response)) {
+            return [];
+        }
+
+        $keypairTypes = json_decode($response, true);
+        if (false === is_array($keypairTypes)) {
+            return [];
+        }
+
+        $paymentTypes = isset($keypairTypes['paymentTypes']) && is_array($keypairTypes['paymentTypes']) ?
+            $keypairTypes['paymentTypes'] :
+            $keypairTypes;
+
+        foreach ($paymentTypes as $paymentType) {
+            if (is_array($paymentType) && strtolower((string)($paymentType['type'] ?? '')) === 'googlepay') {
+                $this->d3GooglePayKeypairType = $paymentType;
+
+                return $paymentType;
+            }
+        }
+
+        return [];
+    }
+
+    protected function d3FetchApplePayKeypairType(): array
+    {
+        if (is_array($this->d3ApplePayKeypairType)) {
+            return $this->d3ApplePayKeypairType;
+        }
+
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+        $publicKey = $factory->getModuleProvider()->getMgwPublicKey();
+
+        if (empty($publicKey)) {
+            return [];
+        }
+
+        $response = $this->d3FetchUnzerKeypairTypes($publicKey);
+        if (empty($response)) {
+            return [];
+        }
+
+        $keypairTypes = json_decode($response, true);
+        if (false === is_array($keypairTypes)) {
+            return [];
+        }
+
+        $paymentTypes = isset($keypairTypes['paymentTypes']) && is_array($keypairTypes['paymentTypes']) ?
+            $keypairTypes['paymentTypes'] :
+            $keypairTypes;
+
+        foreach ($paymentTypes as $paymentType) {
+            if (is_array($paymentType) && strtolower((string)($paymentType['type'] ?? '')) === 'applepay') {
+                $this->d3ApplePayKeypairType = $paymentType;
+
+                return $paymentType;
+            }
+        }
+
+        return [];
+    }
+
+    protected function d3FetchUnzerKeypairTypes(string $publicKey): string
+    {
+        $authorization = base64_encode($publicKey . ':');
+        $context = stream_context_create(
+            [
+                'http' => [
+                    'method'  => 'GET',
+                    'header'  => "Authorization: Basic $authorization\r\nAccept: application/json\r\n",
+                    'timeout' => 10,
+                ],
+            ]
+        );
+
+        $response = @file_get_contents('https://api.unzer.com/v1/keypair/types', false, $context);
+
+        return is_string($response) ? $response : '';
+    }
+
+    public function d3GetMgwChannelConfiguration(string $paymentId): \D3\Unzer\Application\Model\Settings\Channels\Channels
+    {
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+
+        return $factory->getChannelProvider()->getChannelconfiguration($paymentId);
+    }
+
+    public function d3GetGooglePayTotalPrice(): float
+    {
+        return Registry::getSession()->getBasket()->getPrice()->getBruttoPrice();
+    }
+
+    public function d3GetGooglePayCurrencyCode(): string
+    {
+        return Registry::getConfig()->getActShopCurrencyObject()->name;
+    }
+
+    public function d3GetGooglePayMerchantName(): string
+    {
+        /** @var Shop $shop */
+        $shop = oxNew(Shop::class);
+        $shop->load(Registry::getConfig()->getShopId());
+
+        return $shop->getFieldData('oxname');
     }
 
     /**
@@ -1268,6 +1614,7 @@ class PaymentController extends PaymentController_parent
         /** @var JavaScriptRegistrator $javaScriptRegistrator */
         $javaScriptRegistrator = oxNew(JavaScriptRegistrator::class);
         $javaScriptRegistrator->addFile('https://static.unzer.com/v1/unzer.js', 3, false);
+        $javaScriptRegistrator->addFile('https://pay.google.com/gp/p/js/pay.js', 3, false);
         $javaScriptRegistrator->addSnippet(<<<SNIPPET
 function getUnzerInstance() {
 

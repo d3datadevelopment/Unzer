@@ -5,7 +5,7 @@
 [{assign var='oHeidelPayment' value=$oHeidelPaySettings->getPayment($paymentmethod)}]
 [{assign var="aBrands" value=$oHeidelpayViewConfig->getHeidelpayNgwBrands($paymentmethod, $oHeidelPayment, $oxcmp_user)}]
 [{assign var="sBrandIdentELV" value='ELV'}]
-[{assign var="sFullImageUrl" value=$sImageUrl|cat:'unzer_direct_debit.png'}]
+[{assign var="sFullImageUrl" value=$sImageUrl|cat:'sepa_direct_debit.png'}]
 [{assign var='blShowPaymentMethod' value=true}]
 [{if get_class($oHeidelPayment) === "D3\Unzer\Application\Model\Payment\Directdebit\Secured"}]
     [{assign var='blShowPaymentMethod' value=$blD3HeidelpayHasSameAdresses}]

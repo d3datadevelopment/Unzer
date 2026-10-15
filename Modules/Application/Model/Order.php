@@ -13,6 +13,8 @@ use D3\Unzer\Application\Model\Payment\Easycredit;
 use D3\Unzer\Application\Model\Payment\Exception\PaymentNotReferencedToUnzerException;
 use D3\Unzer\Application\Model\Payment\Invoice\Secured;
 use D3\Unzer\Application\Model\Payment\Invoice\Unsecured;
+use D3\Unzer\Application\Model\Payment\Invoice\Paylater;
+use D3\Unzer\Application\Model\Payment\Directdebit\Paylater as DirectdebitPaylater;
 use D3\Unzer\Application\Model\Payment\Payment;
 use D3\Unzer\Application\Model\Payment\Prepayment;
 use D3\Unzer\Application\Model\Response\Parser;
@@ -55,7 +57,7 @@ class Order extends Order_parent
     /**
      * Returns bank transfer data if available
      *
-     * @return stdClass|false|array
+     * @return stdClass|false|array|null
      * @throws PaymentNotReferencedToUnzerException
      * @throws d3ShopCompatibilityAdapterException
      * @throws d3_cfg_mod_exception
@@ -65,7 +67,7 @@ class Order extends Order_parent
      * @throws StandardException
      * @throws UnzerApiException
      */
-    public function getHeidelpayBankTransferData()
+    public function getUnzerBankTransferData()
     {
         /** @var Factory $factory */
         $factory   = oxNew(Factory::class);
@@ -78,32 +80,37 @@ class Order extends Order_parent
         /** @var OxidPayment $oPayment */
         $oPayment  = oxNew(OxidPayment::class);
         $oPayment->load($this->getFieldData('oxpaymenttype'));
-        if (false == $oSettings->isAssignedToHeidelPayment($oPayment)) {
+        if (false == $oSettings->isAssignedToUnzerPayment($oPayment)) {
             return false;
         }
 
-        $heidelpayment = $oSettings->getPayment($oPayment);
+        $unzerPayment = $oSettings->getPayment($oPayment);
 
-        if ($factory->getModuleProvider()->isHeidelpayInterfaceNGWActive() && (
-            $heidelpayment instanceof Prepayment
-            || $heidelpayment instanceof Secured
-            || $heidelpayment instanceof Unsecured
-            || $heidelpayment instanceof Btobbillpurchase
+        if ($unzerPayment instanceof DirectdebitPaylater) {
+            return false;
+        }
+
+        if ($factory->getModuleProvider()->isUnzerInterfaceNGWActive() && (
+            $unzerPayment instanceof Prepayment
+            || $unzerPayment instanceof Secured
+            || $unzerPayment instanceof Unsecured
+            || $unzerPayment instanceof Btobbillpurchase
         )
         ) {
             /** @var PrepaymentData $oPrePaymentData */
             $oPrePaymentData = oxNew(PrepaymentData::class);
 
-            return $oPrePaymentData->getBankTransferData($this, $heidelpayment->getPaymentCode() . '.PA');
+            return $oPrePaymentData->getBankTransferData($this, $unzerPayment->getPaymentCode() . '.PA');
         }
 
-        if ($factory->getModuleProvider()->isHeidelpayInterfaceMGWRestActive()
-            && $heidelpayment->isMGWPayment()
+        if ($factory->getModuleProvider()->isUnzerInterfaceMGWRestActive()
+            && $unzerPayment->isMGWPayment()
             && (
-                $heidelpayment instanceof Prepayment
-                || $heidelpayment instanceof Secured
-                || $heidelpayment instanceof Unsecured
-                || $heidelpayment instanceof Btobbillpurchase
+                $unzerPayment instanceof Prepayment
+                || $unzerPayment instanceof Secured
+                || $unzerPayment instanceof Unsecured
+                || $unzerPayment instanceof Paylater
+                || $unzerPayment instanceof Btobbillpurchase
             )
         ) {
             $paymentId = $this->getFieldData('oxtransid');
@@ -111,14 +118,10 @@ class Order extends Order_parent
                 return false;
             }
 
-            $result = null;
+            $result = [];
 
             try {
-                $result = $factory->getMgwResourceHandler()->obtainPaymentAuthorizationByPayID($paymentId);
-                if (empty($result)) {
-                    $result = $factory->getMgwResourceHandler()->obtainPaymentChargesByID($paymentId);
-                    $result = $result[0];
-                }
+                $result = $factory->getMgwResourceHandler()->obtainBankTransferDataByPaymentId($paymentId);
             } catch (UnzerApiException $e) {
                 $factory->getModuleConfiguration()->d3getLog()->error(
                     self::class,
@@ -134,6 +137,14 @@ class Order extends Order_parent
         }
 
         return false;
+    }
+
+    /**
+     * @deprecated Use getUnzerBankTransferData() instead.
+     */
+    public function getHeidelpayBankTransferData()
+    {
+        return $this->getUnzerBankTransferData();
     }
 
     /**
