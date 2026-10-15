@@ -7,7 +7,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.5.1.0...rel_6.x_mgw)
+## [Unreleased](https://git.d3data.de/D3Private/Unzer/compare/6.6.0.0...rel_6.x_mgw)
+
+## [6.6.0.0](https://git.d3data.de/D3Private/Unzer/compare/6.5.1.0...6.6.0.0) - 2026-10-15
+### Added
+- Apple Pay als MGW-Zahlart hinzugefügt
+- Apple-Pay-Frontend-Button für Flow- und Wave-Theme hinzugefügt
+- Apple-Pay-Sandbox-Debugging im Testmodus ergänzt
+- Google Pay als MGW-Zahlart hinzugefügt
+- PayLater als MGW-Zahlart hinzugefügt
+- Konfiguration der Google-Pay-Merchant-ID und des Ländercodes im Admin; Gateway-Merchant-ID und unterstützte Kartennetzwerke werden automatisch aus der Unzer-Keypair-Konfiguration ermittelt
+- Konfiguration des Apple-Pay-Ländercodes im Admin und automatische Ermittlung der unterstützten Kartennetzwerke
+
+### Changed
+- Channel-Zahltypen im Admin werden gruppiert angezeigt
+- veraltete Zahlarten markiert und separat gruppiert
+- Unzer-PHP-SDK auf Version 3.15 aktualisiert; MGW-API-Endpunkt auf `/v2/` umgestellt
+- Bezeichnungen der Zahlarten im Admin überarbeitet
+- Apple Pay wird im Livebetrieb bei fehlender Geräte- oder Browserunterstützung ausgeblendet; der Zahlungsbutton erscheint nur bei ausgewählter Zahlart
+- Zahlartenlogos aktualisiert
+
+### Fixed
+- Rückkehr aus Open-Banking-Zahlungen mit noch ausstehendem Ergebnis führt nicht mehr zu erneuten Weiterleitungen zum Zahlungsanbieter; Abbrüche führen zurück zur Zahlartenauswahl, ausstehende Zahlungen erhalten den Bestellstatus `PENDING` bis zur weiteren Verarbeitung per Webhook
+- PayLater verwendet den Autorisierungsablauf mit Warenkorbdaten; Kundentyp B2B/B2C wird im Frontend korrekt übergeben und erfolgreiche MGW-Transaktionen setzen Bestellstatus und Transaktionsreferenzen zuverlässig
+- Wartedialog bei Karten- und SEPA-Zahlungen erscheint erst nach erfolgreicher Ressourcenerstellung, sodass Eingabefehler sichtbar bleiben und korrigiert werden können
+
 
 ## [6.5.1.0](https://git.d3data.de/D3Private/Unzer/compare/6.5.0.0...6.5.1.0) - 2026-03-31
 ### Changed

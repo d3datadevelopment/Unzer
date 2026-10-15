@@ -1,3 +1,4 @@
+[{assign var="sMgwImageUrl" value=$oViewConf->getModuleUrl('d3heidelpay','out/img/mgw/')}]
 [{block name="heidelpay_cards"}]
     <dl>
         <dt>
@@ -7,6 +8,7 @@
                    value="[{$sPaymentID}]"
                    [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
             <label for="payment_[{$sPaymentID}]"><b>[{$paymentmethod->oxpayments__oxdesc->value}]</b></label>
+            <img src="[{$sMgwImageUrl}]creditcard.png" alt="[{$paymentmethod->oxpayments__oxdesc->value}]" style="vertical-align: middle; width: 65px">
             [{foreach from=$aBrands item='sBrandName' key='sBrandIdent'}]
                 [{assign var="sBrandIdent" value=$sBrandIdent|lower}]
                 [{assign var="sFullImageUrl" value=$sImageUrl|cat:'logo_'|cat:$sBrandIdent|cat:'.jpg'}]

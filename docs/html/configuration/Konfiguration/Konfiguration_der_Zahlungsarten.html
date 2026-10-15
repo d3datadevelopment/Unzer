@@ -91,7 +91,7 @@
     <div class="Page__header">
         <h1><a href="../../configuration/Konfiguration/Konfiguration_der_Zahlungsarten.html">Konfiguration</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../../configuration/Konfiguration/Konfiguration_der_Zahlungsarten.html">Konfiguration der Zahlungsarten</a></h1>
                 <span class="ModifiedDate">
-                        31.03.2026        </span>
+                        15.10.2026        </span>
                     </div>
 
     <div class="s-content">
@@ -100,6 +100,8 @@
 <ul>
 <li>Kreditkarte</li>
 <li>Debitkarte</li>
+<li>Apple Pay</li>
+<li>Google Pay</li>
 <li>Bankeinzug</li>
 <li>automatische Vorkasse</li>
 <li>Sofort by Klarna</li>
@@ -109,6 +111,7 @@
 <li>Rechnungskauf (ohne Zahlungssicherung)</li>
 <li>Rechnungskauf (mit Zahlungssicherung)</li>
 <li>B2B Rechnungskauf</li>
+<li>PayLater (Buy Now, Pay Later)</li>
 <li>Przelewy 24</li>
 <li>PayPal</li>
 <li>EasyCredit (nur Legacy Payments / NGW)</li>
@@ -123,6 +126,9 @@ Diese müssen aktiviert, vollständig konfiguriert und im Frontend sichtbar sind
 Es werden durch den Installationsassistenten weitere Shop-Zahlungsarten hinzugefügt:</p>
 <ul>
 <li>Debitkarte</li>
+<li>Apple Pay</li>
+<li>Google Pay</li>
+<li>PayLater (Buy Now, Pay Later)</li>
 <li>Sofortüberweisung</li>
 <li>Unzer Direktüberweisung</li>
 <li>iDeal Niederlande</li>
@@ -143,6 +149,9 @@ Es werden durch den Installationsassistenten weitere Shop-Zahlungsarten hinzugef
 </ol>
 <blockquote class="alert alert-info">
 <i class='fas fa-info-circle'></i> <p> Wenn der Haken bei &quot;Test Modus&quot; gesetzt wird, ist die Channel-Konfiguration erst dann aktiv, wenn das Modul sich im Test Modus befindet.</p>
+</blockquote>
+<blockquote class="alert alert-info">
+<i class='fas fa-info-circle'></i> <p> Die Auswahl der Unzer-Zahltypen ist nach Zahlungsgruppen sortiert. Als veraltet markierte Zahlarten bleiben zu Test- und Migrationszwecken auswählbar.</p>
 </blockquote>
 <ol start="4">
 <li>Gehen Sie in den Tab <span class="navi_element">Zahlungsarten</span>. Hier sehen Sie eine Liste der Shop-Zahlungsarten und deren aktuellen Zuordnung.<br />
@@ -168,6 +177,10 @@ Sobald die Shop-Zahlungsart aktiv und zugeordnet ist, wird die Konfiguration im 
 </ul>
 </li>
 </ol>
+<h2 id="page_Hinweise-zu-Apple-Pay">Hinweise zu Apple Pay</h2>
+<p>Apple Pay steht als PaymentApi / MGW-Zahltyp zur Verfügung und wird wie die anderen Zahlarten über eine Channel-Konfiguration eingerichtet.</p>
+<p>Legen Sie dafür eine Channel-Konfiguration mit dem Unzer-Zahltyp <span class="navi_element">Apple Pay</span> an und ordnen Sie ihr die Shop-Zahlungsart <span class="navi_element">Unzer Apple Pay</span> zu. Im Tab <span class="navi_element">Einstellungen</span> der Channel-Konfiguration kann der Apple-Pay-Country-Code gepflegt werden. Tragen Sie hier den ISO-2-Ländercode ein, der zu Ihrer Freischaltung passt, zum Beispiel <code>DE</code>.</p>
+<p>Im Frontend wird Apple Pay über den Apple-Pay-Button im Bestellschritt &quot;Versand &amp; Zahlungsart&quot; autorisiert. Die Zahlart wird nur angezeigt beziehungsweise nutzbar, wenn Apple Pay auf dem verwendeten Gerät, im Browser und mit der hinterlegten Konfiguration verfügbar ist. Im Testmodus bleibt die Zahlart sichtbar, damit die Sandbox-Konfiguration geprüft werden kann.</p>
     </div>
 
         <nav>

@@ -6,6 +6,8 @@ In der PaymentApi / MGW-Schnittstelle stehen Ihnen die folgenden Zahlungstypen z
 
 - Kreditkarte
 - Debitkarte
+- Apple Pay
+- Google Pay
 - SEPA Lastschrift
 - automatische Vorkasse
 - Sofort by Klarna
@@ -15,6 +17,7 @@ In der PaymentApi / MGW-Schnittstelle stehen Ihnen die folgenden Zahlungstypen z
 - Rechnungskauf (ohne Zahlungssicherung)
 - Rechnungskauf (mit Zahlungssicherung)
 - B2B Rechnungskauf
+- PayLater (Buy Now, Pay Later)
 - Przelewy 24
 - PayPal
 

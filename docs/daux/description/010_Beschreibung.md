@@ -16,8 +16,11 @@ Details zu PCI finden Sie unter https://www.pcisecuritystandards.org/ .
 ## Folgende Leistungen bietet Ihnen das Modul über das Zahlungssystem der Unzer GmbH
 - Kreditkarte
 - Debitkarte
+- Apple Pay
+- Google Pay
 - Unzer Direct Debit (SEPA Lastschrift mit Zahlungsgarantie)
 - Unzer Invoice (Rechnungskauf B2C oder B2B, mit oder ohne Zahlungssicherung)
+- PayLater (Buy Now, Pay Later)
 - PayPal
 - Sofort Überweisung
 - Unzer Direktüberweisung

@@ -91,22 +91,48 @@
     <div class="Page__header">
         <h1><a href="../changelog/Changelog.html">Changelog</a></h1>
                 <span class="ModifiedDate">
-                        31.03.2026        </span>
+                        15.10.2026        </span>
                     </div>
 
     <div class="s-content">
         <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="Link--external">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="Link--external">Semantic Versioning</a>.</p>
-<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.5.1.0...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
-<h2 id="page_6-5-1-0-2026-03-31"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.5.0.0...6.5.1.0" class="Link--external">6.5.1.0</a> - 2026-03-31</h2>
+<h2 id="page_Unreleased"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.6.0.0...rel_6.x_mgw" class="Link--external">Unreleased</a></h2>
+<h2 id="page_6-6-0-0-2026-10-15"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.5.1.0...6.6.0.0" class="Link--external">6.6.0.0</a> - 2026-10-15</h2>
+<h3 id="page_Added">Added</h3>
+<ul>
+<li>Apple Pay als MGW-Zahlart hinzugefügt</li>
+<li>Apple-Pay-Frontend-Button für Flow- und Wave-Theme hinzugefügt</li>
+<li>Apple-Pay-Sandbox-Debugging im Testmodus ergänzt</li>
+<li>Google Pay als MGW-Zahlart hinzugefügt</li>
+<li>PayLater als MGW-Zahlart hinzugefügt</li>
+<li>Konfiguration der Google-Pay-Merchant-ID und des Ländercodes im Admin; Gateway-Merchant-ID und unterstützte Kartennetzwerke werden automatisch aus der Unzer-Keypair-Konfiguration ermittelt</li>
+<li>Konfiguration des Apple-Pay-Ländercodes im Admin und automatische Ermittlung der unterstützten Kartennetzwerke</li>
+</ul>
 <h3 id="page_Changed">Changed</h3>
+<ul>
+<li>Channel-Zahltypen im Admin werden gruppiert angezeigt</li>
+<li>veraltete Zahlarten markiert und separat gruppiert</li>
+<li>Unzer-PHP-SDK auf Version 3.15 aktualisiert; MGW-API-Endpunkt auf <code>/v2/</code> umgestellt</li>
+<li>Bezeichnungen der Zahlarten im Admin überarbeitet</li>
+<li>Apple Pay wird im Livebetrieb bei fehlender Geräte- oder Browserunterstützung ausgeblendet; der Zahlungsbutton erscheint nur bei ausgewählter Zahlart</li>
+<li>Zahlartenlogos aktualisiert</li>
+</ul>
+<h3 id="page_Fixed">Fixed</h3>
+<ul>
+<li>Rückkehr aus Open-Banking-Zahlungen mit noch ausstehendem Ergebnis führt nicht mehr zu erneuten Weiterleitungen zum Zahlungsanbieter; Abbrüche führen zurück zur Zahlartenauswahl, ausstehende Zahlungen erhalten den Bestellstatus <code>PENDING</code> bis zur weiteren Verarbeitung per Webhook</li>
+<li>PayLater verwendet den Autorisierungsablauf mit Warenkorbdaten; Kundentyp B2B/B2C wird im Frontend korrekt übergeben und erfolgreiche MGW-Transaktionen setzen Bestellstatus und Transaktionsreferenzen zuverlässig</li>
+<li>Wartedialog bei Karten- und SEPA-Zahlungen erscheint erst nach erfolgreicher Ressourcenerstellung, sodass Eingabefehler sichtbar bleiben und korrigiert werden können</li>
+</ul>
+<h2 id="page_6-5-1-0-2026-03-31"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.5.0.0...6.5.1.0" class="Link--external">6.5.1.0</a> - 2026-03-31</h2>
+<h3 id="page_Changed-2">Changed</h3>
 <ul>
 <li>Unzer-Keys werden im Demo-Modus als Sandbox-Version gekennzeichnet</li>
 <li>Integration der Zahlungsartenscripte erfolgt im onContentLoaded Event, um Ladefehler durch ConsentManager zu vermeiden</li>
 </ul>
 <h2 id="page_6-5-0-0-2025-03-14"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.4.0...6.5.0.0" class="Link--external">6.5.0.0</a> - 2025-03-14</h2>
-<h3 id="page_Added">Added</h3>
+<h3 id="page_Added-2">Added</h3>
 <ul>
 <li>Unzer DirectBankTransfer als Alternative zum abgekündigten &quot;Sofort&quot; hinzugefügt</li>
 </ul>
@@ -126,7 +152,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class=
 <li>Prüfung auf fehlende Methode im O3-Shop</li>
 </ul>
 <h2 id="page_6-4-3-1-2024-05-07"><a href="https://git.d3data.de/D3Private/Unzer/compare/6.4.3.0...6.4.3.1" class="Link--external">6.4.3.1</a> - 2024-05-07</h2>
-<h3 id="page_Fixed">Fixed</h3>
+<h3 id="page_Fixed-2">Fixed</h3>
 <ul>
 <li>Benutzereingaben werden auf Vollständigkeit geprüft</li>
 </ul>

@@ -9,6 +9,24 @@
     color:red;
 }
 
+.d3UnzerSepaMandateConfirmation {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 12px 0 20px;
+    font-size: 16px;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.d3UnzerSepaMandateConfirmation input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    margin-top: 0;
+    accent-color: #32aaf2;
+}
+
 #payment label b {
     margin-right:10px;
 }

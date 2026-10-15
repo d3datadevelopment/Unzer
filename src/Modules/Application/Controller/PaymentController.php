@@ -12,6 +12,7 @@ use D3\Heidelpay\Models\Payment\Easycredit;
 use D3\Heidelpay\Models\Payment\Exception\PaymentNotReferencedToHeidelpayException;
 use D3\Heidelpay\Models\Payment\Ideal;
 use D3\Heidelpay\Models\Payment\Eps;
+use D3\Heidelpay\Models\Payment\Invoice\Paylater as InvoicePaylater;
 use D3\Heidelpay\Models\Payment\Invoice\Secured;
 use D3\Heidelpay\Models\Payment\Invoice\Unsecured;
 use D3\Heidelpay\Models\Payment\Payment as HeidelpayAbstractPayment;
@@ -36,6 +37,7 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
+use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
@@ -54,6 +56,16 @@ class PaymentController extends PaymentController_parent
      * @var array
      */
     protected $d3UnzerMissingUserParameter = [];
+
+    /**
+     * @var array|null
+     */
+    protected $d3GooglePayKeypairType;
+
+    /**
+     * @var array|null
+     */
+    protected $d3ApplePayKeypairType;
 
     /**
      * Initiate and register module classes
@@ -429,12 +441,17 @@ class PaymentController extends PaymentController_parent
                 $this->d3GetMissingUserParameters($factory);
                 if (count($this->d3UnzerMissingUserParameter[$paymentId]) &&
                     ($heidelPayment instanceof Secured
+                    || $heidelPayment instanceof InvoicePaylater
                     || $heidelPayment instanceof Unsecured
                     || $heidelPayment instanceof DirectdebitSecured)
                 ) {
                     $missingUserData = Registry::getRequest()->getRequestEscapedParameter('d3UnzerMissingUserData');
+                    $birthdateSubmitted = is_array($missingUserData)
+                        && isset($missingUserData[$paymentId]['oxbirthdate']);
 
-                    $birthdate[$paymentId] = $missingUserData[$paymentId]['oxbirthdate'] ?? null;
+                    $birthdate[$paymentId] = $birthdateSubmitted ?
+                        $missingUserData[$paymentId]['oxbirthdate'] :
+                        $this->d3GetBirthdateInputFromUser($oxUser);
 
                     if ($this->d3HasInvalidBirthdateInput($birthdate, $paymentId)) {
                         // log message
@@ -450,11 +467,13 @@ class PaymentController extends PaymentController_parent
                         return null;
                     }
 
-                    $oxUser->assign(
-                        ['oxbirthdate' => $birthdate[$paymentId]]
-                    );
+                    if ($birthdateSubmitted) {
+                        $oxUser->assign(
+                            ['oxbirthdate' => $birthdate[$paymentId]]
+                        );
 
-                    $oxUser->save();
+                        $oxUser->save();
+                    }
                 }
 
                 $heidelpayResult = $request->getRequestParameter('unzer-result');
@@ -610,6 +629,25 @@ class PaymentController extends PaymentController_parent
     }
 
     /**
+     * @param User $oxUser
+     *
+     * @return array
+     */
+    protected function d3GetBirthdateInputFromUser(User $oxUser)
+    {
+        $birthdate = (string) $oxUser->getFieldData('oxbirthdate');
+        if (!preg_match('/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $birthdate, $matches)) {
+            return [];
+        }
+
+        return [
+            'day'   => $matches[3],
+            'month' => $matches[2],
+            'year'  => $matches[1],
+        ];
+    }
+
+    /**
      * @param $paymentId
      *
      * @return string
@@ -737,6 +775,384 @@ class PaymentController extends PaymentController_parent
         } else {
             return "page/checkout/inc/payment_other.tpl";
         }
+    }
+
+    /**
+     * @param string $paymentId
+     *
+     * @return string
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws InputException
+     * @throws StandardException
+     * @throws SystemComponentException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function d3GetMgwGatewayMerchantId($paymentId)
+    {
+        return $this->d3GetMgwChannelConfiguration($paymentId)->getChannel();
+    }
+
+    /**
+     * @param string $paymentId
+     *
+     * @return string
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws InputException
+     * @throws StandardException
+     * @throws SystemComponentException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function d3GetGooglePayGatewayMerchantId($paymentId)
+    {
+        return $this->d3FetchGooglePayGatewayMerchantId();
+    }
+
+    /**
+     * @return string
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function d3GetGooglePayAllowedCardNetworks()
+    {
+        return json_encode($this->d3FetchGooglePayAllowedCardNetworks());
+    }
+
+    /**
+     * @return string
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function d3GetApplePayAllowedCardNetworks()
+    {
+        return json_encode($this->d3FetchApplePayAllowedCardNetworks());
+    }
+
+    /**
+     * @return string
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    protected function d3FetchGooglePayGatewayMerchantId()
+    {
+        $paymentType = $this->d3FetchGooglePayKeypairType();
+        if (empty($paymentType)) {
+            return '';
+        }
+
+        if (false === empty($paymentType['channel'])) {
+            return (string)$paymentType['channel'];
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (is_array($support) && false === empty($support['channel'])) {
+                    return (string)$support['channel'];
+                }
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @return array
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    protected function d3FetchGooglePayAllowedCardNetworks()
+    {
+        $paymentType = $this->d3FetchGooglePayKeypairType();
+        if (empty($paymentType)) {
+            return [];
+        }
+
+        $brands = [];
+        if (isset($paymentType['brands']) && is_array($paymentType['brands'])) {
+            $brands = array_merge($brands, $paymentType['brands']);
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (isset($support['brands']) && is_array($support['brands'])) {
+                    $brands = array_merge($brands, $support['brands']);
+                }
+            }
+        }
+
+        $allowedCardNetworks = [];
+        foreach (array_unique($brands) as $brand) {
+            $mappedBrand = $this->d3MapGooglePayCardNetwork($brand);
+            if (false === empty($mappedBrand)) {
+                $allowedCardNetworks[] = $mappedBrand;
+            }
+        }
+
+        return array_values(array_unique($allowedCardNetworks));
+    }
+
+    /**
+     * @param string $brand
+     *
+     * @return string
+     */
+    protected function d3MapGooglePayCardNetwork($brand)
+    {
+        $brand = strtoupper((string)$brand);
+        $brandMap = [
+            'MASTER' => 'MASTERCARD',
+        ];
+
+        return $brandMap[$brand] ?? $brand;
+    }
+
+    /**
+     * @return array
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    protected function d3FetchApplePayAllowedCardNetworks()
+    {
+        $paymentType = $this->d3FetchApplePayKeypairType();
+        if (empty($paymentType)) {
+            return [];
+        }
+
+        $brands = [];
+        if (isset($paymentType['brands']) && is_array($paymentType['brands'])) {
+            $brands = array_merge($brands, $paymentType['brands']);
+        }
+
+        if (isset($paymentType['supports']) && is_array($paymentType['supports'])) {
+            foreach ($paymentType['supports'] as $support) {
+                if (isset($support['brands']) && is_array($support['brands'])) {
+                    $brands = array_merge($brands, $support['brands']);
+                }
+            }
+        }
+
+        $allowedCardNetworks = [];
+        foreach (array_unique($brands) as $brand) {
+            $mappedBrand = $this->d3MapApplePayCardNetwork($brand);
+            if (false === empty($mappedBrand)) {
+                $allowedCardNetworks[] = $mappedBrand;
+            }
+        }
+
+        return array_values(array_unique($allowedCardNetworks));
+    }
+
+    /**
+     * @param string $brand
+     *
+     * @return string
+     */
+    protected function d3MapApplePayCardNetwork($brand)
+    {
+        $brand = strtoupper((string)$brand);
+        $brandMap = [
+            'MASTER' => 'mastercard',
+            'MASTERCARD' => 'mastercard',
+            'VISA' => 'visa',
+            'AMEX' => 'amex',
+            'AMERICANEXPRESS' => 'amex',
+            'MAESTRO' => 'maestro',
+        ];
+
+        return $brandMap[$brand] ?? strtolower($brand);
+    }
+
+    /**
+     * @return array
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    protected function d3FetchGooglePayKeypairType()
+    {
+        if (is_array($this->d3GooglePayKeypairType)) {
+            return $this->d3GooglePayKeypairType;
+        }
+
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+        $publicKey = $factory->getModuleProvider()->getMgwPublicKey();
+
+        if (empty($publicKey)) {
+            return [];
+        }
+
+        $response = $this->d3FetchUnzerKeypairTypes($publicKey);
+        if (empty($response)) {
+            return [];
+        }
+
+        $keypairTypes = json_decode($response, true);
+        if (false === is_array($keypairTypes)) {
+            return [];
+        }
+
+        $paymentTypes = isset($keypairTypes['paymentTypes']) && is_array($keypairTypes['paymentTypes']) ?
+            $keypairTypes['paymentTypes'] :
+            $keypairTypes;
+
+        foreach ($paymentTypes as $paymentType) {
+            if (is_array($paymentType) && strtolower((string)($paymentType['type'] ?? '')) === 'googlepay') {
+                $this->d3GooglePayKeypairType = $paymentType;
+
+                return $paymentType;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @return array
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws StandardException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    protected function d3FetchApplePayKeypairType()
+    {
+        if (is_array($this->d3ApplePayKeypairType)) {
+            return $this->d3ApplePayKeypairType;
+        }
+
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+        $publicKey = $factory->getModuleProvider()->getMgwPublicKey();
+
+        if (empty($publicKey)) {
+            return [];
+        }
+
+        $response = $this->d3FetchUnzerKeypairTypes($publicKey);
+        if (empty($response)) {
+            return [];
+        }
+
+        $keypairTypes = json_decode($response, true);
+        if (false === is_array($keypairTypes)) {
+            return [];
+        }
+
+        $paymentTypes = isset($keypairTypes['paymentTypes']) && is_array($keypairTypes['paymentTypes']) ?
+            $keypairTypes['paymentTypes'] :
+            $keypairTypes;
+
+        foreach ($paymentTypes as $paymentType) {
+            if (is_array($paymentType) && strtolower((string)($paymentType['type'] ?? '')) === 'applepay') {
+                $this->d3ApplePayKeypairType = $paymentType;
+
+                return $paymentType;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param string $publicKey
+     *
+     * @return string
+     */
+    protected function d3FetchUnzerKeypairTypes($publicKey)
+    {
+        $authorization = base64_encode($publicKey.':');
+        $context = stream_context_create(
+            [
+                'http' => [
+                    'method'  => 'GET',
+                    'header'  => "Authorization: Basic $authorization\r\nAccept: application/json\r\n",
+                    'timeout' => 10,
+                ],
+            ]
+        );
+
+        $response = @file_get_contents('https://api.unzer.com/v1/keypair/types', false, $context);
+
+        return is_string($response) ? $response : '';
+    }
+
+    /**
+     * @param string $paymentId
+     *
+     * @return \D3\Heidelpay\Models\Settings\Channels\Channels
+     * @throws DBALException
+     * @throws DatabaseConnectionException
+     * @throws DatabaseErrorException
+     * @throws InputException
+     * @throws StandardException
+     * @throws SystemComponentException
+     * @throws d3ShopCompatibilityAdapterException
+     * @throws d3_cfg_mod_exception
+     */
+    public function d3GetMgwChannelConfiguration($paymentId)
+    {
+        /** @var Factory $factory */
+        $factory = oxNew(Factory::class);
+
+        return $factory->getChannelProvider()->getChannelconfiguration($paymentId);
+    }
+
+    /**
+     * @return float
+     */
+    public function d3GetGooglePayTotalPrice()
+    {
+        return Registry::getSession()->getBasket()->getPrice()->getBruttoPrice();
+    }
+
+    /**
+     * @return string
+     */
+    public function d3GetGooglePayCurrencyCode()
+    {
+        return $this->getConfig()->getActShopCurrencyObject()->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function d3GetGooglePayMerchantName()
+    {
+        /** @var Shop $shop */
+        $shop = oxNew(Shop::class);
+        $shop->load($this->getConfig()->getShopId());
+
+        return $shop->getFieldData('oxname');
     }
 
     /**
@@ -1260,6 +1676,7 @@ class PaymentController extends PaymentController_parent
         /** @var JavaScriptRegistrator $javaScriptRegistrator */
         $javaScriptRegistrator = oxNew(JavaScriptRegistrator::class);
         $javaScriptRegistrator->addFile('https://static.unzer.com/v1/unzer.js', 3, false);
+        $javaScriptRegistrator->addFile('https://pay.google.com/gp/p/js/pay.js', 3, false);
         $javaScriptRegistrator->addSnippet(<<<SNIPPET
 function getUnzerInstance() {
 

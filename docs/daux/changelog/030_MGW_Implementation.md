@@ -17,9 +17,12 @@ Den Zahlungsmitteln entsprechende Formulare werden im Bestellschritt "3. Versand
 
 ## Welche Zahlungsarten werden unterstützt?
 - Kartentypen (Kredit- und Debitkarten wurden zusammengefasst)
+- Apple Pay
+- Google Pay
 - SEPA ELV mit / ohne Zahlungssicherung
 - Rechnungskauf B2B versichert 
 - Rechnungskauf B2C versichert / unversichert 
+- PayLater (Buy Now, Pay Later)
 - iDeal
 - Flexipay Direct
 - Paypal

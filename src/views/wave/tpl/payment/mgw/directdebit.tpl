@@ -1,3 +1,4 @@
+[{assign var="sImageUrl" value=$oViewConf->getModuleUrl('d3heidelpay','out/img/mgw/')}]
 [{block name="heidelpay_directdebit"}]
     <div class="well well-sm">
         <dl>
@@ -9,6 +10,7 @@
                        [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]">
                     <b>[{$paymentmethod->oxpayments__oxdesc->value}]</b>
+                    <img src="[{$sImageUrl}]sepa_direct_debit.png" alt="[{$paymentmethod->oxpayments__oxdesc->value}]" style="vertical-align: middle; width: 65px">
                 </label>
             </dt>
             <dd class="payment-option [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">

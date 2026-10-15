@@ -145,11 +145,21 @@
                                 name="editval[paymentType]"
                                 title="[{oxmultilang ident="D3DYN_HEIDELPAY_PAYTYPE"}]"
                         >
-                            [{foreach from=$paymentTypeList item="heidelPayment"}]
-                                <option value="[{$heidelPayment}]"[{if $currentChannel->getPaymentType() == $heidelPayment}] selected[{/if}]>
-                                    [{oxmultilang ident=$heidelPayment|strtolower}]
-                                </option>
+                            [{assign var="paymentTypeSelected" value="0"}]
+                            [{foreach from=$paymentTypeGroupList item="paymentTypeGroup"}]
+                                <optgroup label="[{oxmultilang ident=$paymentTypeGroup.labelIdent}]">
+                                    [{foreach from=$paymentTypeGroup.paymentTypes item="heidelPayment"}]
+                                        <option value="[{$heidelPayment}]"[{if $currentChannel->getPaymentType() == $heidelPayment}] selected[{assign var="paymentTypeSelected" value="1"}][{/if}]>
+                                            [{oxmultilang ident=$heidelPayment|strtolower}]
+                                        </option>
+                                    [{/foreach}]
+                                </optgroup>
                             [{/foreach}]
+                            [{if !$paymentTypeSelected}]
+                                <option value="[{$currentChannel->getPaymentType()}]" selected>
+                                    [{oxmultilang ident="D3_HEIDELPAY_CHANNEL_NOTSELECTABLE"}]: [{$currentChannel->getPaymentType()}]
+                                </option>
+                            [{/if}]
                         </select>
                     </div>
                 </div>

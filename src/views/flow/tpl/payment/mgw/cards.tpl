@@ -1,3 +1,4 @@
+[{assign var="sImageUrl" value=$oViewConf->getModuleUrl('d3heidelpay','out/img/mgw/')}]
 [{block name="heidelpay_cards"}]
     <div class="well well-sm">
         <dl>
@@ -9,7 +10,8 @@
                        [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
                 <label for="payment_[{$sPaymentID}]">
                     <b>[{$paymentmethod->oxpayments__oxdesc->value}]</b>
-                    <i class="fa fa-credit-card fa-3x" style="vertical-align: middle"></i>
+                    <img src="[{$sImageUrl}]creditcard.png" alt="[{$paymentmethod->oxpayments__oxdesc->value}]" style="vertical-align: middle; width: 65px">
+                </label>
             </dt>
             <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
                 [{assign var="oPaymentPrice" value=$paymentmethod->getPrice()}]

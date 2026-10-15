@@ -32,6 +32,8 @@
     <script type="text/javascript">
         [{capture name="javaScript"}]
 
+            var unzerPaymentId_[{$paymentId|escape:'url'}] = '[{$paymentId|escape:'javascript'}]';
+
             function initUnzerCard_[{$paymentId|escape:'url'}]() {
 
                 const container = document.getElementById(
@@ -54,7 +56,7 @@
                     window.unzerPayments = {};
                 }
 
-                window.unzerPayments['d3debitcard'] = card;
+                window.unzerPayments[unzerPaymentId_[{$paymentId|escape:'url'}]] = card;
 
                 card.create('holder', {
                     containerId: 'card-element-id-card-holder-[{$paymentId}]',
@@ -91,8 +93,14 @@
                     if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                         event.preventDefault();
                         $('#error-[{$paymentId}]').remove();
-                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                        window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource()
+                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]");
+                        var unzerCard = window.unzerPayments && window.unzerPayments[unzerPaymentId_[{$paymentId|escape:'url'}]];
+
+                        var cardResourcePromise = unzerCard ?
+                            unzerCard.createResource() :
+                            Promise.reject(new Error('Unzer card payment was not initialized.'));
+
+                        cardResourcePromise
                             .then(function (result) {
                                 var hiddenField = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -100,15 +108,21 @@
                                 hiddenField.name  = "unzer-result";
 
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal("hide");
+                                setTimeout(function () {
+                                    modalDialog.modal("hide");
+                                }, 300);
+
                                 var errorMessage = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-[{$paymentId}]');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text(error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({

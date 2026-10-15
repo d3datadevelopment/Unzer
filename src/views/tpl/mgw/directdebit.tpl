@@ -75,8 +75,15 @@
                     if (isFormValid && $('#[{$selectorId}]').is(':checked')) {
                         event.preventDefault();
                         $('#error-[{$paymentId}]').remove();
-                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]").modal('show');
-                        window.unzerPayments['[{$paymentId|escape:'url'}]'].createResource()
+                        var modalDialog = $("#unzerWaitingDialog-[{$paymentId}]");
+                        var sepaDirectDebit = window.unzerPayments && window.unzerPayments['[{$paymentId|escape:'url'}]'];
+
+                        Promise.resolve().then(function () {
+                            if (!sepaDirectDebit) {
+                                throw new Error('Unzer SEPA payment was not initialized.');
+                            }
+                            return sepaDirectDebit.createResource();
+                        })
                             .then(function (result) {
                                 var hiddenField   = document.createElement("input");
                                 hiddenField.value = JSON.stringify(result);
@@ -84,23 +91,22 @@
                                 hiddenField.name  = "unzer-result";
 
                                 form.appendChild(hiddenField);
+                                modalDialog.modal('show');
                                 form.submit();
                             })
                             .catch(function (error) {
+                                modalDialog.modal('hide');
                                 var errorMessage = document.createElement("p");
 
                                 $(errorMessage).prop('id', 'error-[{$paymentId}]');
                                 $(errorMessage).addClass('alert');
                                 $(errorMessage).addClass('alert-danger');
-                                $(errorMessage).text(error.message);
+                                $(errorMessage).text(error.customerMessage || error.message);
                                 form.parentNode.insertBefore(errorMessage, form);
 
                                 $([document.documentElement, document.body]).animate({
                                     scrollTop: $('#error-[{$paymentId}]').offset().top
                                 }, 1000);
-                            })
-                            .finally(function () {
-                                modalDialog.modal("hide");
                             });
                     }
                 }

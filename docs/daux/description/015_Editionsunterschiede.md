@@ -45,6 +45,8 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 
 | E-Wallet | Basic | Premium
 | --- |: --- :|: ---: 
+|Apple Pay|**X**|**X**
+|Google Pay|**X**|**X**
 |PayPal|**X**|**X**
 |MasterPass| |**X**
 
@@ -55,6 +57,7 @@ Die Unterschiede zwischen den Lizenzen können Sie hier einsehen:
 |Rechnungskauf ohne Zahlungssicherung|**X**|**X**
 |Rechnungskauf mit Zahlungssicherung| |**X**
 |B2B Rechnungskauf mit Zahlungssicherung| |**X**
+|PayLater (Buy Now, Pay Later)| |**X**
 |EasyCredit (Ratenkauf)| |**X**
 
 | Admin-Bereich an den Bestellungen | Basic | Premium

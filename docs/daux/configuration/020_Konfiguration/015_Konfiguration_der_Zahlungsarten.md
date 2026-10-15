@@ -6,6 +6,8 @@ title: Konfiguration der Zahlungsarten
 Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von der eingesetzten Lizenz):
 - Kreditkarte
 - Debitkarte
+- Apple Pay
+- Google Pay
 - Bankeinzug
 - automatische Vorkasse
 - Sofort by Klarna
@@ -15,6 +17,7 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
 - Rechnungskauf (ohne Zahlungssicherung)
 - Rechnungskauf (mit Zahlungssicherung)
 - B2B Rechnungskauf
+- PayLater (Buy Now, Pay Later)
 - Przelewy 24
 - PayPal
 - EasyCredit (nur Legacy Payments / NGW)
@@ -26,6 +29,9 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
     Diese müssen aktiviert, vollständig konfiguriert und im Frontend sichtbar sind.
     Es werden durch den Installationsassistenten weitere Shop-Zahlungsarten hinzugefügt:
     - Debitkarte
+    - Apple Pay
+    - Google Pay
+    - PayLater (Buy Now, Pay Later)
     - Sofortüberweisung
     - Unzer Direktüberweisung
     - iDeal Niederlande
@@ -41,6 +47,8 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
 
 > [i] Wenn der Haken bei "Test Modus" gesetzt wird, ist die Channel-Konfiguration erst dann aktiv, wenn das Modul sich im Test Modus befindet. 
 
+> [i] Die Auswahl der Unzer-Zahltypen ist nach Zahlungsgruppen sortiert. Als veraltet markierte Zahlarten bleiben zu Test- und Migrationszwecken auswählbar.
+
 4. Gehen Sie in den Tab [ Zahlungsarten ]. Hier sehen Sie eine Liste der Shop-Zahlungsarten und deren aktuellen Zuordnung.  
     Wählen Sie für die aktive Channel-Konfiguration die zu verwendente Shop-Zahlungsart in der Spalte [ Zugeordnet? ] aus.  
     Sobald die Shop-Zahlungsart aktiv und zugeordnet ist, wird die Konfiguration im Frontend angewendet.
@@ -55,3 +63,11 @@ Ihnen stehen folgende **Zahltypen** im Unzer Modul zur Verfügung (abhängig von
     - Ist der Test/Livemodus im Modul aktiv? 
     - Sind die Channel-Konfigurationen korrekt eingestellt (Aktiv, Test Modus, Zuordnung der Shop-Zahlungsart)?
     - Sind die Test/Livedaten im Modul hinterlegt?
+
+## Hinweise zu Apple Pay
+
+Apple Pay steht als PaymentApi / MGW-Zahltyp zur Verfügung und wird wie die anderen Zahlarten über eine Channel-Konfiguration eingerichtet.
+
+Legen Sie dafür eine Channel-Konfiguration mit dem Unzer-Zahltyp [ Apple Pay ] an und ordnen Sie ihr die Shop-Zahlungsart [ Unzer Apple Pay ] zu. Im Tab [ Einstellungen ] der Channel-Konfiguration kann der Apple-Pay-Country-Code gepflegt werden. Tragen Sie hier den ISO-2-Ländercode ein, der zu Ihrer Freischaltung passt, zum Beispiel `DE`.
+
+Im Frontend wird Apple Pay über den Apple-Pay-Button im Bestellschritt "Versand & Zahlungsart" autorisiert. Die Zahlart wird nur angezeigt beziehungsweise nutzbar, wenn Apple Pay auf dem verwendeten Gerät, im Browser und mit der hinterlegten Konfiguration verfügbar ist. Im Testmodus bleibt die Zahlart sichtbar, damit die Sandbox-Konfiguration geprüft werden kann.
